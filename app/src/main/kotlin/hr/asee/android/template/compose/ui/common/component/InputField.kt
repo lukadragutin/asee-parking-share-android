@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import hr.asee.android.template.compose.ui.common.lifecycle.LifecycleEventHandler
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
@@ -48,7 +50,7 @@ fun InputField(
         label = {
             Text(
                 text = label,
-                color = if (state.isError) MaterialTheme.colors.error else MaterialTheme.colors.primary.copy(alpha = 0.75f),
+                color = if (state.isError) MaterialTheme.colors.error else Color(0xFFAAAFAF),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
@@ -58,7 +60,7 @@ fun InputField(
             errorIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            backgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.25f),
+            backgroundColor = Color.Transparent,
         ),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
@@ -66,6 +68,7 @@ fun InputField(
         trailingIcon = trailingIconContent,
         shape = MaterialTheme.shapes.small,
         singleLine = isSingleLine,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        textStyle = TextStyle(fontSize = 14.sp)
     )
 }

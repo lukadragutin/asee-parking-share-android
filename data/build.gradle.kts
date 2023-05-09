@@ -15,3 +15,6 @@ dependencies {
     //    kapt "androidx.room:room-compiler:$room_version"
 
 }
+android {
+    namespace = "hr.asee.android.template.data"
+}

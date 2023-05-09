@@ -67,4 +67,8 @@ class LoginViewModel @Inject constructor(
             else -> showError(CommonMessages.UNEXPECTED_ERROR)
         }
     }
+
+    fun signUp() {
+        router.navigateToRegistrationScreen()
+    }
 }

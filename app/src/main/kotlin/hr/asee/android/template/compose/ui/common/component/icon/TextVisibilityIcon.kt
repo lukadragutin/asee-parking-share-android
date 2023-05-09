@@ -18,7 +18,7 @@ fun TextVisibilityIcon(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     onVisibilityClicked: () -> Unit,
-    tint: Color = MaterialTheme.colors.primary
+    tint: Color = Color(0xFF2BA1DC)
 ) {
     Icon(
         modifier = modifier.clickable(
@@ -28,6 +28,6 @@ fun TextVisibilityIcon(
         ),
         painter = painterResource(id = if (isVisible) R.drawable.ic_baseline_visibility_24 else R.drawable.ic_baseline_visibility_off_24),
         contentDescription = stringResource(id = R.string.text_visibility_icon_content_description),
-        tint = tint,
+        tint = if (isVisible) tint else Color(0xFF7D8282),
     )
 }

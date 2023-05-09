@@ -12,7 +12,7 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="info">Info</string>
-    <string name="welcome">Welcome</string>
+    <string name="login">Login</string>
     <string name="toggle_visibility">Toggle visibility</string>
     <string name="this_login_will_only_accept_email_eve_holt">This login will only accept E-mail: \'eve.holt@reqres.in\'. On the other hand, any password value is valid.</string>
     <string name="ok">OK</string>
@@ -24,6 +24,8 @@
     <string name="application_icon">Application icon</string>
     <string name="jetpack_compose_logo">Jetpack Compose logo</string>
     <string name="next">Next</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
 
     <!-- Non-translatable -->
     <!-- Common -->
@@ -31,7 +33,7 @@
     <string name="ok_button_label" translatable="false">@string/ok</string>
 
     <!-- Login screen -->
-    <string name="login_screen_welcome_label" translatable="false">@string/welcome</string>
+    <string name="login_screen_welcome_label" translatable="false">@string/login</string>
     <string name="login_screen_subtitle_label" translatable="false">@string/sign_in</string>
     <string name="login_screen_email_field_label" translatable="false">@string/email</string>
     <string name="login_screen_password_field_label" translatable="false">@string/password</string>

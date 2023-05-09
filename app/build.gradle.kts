@@ -19,19 +19,19 @@ android {
         versionName = Config.versionName
     }
 
-    val releaseSigningConfigName = "release"
+/*    val releaseSigningConfigName = "release"
     val keystorePropertiesFile = file("../keystore/keystore.properties")
     val keystoreProperties = Properties()
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))*/
 
-    signingConfigs {
+/*    signingConfigs {
         create(releaseSigningConfigName) {
             storeFile = file("${rootDir.canonicalPath}/${keystoreProperties.getProperty("releaseKeystore")}")
             keyAlias = keystoreProperties.getProperty("releaseKeyAlias")
             keyPassword = keystoreProperties.getProperty("releaseKeyPassword")
             storePassword = keystoreProperties.getProperty("releaseStorePassword")
         }
-    }
+    }*/
 
     buildTypes {
         debug {
@@ -41,7 +41,7 @@ android {
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName(releaseSigningConfigName)
+//            signingConfig = signingConfigs.getByName(releaseSigningConfigName)
         }
     }
 
@@ -54,6 +54,7 @@ android {
             applicationIdSuffix = ".dev"
         }
     }
+    namespace = "hr.asee.android.template.compose"
 
     applicationVariants.all {
         val variant = this
