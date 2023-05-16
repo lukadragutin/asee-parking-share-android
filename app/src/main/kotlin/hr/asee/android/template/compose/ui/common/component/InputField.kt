@@ -20,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import hr.asee.android.template.compose.ui.common.lifecycle.LifecycleEventHandler
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.ui.common.modifiers.clearFocusOnKeyboardDismiss
+import hr.asee.android.template.compose.ui.theme.LightGray
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -50,7 +51,7 @@ fun InputField(
         label = {
             Text(
                 text = label,
-                color = if (state.isError) MaterialTheme.colors.error else Color(0xFFAAAFAF),
+                color = if (state.isError) MaterialTheme.colors.error else LightGray,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
