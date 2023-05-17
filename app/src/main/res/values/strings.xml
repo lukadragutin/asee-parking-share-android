@@ -12,7 +12,7 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="info">Info</string>
-    <string name="welcome">Welcome</string>
+    <string name="login">Login</string>
     <string name="toggle_visibility">Toggle visibility</string>
     <string name="this_login_will_only_accept_email_eve_holt">This login will only accept E-mail: \'eve.holt@reqres.in\'. On the other hand, any password value is valid.</string>
     <string name="ok">OK</string>
@@ -24,6 +24,9 @@
     <string name="application_icon">Application icon</string>
     <string name="jetpack_compose_logo">Jetpack Compose logo</string>
     <string name="next">Next</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="logo">Logo</string>
 
     <!-- Non-translatable -->
     <!-- Common -->
@@ -31,7 +34,7 @@
     <string name="ok_button_label" translatable="false">@string/ok</string>
 
     <!-- Login screen -->
-    <string name="login_screen_welcome_label" translatable="false">@string/welcome</string>
+    <string name="login_screen_welcome_label" translatable="false">@string/login</string>
     <string name="login_screen_subtitle_label" translatable="false">@string/sign_in</string>
     <string name="login_screen_email_field_label" translatable="false">@string/email</string>
     <string name="login_screen_password_field_label" translatable="false">@string/password</string>
@@ -46,7 +49,11 @@
     <string name="login_screen_user_not_found_error_message" translatable="false">@string/entered_user_is_not_found_please_check_info_for_valid_user_info</string>
     <string name="login_screen_missing_email_or_username_error_title" translatable="false">@string/an_error_occurred</string>
     <string name="login_screen_missing_email_or_username_error_message" translatable="false">@string/email_or_username_is_missing_please_check_login_credentials_and_try_again</string>
-
+    <string name="login_screen_login_button_label" translatable="false">@string/login</string>
+    <string name="login_screen_no_account_message_label" translatable="false">@string/dont_have_an_account</string>
+    <string name="login_screen_logo_content_description" translatable="false">@string/logo</string>
+    <string name="login_screen_sign_up_message_label" translatable="false">@string/sign_up</string>
+    
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_users_icon_content_description" translatable="false">@string/users</string>
     <string name="bottom_nav_bar_api_info_icon_content_description" translatable="false">@string/api_info</string>
