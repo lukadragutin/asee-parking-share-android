@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import hr.asee.android.template.data.interactor.LoginInteractor
+import hr.asee.android.template.data.interactor.RegisterInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.data.interactor.impl.LoginInteractorImpl
 import hr.asee.android.template.data.interactor.impl.StoreAccessTokenInteractorImpl
@@ -24,6 +25,13 @@ object InteractorModule {
         reqresApiService = retrofit.create(ReqresApiService::class.java),
         reqResServiceErrorResolver = reqResServiceErrorResolver,
     )
+
+    /*@Provides
+    @ViewModelScoped
+    fun provideRegisterInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): RegisterInteractor = RegisterInteractorImpl(
+        reqresApiService = retrofit.create(ReqresApiService::class.java),
+        reqResServiceErrorResolver = reqResServiceErrorResolver,
+    )*/
 
     @Provides
     @ViewModelScoped

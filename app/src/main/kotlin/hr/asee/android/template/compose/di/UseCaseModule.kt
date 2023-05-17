@@ -9,8 +9,10 @@ import hr.asee.android.template.domain.repository.AuthenticationRepository
 import hr.asee.android.template.domain.repository.NavigationItemsRepository
 import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
 import hr.asee.android.template.domain.usecase.LoginUseCase
+import hr.asee.android.template.domain.usecase.RegisterUseCase
 import hr.asee.android.template.domain.usecase.impl.GetAllBottomNavItemsUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.LoginUseCaseImpl
+import hr.asee.android.template.domain.usecase.impl.RegisterUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -26,5 +28,11 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideLoginUseCase(authenticationRepository: AuthenticationRepository): LoginUseCase {
         return LoginUseCaseImpl(authenticationRepository = authenticationRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRegisterUseCase(authenticationRepository: AuthenticationRepository): RegisterUseCase {
+        return RegisterUseCaseImpl()
     }
 }

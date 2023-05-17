@@ -29,7 +29,10 @@ fun DefaultScreenLayout(
             .padding(contentPadding)
     ) {
         Row(modifier = Modifier.padding(bottom = 20.dp)) {
-            Text(text = screenTitle.uppercase(), color = onBackground, style = MaterialTheme.typography.h1, overflow = TextOverflow.Ellipsis)
+            Text(text = screenTitle,
+                color = onBackground,
+                style = MaterialTheme.typography.h1,
+                overflow = TextOverflow.Ellipsis)
         }
 
         Row(modifier = Modifier.weight(1f)) {

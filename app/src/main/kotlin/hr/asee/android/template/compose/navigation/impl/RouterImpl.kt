@@ -53,4 +53,8 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
     override fun navigateToLoginScreen() {
         navigationDelegate.navigate(navigationCommand = PreLoginDirection.Login)
     }
+
+    override fun navigateToRegisterScreen() {
+        navigationDelegate.navigate(navigationCommand = PreLoginDirection.Register)
+    }
 }

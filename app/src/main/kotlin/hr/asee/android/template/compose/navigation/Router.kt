@@ -15,4 +15,6 @@ interface Router {
     fun hideBottomNavBar()
 
     fun navigateToLoginScreen()
+
+    fun navigateToRegisterScreen()
 }

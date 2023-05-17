@@ -37,4 +37,8 @@ class OnboardingViewModel @Inject constructor(
     fun navigateToLogin() {
         router.navigateToLoginScreen()
     }
+
+    fun navigateToRegister() {
+        router.navigateToRegisterScreen()
+    }
 }

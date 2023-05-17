@@ -7,6 +7,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import hr.asee.android.template.compose.config.Config
 import hr.asee.android.template.data.interactor.LoginInteractor
+import hr.asee.android.template.data.interactor.RegisterInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.domain.mapper.AccessTokenMapper
 import hr.asee.android.template.domain.repository.AuthenticationRepository
@@ -26,11 +27,15 @@ object RepositoryModule {
     @ViewModelScoped
     fun provideAuthenticationRepository(
         loginInteractor: LoginInteractor,
+        //registerInteractor : RegisterInteractor,
         accessTokenMapper: AccessTokenMapper,
         storeAccessTokenInteractor: StoreAccessTokenInteractor,
     ): AuthenticationRepository = AuthenticationRepositoryImpl(
         loginInteractor = loginInteractor,
+        //registerInteractor = registerInteractor,
         accessTokenMapper = accessTokenMapper,
         storeAccessTokenInteractor = storeAccessTokenInteractor,
     )
+
+
 }
