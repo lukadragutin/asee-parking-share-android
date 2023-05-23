@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.component.InputField
-import hr.asee.android.template.compose.ui.common.component.button.BasicButton
 import hr.asee.android.template.compose.ui.common.component.icon.TextVisibilityIcon
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
@@ -40,38 +39,45 @@ import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
 
 @Composable
-fun RegScr(viewModel: RegisterViewModel = hiltViewModel()){
+fun RegisterScreen(viewModel: RegisterViewModel = hiltViewModel()){
     val nameState by viewModel.nameState.collectAsState()
     val emailState by viewModel.emailState.collectAsState()
     val passwordState by viewModel.passwordState.collectAsState()
-    val confirmpasswordState by viewModel.confirmpasswordState.collectAsState()
+    val confirmPasswordState by viewModel.confirmPasswordState.collectAsState()
 
-    DefaultScreenLayout(screenTitle = stringResource(id = R.string.register_with_email)) {
-        RegisterScreen(
+    DefaultScreenLayout(screenTitle = stringResource(id = R.string.register_screen_register_with_email_label)) {
+        RegisterScreenContent(
             nameState = nameState,
             emailState = emailState,
             passwordState = passwordState,
-            confirmpasswordState = confirmpasswordState,
+            confirmPasswordState = confirmPasswordState,
             onRegisterClicked = viewModel::register,
-            onGoToLoginClicked = viewModel::gotologin
+            onGoToLoginClicked = viewModel::goToLogin,
+            isEmailValid = viewModel::isEmailValid ,
+            isPasswordValid = viewModel::isPasswordValid,
+            isPasswordLongEnough = viewModel::isPasswordLongEnough,
+            isValidConfirmPassword = viewModel::isValidConfirmPassword,
+            isFlagUp = viewModel::isFlagUp
         )
     }
 }
 
 @Composable
-fun RegisterScreen(
+fun RegisterScreenContent(
     nameState: InputFieldState,
     emailState: InputFieldState,
     passwordState: InputFieldState,
-    confirmpasswordState: InputFieldState,
+    confirmPasswordState: InputFieldState,
     onRegisterClicked: () -> Unit,
-    onGoToLoginClicked: () -> Unit
+    onGoToLoginClicked: () -> Unit,
+    isEmailValid: () -> Boolean,
+    isPasswordValid: () -> Boolean,
+    isPasswordLongEnough: () -> Boolean,
+    isValidConfirmPassword: () -> Boolean,
+    isFlagUp: () -> Boolean
 ){
 
     val focusManager = LocalFocusManager.current
-
-    var passwordError by rememberSaveable { mutableStateOf(false) }
-    var emailError by rememberSaveable { mutableStateOf(false) }
 
     //FIRST AND LAST NAME FIELD
 
@@ -90,7 +96,7 @@ fun RegisterScreen(
                 )
                 .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(20)),
             state = nameState,
-            label = stringResource(R.string.register_screen_name),
+            label = stringResource(R.string.register_screen_first_and_last_name_field_label),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next),
@@ -118,19 +124,19 @@ fun RegisterScreen(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Down)}
+
                 )
             )
-            if (emailState.text.isNotEmpty() && !hasValidEmailDomain(emailState.text)) {
+            if(isEmailValid()){
                 Text(
-                    text = "Email address not correct.",
+                    text = stringResource(R.string.register_screen_email_not_correct_text_label),
                     color = AssecoYellow,
                     fontSize = 12.sp,
                     fontFamily = Geomanist,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
-
         }
 
         //PASSWORD FIELD
@@ -150,12 +156,12 @@ fun RegisterScreen(
                     )
                     .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(20)),
                 state = passwordState,
-                label = stringResource(R.string.register_screen_password),
+                label = stringResource(R.string.register_screen_password_field_label),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Down)}
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIconContent = {
@@ -166,9 +172,18 @@ fun RegisterScreen(
                     )
                 }
             )
-            if (passwordState.text.isNotEmpty() && !isValidPasswordFormat(passwordState.text)) {
+            if (isPasswordValid()) {
                 Text(
-                    text = "Password has to consist of letters, numbers, and special characters.",
+                    text = stringResource(R.string.register_screen_password_not_correct_text_label),
+                    color = AssecoYellow,
+                    fontSize = 12.sp,
+                    fontFamily = Geomanist,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+            else if(isPasswordLongEnough()){
+                Text(
+                    text = stringResource(R.string.register_screen_password_too_short_text_label),
                     color = AssecoYellow,
                     fontSize = 12.sp,
                     fontFamily = Geomanist,
@@ -179,7 +194,7 @@ fun RegisterScreen(
 
         //CONFIRM PASSWORD FIELD
 
-        var confpasswordVisible by rememberSaveable { mutableStateOf(false) }
+        var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
@@ -192,26 +207,26 @@ fun RegisterScreen(
                         color = Color.Transparent
                     )
                     .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(20)),
-                state = confirmpasswordState,
-                label = stringResource(R.string.register_screen_confirm_password),
+                state = confirmPasswordState,
+                label = stringResource(R.string.register_screen_confirm_password_field_label),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus() }
+                    onDone = { focusManager.clearFocus()}
                 ),
-                visualTransformation = if (confpasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIconContent = {
                     TextVisibilityIcon(
-                        isVisible = confpasswordVisible,
-                        onVisibilityClicked = { confpasswordVisible = !confpasswordVisible },
+                        isVisible = confirmPasswordVisible,
+                        onVisibilityClicked = { confirmPasswordVisible = !confirmPasswordVisible },
                         tint = AssecoBlue
                     )
                 }
             )
-            if (passwordError && confirmpasswordState.text.isNotEmpty()) {
+            if (isValidConfirmPassword()) {
                 Text(
-                    text = "Passwords are not equal.",
+                    text = stringResource(R.string.register_screen_passwords_not_equal_text_label),
                     color = AssecoYellow,
                     fontSize = 12.sp,
                     fontFamily = Geomanist,
@@ -221,20 +236,6 @@ fun RegisterScreen(
         }
 
         Spacer(modifier = Modifier.height(1.dp))
-
-        var flag = 0
-
-        if (passwordState.text == confirmpasswordState.text) {
-            passwordError = false
-            if (isValidPasswordFormat(passwordState.text)) {
-                if (hasValidEmailDomain(emailState.text)) {
-                    flag = 1
-                }
-            }
-        }
-        else {
-            passwordError = true
-        }
 
         Button(
                 modifier = Modifier
@@ -247,7 +248,7 @@ fun RegisterScreen(
                     disabledContentColor = Color.White
                 ),
                 onClick = onRegisterClicked,
-                enabled = !(emailState.text.isEmpty() || passwordState.text.isEmpty() || nameState.text.isEmpty() || confirmpasswordState.text.isEmpty()) && flag == 1
+                enabled = !(emailState.text.isEmpty() || passwordState.text.isEmpty() || nameState.text.isEmpty() || confirmPasswordState.text.isEmpty()) && isFlagUp()
             )
             {
             Text(
@@ -263,14 +264,14 @@ fun RegisterScreen(
 
         Row(horizontalArrangement = Arrangement.Center) {
             Text(
-                text = stringResource(id = R.string.register_screen_link_to_login),
+                text = stringResource(id = R.string.register_screen_link_to_login_field_label),
                 color = LightGray,
                 fontSize = 16.sp,
                 fontFamily = Geomanist
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                text = stringResource(id = R.string.register_screen_go_to_login),
+                text = stringResource(id = R.string.register_screen_go_to_login_field_label),
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -281,7 +282,7 @@ fun RegisterScreen(
 
         Spacer(Modifier.weight(1f))
 
-        //Asseco logo
+        //Asse-co logo
         Image(
             painter = painterResource(R.drawable.asee_black_blue_2),
             contentDescription = null,
@@ -291,44 +292,7 @@ fun RegisterScreen(
     }
 }
 
-fun isValidPasswordFormat(password: String): Boolean {
-    var hasLowercaseLetter = false
-    var hasUppercaseLetter = false
-    var hasNumber = false
-    var hasSpecialCharacter = false
 
-    val lowercaseLetters = ('a'..'z')
-    val uppercaseLetters = ('A'..'Z')
-    val numbers = ('0'..'9')
-    val specialCharacters = setOf('@', '$', '!', '%', '*', '#', '?', '&')
-
-    for (char in password) {
-        if (char in lowercaseLetters) {
-            hasLowercaseLetter = true
-        } else if (char in uppercaseLetters) {
-            hasUppercaseLetter = true
-        } else if (char in numbers) {
-            hasNumber = true
-        } else if (char in specialCharacters) {
-            hasSpecialCharacter = true
-        }
-    }
-
-    return hasLowercaseLetter && hasUppercaseLetter && hasNumber && hasSpecialCharacter
-}
-
-fun hasValidEmailDomain(email: String): Boolean {
-    val emailParts = email.split("@")
-    if (emailParts.size == 2) {
-        val domain = emailParts[1]
-        val domainParts = domain.split(".")
-        if (domainParts.size >= 2) {
-            val lastDomainPart = domainParts.last()
-            return lastDomainPart.length >= 2
-        }
-    }
-    return false
-}
 
 
 
