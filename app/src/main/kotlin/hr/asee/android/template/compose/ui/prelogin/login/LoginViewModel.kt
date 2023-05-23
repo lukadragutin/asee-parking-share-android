@@ -47,7 +47,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun loginInternal() {
-        loginUseCase(LoginUseCase.LoginRequest(email = emailState.value.text, password = emailState.value.text)).onFinished(
+        loginUseCase(LoginUseCase.LoginRequest(email = emailState.value.text, password = passwordState.value.text)).onFinished(
             successCallback = this::onLoginSuccessful,
             errorCallback = this::onLoginError,
         )

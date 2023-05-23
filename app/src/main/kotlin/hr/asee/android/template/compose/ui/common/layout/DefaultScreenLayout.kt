@@ -13,17 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import hr.asee.android.template.compose.ui.theme.Typography
 
 @Composable
 fun DefaultScreenLayout(
     screenTitle: String,
+    modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(all = 20.dp),
     background: Color = MaterialTheme.colors.background,
     onBackground: Color = MaterialTheme.colors.onBackground,
     content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(background)
             .padding(contentPadding)
@@ -32,7 +34,7 @@ fun DefaultScreenLayout(
             Text(
                 text = screenTitle,
                 color = onBackground,
-                style = MaterialTheme.typography.h1,
+                style = Typography.h2,
                 overflow = TextOverflow.Ellipsis
             )
         }

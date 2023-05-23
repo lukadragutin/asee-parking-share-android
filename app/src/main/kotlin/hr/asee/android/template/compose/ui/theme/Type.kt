@@ -23,6 +23,11 @@ val Typography = Typography(
         fontFamily = Geomanist,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
+    ),
+    h2 = TextStyle(
+        fontFamily = Geomanist,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp
     )
     /* Other default text styles to override
     button = TextStyle(

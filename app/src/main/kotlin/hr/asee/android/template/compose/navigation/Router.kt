@@ -17,4 +17,12 @@ interface Router {
     fun navigateToLoginScreen()
 
     fun navigateToRegistrationScreen()
+
+    fun navigateToHomeScreen()
+
+    fun navigateToParkingManagerScreen()
+
+    fun navigateToSettingsScreen()
+
+    fun navigateToUserManagementScreen()
 }

@@ -12,30 +12,29 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val getAllBottomNavItemsUseCase: GetAllBottomNavItemsUseCase,
+open class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
-    private val _bottomNavBarState = MutableStateFlow(BottomNavBarState(items = Config.BOTTOM_NAV_BAR_ITEMS, onElementClicked = this::onNavElementClicked))
-    val bottomNavBarState: StateFlow<BottomNavBarState> = _bottomNavBarState
-
-    init {
-        runSuspend { getAllBottomNavItemsUseCase().onSuccess { items -> _bottomNavBarState.update { it.copy(items = items, selectedItem = it.items.firstOrNull()) } } }
-    }
-
-    private fun onNavElementClicked(item: NavigationItem) {
-        router.navigateToDirection(item.direction)
-
-        if (item.direction != NavigationItem.NavigationDirection.LOGOUT) {
-            _bottomNavBarState.update { it.copy(selectedItem = item) }
-        }
-    }
-
-    fun showBottomNavBar() {
-        _bottomNavBarState.update { it.copy(isVisible = true) }
-    }
-
-    fun hideBottomNavBar() {
-        _bottomNavBarState.update { it.copy(isVisible = false) }
-    }
+//    private val _bottomNavBarState = MutableStateFlow(BottomNavBarState(items = Config.BOTTOM_NAV_BAR_ITEMS, onElementClicked = this::onNavElementClicked))
+//    val bottomNavBarState: StateFlow<BottomNavBarState> = _bottomNavBarState
+//
+//    init {
+//        runSuspend { getAllBottomNavItemsUseCase().onSuccess { items -> _bottomNavBarState.update { it.copy(items = items, selectedItem = it.items.firstOrNull()) } } }
+//    }
+//
+//    private fun onNavElementClicked(item: NavigationItem) {
+//        router.navigateToDirection(item.direction)
+//
+//        if (item.direction != NavigationItem.NavigationDirection.LOGOUT) {
+//            _bottomNavBarState.update { it.copy(selectedItem = item) }
+//        }
+//    }
+//
+//    fun showBottomNavBar() {
+//        _bottomNavBarState.update { it.copy(isVisible = true) }
+//    }
+//
+//    fun hideBottomNavBar() {
+//        _bottomNavBarState.update { it.copy(isVisible = false) }
+//    }
 }

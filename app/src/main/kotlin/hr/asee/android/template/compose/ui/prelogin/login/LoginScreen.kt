@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -91,7 +92,7 @@ fun LoginScreenContent(
                     shape = RoundedCornerShape(20),
                     color = Color.Transparent
                 )
-                .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(20)),
+                .border(width = 1.dp, color = MaterialTheme.colors.onSurface, shape = RoundedCornerShape(20)),
             state = emailState,
             label = stringResource(id = R.string.login_screen_email_field_label),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
@@ -107,7 +108,7 @@ fun LoginScreenContent(
                     shape = RoundedCornerShape(20),
                     color = Color.Transparent
                 )
-                .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(20)),
+                .border(width = 1.dp, color = MaterialTheme.colors.onSurface, shape = RoundedCornerShape(20)),
             state = passwordState,
             label = stringResource(id = R.string.login_screen_password_field_label),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Go),
@@ -141,7 +142,8 @@ fun LoginScreenContent(
             Text(
                 text = stringResource(id = R.string.login_screen_login_button_label),
                 fontSize = 18.sp,
-                fontFamily = Geomanist
+                fontFamily = Geomanist,
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -158,7 +160,7 @@ fun LoginScreenContent(
             Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = stringResource(id = R.string.login_screen_sign_up_message_label),
-                color = Color.Black,
+                color = MaterialTheme.colors.onSurface,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = Geomanist,
@@ -170,7 +172,7 @@ fun LoginScreenContent(
         
         //Asee logo
         Image(
-            painter = painterResource(id = R.drawable.asee_logo),
+            painter = painterResource(id = R.mipmap.asee_logo),
             contentDescription = stringResource(id = R.string.login_screen_logo_content_description),
             modifier = Modifier.size(width = 157.dp, height = 48.dp)
         )

@@ -6,10 +6,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import hr.asee.android.template.domain.repository.AuthenticationRepository
+import hr.asee.android.template.domain.repository.FilterRepository
 import hr.asee.android.template.domain.repository.NavigationItemsRepository
 import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
+import hr.asee.android.template.domain.usecase.HomeUseCase
 import hr.asee.android.template.domain.usecase.LoginUseCase
 import hr.asee.android.template.domain.usecase.impl.GetAllBottomNavItemsUseCaseImpl
+import hr.asee.android.template.domain.usecase.impl.HomeUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.LoginUseCaseImpl
 
 @Module
@@ -26,5 +29,11 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideLoginUseCase(authenticationRepository: AuthenticationRepository): LoginUseCase {
         return LoginUseCaseImpl(authenticationRepository = authenticationRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideHomeUseCase(filterRepository: FilterRepository): HomeUseCase {
+        return HomeUseCaseImpl(filterRepository = filterRepository)
     }
 }

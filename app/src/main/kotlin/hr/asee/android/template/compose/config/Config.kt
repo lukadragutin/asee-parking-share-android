@@ -8,23 +8,35 @@ object Config {
     const val REQRES_BASE_URL = "https://reqres.in/"
 
     val BOTTOM_NAV_BAR_ITEMS = listOf(
+//        NavigationItem(
+//            direction = NavigationItem.NavigationDirection.USERS,
+//            icon = R.drawable.ic_outline_people_alt_24,
+//            label = R.string.bottom_nav_bar_users_label,
+//            contentDescription = R.string.bottom_nav_bar_users_icon_content_description,
+//        ),
+//        NavigationItem(
+//            direction = NavigationItem.NavigationDirection.API_INFO,
+//            icon = R.drawable.ic_outline_info_24,
+//            label = R.string.bottom_nav_bar_api_info_label,
+//            contentDescription = R.string.bottom_nav_bar_api_info_icon_content_description,
+//        ),
+//        NavigationItem(
+//            direction = NavigationItem.NavigationDirection.LOGOUT,
+//            icon = R.drawable.ic_baseline_logout_24,
+//            label = R.string.bottom_nav_bar_logout_label,
+//            contentDescription = R.string.bottom_nav_bar_logout_icon_content_description,
+//        ),
         NavigationItem(
-            direction = NavigationItem.NavigationDirection.USERS,
-            icon = R.drawable.ic_outline_people_alt_24,
-            label = R.string.bottom_nav_bar_users_label,
-            contentDescription = R.string.bottom_nav_bar_users_icon_content_description,
+            direction = NavigationItem.NavigationDirection.HOME,
+            icon = R.mipmap.car_sharing,
+            label = R.string.bottom_nav_bar_home_label,
+            contentDescription = R.string.bottom_nav_bar_home_icon_content_description
         ),
         NavigationItem(
-            direction = NavigationItem.NavigationDirection.API_INFO,
-            icon = R.drawable.ic_outline_info_24,
-            label = R.string.bottom_nav_bar_api_info_label,
-            contentDescription = R.string.bottom_nav_bar_api_info_icon_content_description,
-        ),
-        NavigationItem(
-            direction = NavigationItem.NavigationDirection.LOGOUT,
-            icon = R.drawable.ic_baseline_logout_24,
-            label = R.string.bottom_nav_bar_logout_label,
-            contentDescription = R.string.bottom_nav_bar_logout_icon_content_description,
+            direction = NavigationItem.NavigationDirection.PARKING_MANAGER,
+            icon = R.mipmap.parking,
+            label = R.string.bottom_nav_bar_parking_manager_label,
+            contentDescription = R.string.bottom_nav_bar_parking_manager_icon_content_description
         )
     )
 }

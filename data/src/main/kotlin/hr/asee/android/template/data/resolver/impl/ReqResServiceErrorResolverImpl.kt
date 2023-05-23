@@ -1,6 +1,8 @@
 package hr.asee.android.template.data.resolver.impl
 
 import hr.asee.android.template.data.model.remote.exception.GeneralException
+import hr.asee.android.template.data.model.remote.exception.home.DatesNotSelectedException
+import hr.asee.android.template.data.model.remote.exception.home.InvalidDatesException
 import hr.asee.android.template.data.model.remote.exception.login.MissingEmailOrUsernameException
 import hr.asee.android.template.data.model.remote.exception.login.MissingPasswordException
 import hr.asee.android.template.data.model.remote.exception.login.UserNotFoundException
@@ -14,6 +16,8 @@ class ReqResServiceErrorResolverImpl : ReqResServiceErrorResolver {
         private const val MISSING_PASSWORD_ERROR = "Missing password"
         private const val USER_NOT_FOUND_ERROR = "user not found"
         private const val MISSING_EMAIL_OR_USERNAME_ERROR = "Missing email or username"
+        private const val INVALID_DATES_ERROR = "Invalid dates"
+        private const val DATES_NOT_SELECTED_ERROR = "Dates not selected"
     }
 
     override fun toException(jsonError: String): Exception {
@@ -27,6 +31,8 @@ class ReqResServiceErrorResolverImpl : ReqResServiceErrorResolver {
             MISSING_PASSWORD_ERROR.lowercase() -> MissingPasswordException()
             USER_NOT_FOUND_ERROR.lowercase() -> UserNotFoundException()
             MISSING_EMAIL_OR_USERNAME_ERROR.lowercase() -> MissingEmailOrUsernameException()
+            INVALID_DATES_ERROR.lowercase() -> InvalidDatesException()
+            DATES_NOT_SELECTED_ERROR.lowercase() -> DatesNotSelectedException()
             else -> GeneralException()
         }
     }

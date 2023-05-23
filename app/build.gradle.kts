@@ -17,6 +17,7 @@ android {
         applicationId = Config.applicationId
         versionCode = Config.versionCode
         versionName = Config.versionName
+        minSdk = Config.minSdk
     }
 
 /*    val releaseSigningConfigName = "release"
@@ -33,17 +34,17 @@ android {
         }
     }*/
 
-    buildTypes {
-        debug {
-            isMinifyEnabled = false
-        }
-
-        release {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//    buildTypes {
+//        debug {
+//            isMinifyEnabled = false
+//        }
+//
+//        release {
+//            isMinifyEnabled = true
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 //            signingConfig = signingConfigs.getByName(releaseSigningConfigName)
-        }
-    }
+//        }
+//    }
 
     val environmentFlavor = "environment"
     flavorDimensions.add(environmentFlavor)

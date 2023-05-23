@@ -12,6 +12,8 @@ data class NavigationItem(
     enum class NavigationDirection {
         USERS,
         API_INFO,
-        LOGOUT
+        LOGOUT,
+        HOME,
+        PARKING_MANAGER
     }
 }

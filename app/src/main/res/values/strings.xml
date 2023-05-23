@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidComposeCodingTemplate</string>
+    <string name="app_name">Asseco Parking</string>
 
     <!-- Translatable -->
     <string name="an_error_occurred">An error occurred</string>
@@ -26,12 +26,112 @@
     <string name="next">Next</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
+    <string name="parking_space">Parking space</string>
+    <string name="start_date">Start date:</string>
+    <string name="end_date">End date:</string>
+    <string name="parking_offer">Parking offer</string>
+    <string name="parking_seeking">Parking seeking</string>
+    <string name="outdoor_parking">Outdoor parking</string>
+    <string name="forward">Forward</string>
+    <string name="remove_offer">Remove offer</string>
+    <string name="asee_zagreb_parking">ASEE Zagreb Parking</string>
+    <string name="offer_parking_space">Offer parking space</string>
+    <string name="no_new_data_to_show">No new data to show</string>
+    <string name="current_offers">Current offers</string>
+    <string name="filter">Filter</string>
+    <string name="reservations">Reservations</string>
+    <string name="seekings">Seekings</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="welcome_commma">Welcome,</string>
+    <string name="karolina">Karolina</string>
+    <string name="seeker">Seeker</string>
+    <string name="owner">Owner</string>
+    <string name="open_settings">Open settings</string>
+    <string name="seek_parking_space">Seek parking space</string>
+    <string name="cancel_reservation">Cancel reservation</string>
+    <string name="parking_manager">Parking manager</string>
+    <string name="car_sharing">Car sharing</string>
+    <string name="cancel">Cancel</string>
+    <string name="filter_offers">Filter offers</string>
+    <string name="choose_start_and_end_date">Choose start and end date</string>
+    <string name="reset">Reset</string>
+    <string name="start_date_capitalized">Start Date</string>
+    <string name="end_date_capitalized">End Date</string>
+    <string name="not_selected">Not selected</string>
+    <string name="end_date_cant_be_after_start_date">End date can\'t be after start date.</string>
+    <string name="start_date_or_end_date_has_not_been_selected">Start date or end date hasn\'t been selected</string>
+    <string name="offers">Offers</string>
+    <string name="current_reservations">Current reservations</string>
+    <string name="filter_reservations">Filter reservations</string>
+    <string name="filter_seekings">Filter seekings</string>
     <string name="logo">Logo</string>
+    <string name="parking_reservation">Parking reservation</string>
+    <string name="no_offers_to_show">No offers to show</string>
+    <string name="no_reservations_to_show">No reservations to show</string>
+    <string name="no_seekings_to_show">No seekings to show</string>
 
     <!-- Non-translatable -->
     <!-- Common -->
     <string name="text_visibility_icon_content_description" translatable="false">@string/toggle_visibility</string>
     <string name="ok_button_label" translatable="false">@string/ok</string>
+    <string name="filter_icon_content_description" translatable="false">@string/filter</string>
+    <string name="settings_icon_content_description" translatable="false">@string/open_settings</string>
+
+    <!-- Filter popup screen -->
+    <string name="filter_popup_cancel_button_label" translatable="false">@string/cancel</string>
+    <string name="filter_popup_title_label" translatable="false">@string/filter</string>
+    <string name="filter_popup_instruction_label" translatable="false">@string/choose_start_and_end_date</string>
+    <string name="filter_popup_reset_button_label" translatable="false">@string/reset</string>
+    <string name="date_picker_start_date_label" translatable="false">@string/start_date_capitalized</string>
+    <string name="date_picker_end_date_label" translatable="false">@string/end_date</string>
+    <string name="date_picker_unselected_start_date_label" translatable="false">@string/not_selected</string>
+    <string name="date_picker_unselected_end_date_label" translatable="false">@string/not_selected</string>
+    <string name="filter_popup_filter_button_label" translatable="false">@string/filter</string>
+
+    <!-- Home screen -->
+    <string name="home_screen_title_label" translatable="false">@string/asee_zagreb_parking</string>
+    <string name="home_screen_giver_offer_card_image_content_description" translatable="false">@string/outdoor_parking</string>
+    <string name="home_screen_giver_offer_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="home_screen_giver_offer_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="home_screen_giver_offer_card_remove_offer_button_label" translatable="false">@string/remove_offer</string>
+    <string name="home_screen_giver_reservation_card_image_content_description" translatable="false">@string/parking_reservation</string>
+    <string name="home_screen_giver_reservation_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="home_screen_giver_reservation_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="home_screen_giver_reservation_card_forward_image_content_description" translatable="false">@string/forward</string>
+    <string name="home_screen_profile_picture_image_content_description" translatable="false">@string/profile_picture</string>
+    <string name="home_screen_seeker_offer_card_image_content_description" translatable="false">@string/parking_offer</string>
+    <string name="home_screen_seeker_offer_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="home_screen_seeker_offer_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="home_screen_seeker_offer_card_forward_image_content_description" translatable="false">@string/forward</string>
+    <string name="home_screen_seeker_reservation_card_image_content_description" translatable="false">@string/outdoor_parking</string>
+    <string name="home_screen_seeker_reservation_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="home_screen_seeker_reservation_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="home_screen_seeker_reservation_card_cancel_reservation_button_label" translatable="false">@string/cancel_reservation</string>
+    <string name="home_screen_seeking_card_image_content_description" translatable="false">@string/parking_seeking</string>
+    <string name="home_screen_seeking_card_title_label" translatable="false">@string/parking_space</string>
+    <string name="home_screen_seeking_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="home_screen_seeking_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="home_screen_seeking_card_forward_image_content_description" translatable="false">@string/forward</string>
+    <string name="home_screen_welcome_label" translatable="false">@string/welcome_commma</string>
+    <string name="home_screen_seeker_role_label" translatable="false">@string/seeker</string>
+    <string name="home_screen_giver_role_label" translatable="false">@string/owner</string>
+    <string name="home_screen_seeker_seek_button_label" translatable="false">@string/seek_parking_space</string>
+    <string name="home_screen_giver_offer_button_label" translatable="false">@string/offer_parking_space</string>
+    <string name="home_screen_giver_no_content_label" translatable="false">@string/no_new_data_to_show</string>
+    <string name="home_screen_giver_offer_list_label" translatable="false">@string/current_offers</string>
+    <string name="home_screen_giver_reservation_list_label" translatable="false">@string/reservations</string>
+    <string name="home_screen_giver_seeking_list_label" translatable="false">@string/seekings</string>
+    <string name="home_screen_seeker_no_content_label" translatable="false">@string/no_new_data_to_show</string>
+    <string name="home_screen_seeker_reservation_list_label" translatable="false">@string/current_reservations</string>
+    <string name="home_screen_seeker_offer_list_label" translatable="false">@string/offers</string>
+    <string name="home_screen_seeker_seeking_list_label" translatable="false">@string/seekings</string>
+    <string name="home_screen_no_offers_label" translatable="false">@string/no_offers_to_show</string>
+    <string name="home_screen_no_reservations_label" translatable="false">@string/no_reservations_to_show</string>
+    <string name="home_screen_no_seekings_label" translatable="false">@string/no_seekings_to_show</string>
+    <string name="home_screen_invalid_dates_error_title" translatable="false">@string/an_error_occurred</string>
+    <string name="home_screen_invalid_dates_error_message" translatable="false">@string/end_date_cant_be_after_start_date</string>
+    <string name="home_screen_dates_not_selected_error_title" translatable="false">@string/an_error_occurred</string>
+    <string name="home_screen_dates_not_selected_error_message" translatable="false">@string/start_date_or_end_date_has_not_been_selected</string>
 
     <!-- Login screen -->
     <string name="login_screen_welcome_label" translatable="false">@string/login</string>
@@ -61,6 +161,10 @@
     <string name="bottom_nav_bar_users_label" translatable="false">@string/users</string>
     <string name="bottom_nav_bar_api_info_label" translatable="false">@string/api_info</string>
     <string name="bottom_nav_bar_logout_label" translatable="false">@string/logout</string>
+    <string name="bottom_nav_bar_home_icon_content_description" translatable="false">@string/car_sharing</string>
+    <string name="bottom_nav_bar_home_label" translatable="false">@string/car_sharing</string>
+    <string name="bottom_nav_bar_parking_manager_icon_content_description" translatable="false">@string/parking_manager</string>
+    <string name="bottom_nav_bar_parking_manager_label" translatable="false">@string/parking_manager</string>
 
     <!-- Common dialog -->
     <string name="common_dialog_message_network_exception_title" translatable="false">@string/an_error_occurred</string>

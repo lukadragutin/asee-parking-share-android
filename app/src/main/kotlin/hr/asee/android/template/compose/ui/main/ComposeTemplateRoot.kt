@@ -32,7 +32,7 @@ import hr.asee.android.template.compose.ui.prelogin.preLoginNavGraph
 fun ComposeTemplateRoot(
     viewModel: MainViewModel = hiltViewModel(),
     navigationDelegate: NavigationDelegate,
-    bottomNavBarDelegate: BottomNavBarDelegate,
+//    bottomNavBarDelegate: BottomNavBarDelegate,
 ) {
 
     val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
@@ -45,30 +45,31 @@ fun ComposeTemplateRoot(
         onShowBottomNavBar = viewModel::showBottomNavBar,
     )
 
-    LaunchedEffect(bottomNavBarDelegate) {
-        bottomNavBarDelegate.getNavBarEvents().collect { event ->
-            when (event) {
-                NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
-                NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
-            }
-        }
-    }
+//    LaunchedEffect(bottomNavBarDelegate) {
+//        bottomNavBarDelegate.getNavBarEvents().collect { event ->
+//            when (event) {
+//                NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
+//                NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
+//            }
+//        }
+//    }
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            AnimatedVisibility(
-                visible = bottomNavBarState.isVisible,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it })
-            ) {
-                BottomNavigationBar(
-                    items = bottomNavBarState.items,
-                    onNavElementClicked = bottomNavBarState.onElementClicked,
-                    selectedElement = bottomNavBarState.selectedItem,
-                )
-            }
-        },
+//        bottomBar = {
+//            AnimatedVisibility(
+//                visible = bottomNavBarState.isVisible,
+//                enter = slideInVertically(initialOffsetY = { it }),
+//                exit = slideOutVertically(targetOffsetY = { it })
+//            ) {
+//                BottomNavigationBar(
+//                    items = bottomNavBarState.items,
+//                    onNavElementClicked = bottomNavBarState.onElementClicked,
+//                    selectedElement = bottomNavBarState.selectedItem,
+//                )
+//            }
+//        },
         backgroundColor = MaterialTheme.colors.background,
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues = paddingValues)) {

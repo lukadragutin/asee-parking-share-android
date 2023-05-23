@@ -1,0 +1,59 @@
+package hr.asee.android.template.compose.ui.postlogin.users
+
+import hr.asee.android.template.compose.ui.common.service.Offer
+import hr.asee.android.template.compose.ui.common.service.Reservation
+import hr.asee.android.template.compose.ui.common.service.Seeking
+import java.time.LocalDateTime
+
+class Seeker(
+    id: Int = generateId(),
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String,
+    activated: Boolean = true,
+    langKey: String = "English",
+    createdBy: String = "admin",
+    createdDate: LocalDateTime,
+    lastModifiedBy: String = createdBy,
+    lastModifiedDate: LocalDateTime = createdDate,
+    authorities: List<String>? = null,
+    resetDate: LocalDateTime? = null
+):
+    User(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        password = password,
+        activated = activated,
+        langKey = langKey,
+        createdBy = createdBy,
+        createdDate = createdDate,
+        lastModifiedBy = lastModifiedBy,
+        lastModifiedDate = lastModifiedDate,
+        authorities = authorities,
+        resetDate = resetDate
+    ) {
+
+    var seekings = mutableSetOf<Seeking>()
+    var reservations = mutableSetOf<Reservation>()
+    var requests = mutableSetOf<Offer>()
+
+    fun addSeeking(seeking: Seeking) {
+        seekings.add(seeking)
+        User.seekings.add(seeking)
+    }
+    fun addReservation(reservation: Reservation) {
+        reservations.add(reservation)
+        reservation.parkingSpace.owner?.reservations!!.add(reservation)
+    }
+}
+
+val exampleSeeker = Seeker(
+    firstName = "seeker",
+    lastName = "one",
+    email = "seeker1@test.com",
+    password = "seeker1",
+    createdDate = LocalDateTime.of(2023, 4, 18, 14, 1)
+)

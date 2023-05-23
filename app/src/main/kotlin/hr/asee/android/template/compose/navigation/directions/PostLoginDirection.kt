@@ -42,4 +42,32 @@ object PostLoginDirection {
         override val destination: String
             get() = "apiInfo"
     }
+
+    val Home = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "home"
+    }
+
+    val ParkingManager = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "parkingManager"
+    }
+
+    val Settings = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "settings"
+    }
+
+    val UserManagement = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "userManagement"
+    }
 }
