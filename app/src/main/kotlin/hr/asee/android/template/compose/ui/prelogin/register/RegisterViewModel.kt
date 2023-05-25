@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.sp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.asee.android.template.compose.ui.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
+import hr.asee.android.template.compose.ui.common.model.state.ButtonState
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.ui.prelogin.register.model.RegisterMessages
 import hr.asee.android.template.compose.ui.theme.AssecoYellow
@@ -43,20 +44,30 @@ RegisterViewModel @Inject constructor(
     private val _confirmPasswordState = MutableStateFlow(InputFieldState(text = String.empty(), onTextChange = this::onConfirmPasswordTextChange))
     val confirmPasswordState: StateFlow<InputFieldState> = _confirmPasswordState
 
+    private val _buttonState = MutableStateFlow(ButtonState())
+    val buttonState: StateFlow<ButtonState> = _buttonState
+
     private fun onNameTextChange(newValue: String) {
         _nameState.update { it.copy(text = newValue, isError = false) }
+        isButtonEnabled()
     }
 
     private fun onEmailTextChange(newValue: String) {
         _emailState.update { it.copy(text = newValue, isError = false) }
+        emailValidation()
+        isButtonEnabled()
     }
 
     private fun onPasswordTextChange(newValue: String) {
         _passwordState.update { it.copy(text = newValue, isError = false) }
+        passwordValidation()
+        isButtonEnabled()
     }
 
     private fun onConfirmPasswordTextChange(newValue: String) {
         _confirmPasswordState.update { it.copy(text = newValue, isError = false) }
+        confirmPasswordValidation()
+        isButtonEnabled()
     }
 
     fun register() {
@@ -89,34 +100,27 @@ RegisterViewModel @Inject constructor(
         router.navigateToLoginScreen()
     }
 
-    fun isEmailValid() : Boolean{
+    private fun emailValidation(){
         if (emailState.value.text.isNotEmpty() && !hasValidEmailDomain(emailState.value.text)){
-            return true
+            _emailState.update { it.copy(isError = true) }
         }
-        return false
     }
 
-    fun isPasswordValid() : Boolean{
-        if (passwordState.value.text.isNotEmpty() && !isValidPasswordFormat(passwordState.value.text) && passwordState.value.text.length >= 8) {
-            return true
+    private fun passwordValidation(){
+        if (passwordState.value.text.isNotEmpty() && (!isValidPasswordFormat(passwordState.value.text) || passwordState.value.text.length < 8)) {
+            _passwordState.update { it.copy(isError = true) }
         }
-        return false
     }
 
-    fun isPasswordLongEnough() : Boolean{
-        if(passwordState.value.text.isNotEmpty() && passwordState.value.text.length < 8){
-            return true
+    private fun confirmPasswordValidation(){
+        if (confirmPasswordState.value.text.isNotEmpty() || !isValidPasswordFormat(confirmPasswordState.value.text)){
+            if (passwordState.value.text != confirmPasswordState.value.text) {
+                _confirmPasswordState.update { it.copy(isError = true) }
+            }
         }
-        return false
     }
 
-    fun isValidConfirmPassword() : Boolean{
-        if (!isFlagUp() && confirmPasswordState.value.text.isNotEmpty()){
-            return true
-        }
-        return false
-    }
-    fun isFlagUp() : Boolean{
+    private fun isFlagUp() : Boolean{
         if (isValidPasswordFormat(passwordState.value.text) && passwordState.value.text.length >= 8) {
             if (hasValidEmailDomain(emailState.value.text)) {
                 if (passwordState.value.text == confirmPasswordState.value.text) {
@@ -125,6 +129,14 @@ RegisterViewModel @Inject constructor(
             }
         }
         return false
+    }
+
+    private fun isButtonEnabled(){
+        if(!(emailState.value.text.isEmpty() || passwordState.value.text.isEmpty() || nameState.value.text.isEmpty() || confirmPasswordState.value.text.isEmpty()) && isFlagUp()){
+            if(!buttonState.value.isEnabled){
+                _buttonState.update { it.copy(isEnabled = true) }
+            }
+        }
     }
 
     private fun isValidPasswordFormat(password: String): Boolean {
@@ -153,7 +165,7 @@ RegisterViewModel @Inject constructor(
         return hasLowercaseLetter && hasUppercaseLetter && hasNumber && hasSpecialCharacter
     }
 
-    fun hasValidEmailDomain(email: String): Boolean {
+    private fun hasValidEmailDomain(email: String): Boolean {
         val emailParts = email.split("@")
         if (emailParts.size == 2) {
             val domain = emailParts[1]

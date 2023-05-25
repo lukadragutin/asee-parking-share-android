@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface ReqresApiService {
 
-    @POST("http://localhost:8080/api/login")
+    @POST("/api/login")
     suspend fun login(
         @Body request: ApiLoginRequest,
     ): ApiAccessToken
