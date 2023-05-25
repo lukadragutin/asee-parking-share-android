@@ -9,7 +9,7 @@ import hr.asee.android.template.compose.ui.common.service.Reservation
 import hr.asee.android.template.compose.ui.postlogin.home.model.HomeMessages
 import hr.asee.android.template.domain.model.common.resource.ErrorData
 import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
-import hr.asee.android.template.domain.usecase.HomeUseCase
+import hr.asee.android.template.domain.usecase.FilterByDateUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeUseCase: HomeUseCase,
+    private val filterByDateUseCase: FilterByDateUseCase,
     private val getAllBottomNavItemsUseCase: GetAllBottomNavItemsUseCase,
     val bottomNavBarDelegate: BottomNavBarDelegate
 ) : BaseViewModel() {
@@ -65,12 +65,21 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun filterClicked() {
+    fun onFilterClicked(): Boolean {
+        try {
+            filterClicked() }
+        catch (exception: Exception) {
+            return false
+        }
+        return true
+    }
+
+    private fun filterClicked() {
         runSuspend { filterInternal() }
     }
 
     private suspend fun filterInternal() {
-        homeUseCase(HomeUseCase.Filter(dateStart = filterState.value.dateStart, dateEnd = filterState.value.dateEnd)).onFinished(
+        filterByDateUseCase(FilterByDateUseCase.Filter(dateStart = filterState.value.dateStart, dateEnd = filterState.value.dateEnd)).onFinished(
             successCallback = this::onFilterSuccess,
             errorCallback = this::onFilterError
         )
@@ -89,8 +98,8 @@ class HomeViewModel @Inject constructor(
 
     private fun onFilterError(errorData: ErrorData) {
         when (errorData.errorType) {
-            HomeUseCase.HomeError.INVALID_DATES_ERROR -> showError(HomeMessages.INVALID_DATES_ERROR)
-            HomeUseCase.HomeError.DATES_NOT_SELECTED_ERROR -> showError(HomeMessages.DATES_NOT_SELECTED_ERROR)
+            FilterByDateUseCase.FilterByDateError.INVALID_DATES_ERROR -> showError(HomeMessages.INVALID_DATES_ERROR)
+            FilterByDateUseCase.FilterByDateError.DATES_NOT_SELECTED_ERROR -> showError(HomeMessages.DATES_NOT_SELECTED_ERROR)
             else -> showError(CommonMessages.UNEXPECTED_ERROR)
         }
     }
@@ -103,11 +112,19 @@ class HomeViewModel @Inject constructor(
         /* TODO */
     }
 
-    fun onReservationClicked() {
+    fun onGiverReservationClicked() {
         /* TODO */
     }
 
-    fun onOfferClicked() {
+    fun onSeekerReservationClicked() {
+        /* TODO */
+    }
+
+    fun onGiverOfferClicked() {
+        /* TODO */
+    }
+
+    fun onSeekerOfferClicked() {
         /* TODO */
     }
 

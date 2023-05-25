@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ExperimentalMaterialApi
@@ -32,6 +34,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +52,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.delegate.event.NavBarEvent
 import hr.asee.android.template.compose.ui.common.component.BottomNavigationBar
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.component.dialog.ScreenStateDialog
+import hr.asee.android.template.compose.ui.common.component.icon.FilterIcon
 import hr.asee.android.template.compose.ui.common.component.icon.SettingsIcon
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
@@ -58,9 +64,10 @@ import hr.asee.android.template.compose.ui.common.service.exampleReservation
 import hr.asee.android.template.compose.ui.common.service.exampleSeeking1
 import hr.asee.android.template.compose.ui.common.service.exampleSeeking2
 import hr.asee.android.template.compose.ui.postlogin.home.contents.FilterPopupScreen
-import hr.asee.android.template.compose.ui.postlogin.home.contents.HomeScreenGiverContent
-import hr.asee.android.template.compose.ui.postlogin.home.contents.HomeScreenSeekerContent
 import hr.asee.android.template.compose.ui.postlogin.home.contents.ProfilePicture
+import hr.asee.android.template.compose.ui.postlogin.home.contents.list.OfferList
+import hr.asee.android.template.compose.ui.postlogin.home.contents.list.ReservationList
+import hr.asee.android.template.compose.ui.postlogin.home.contents.list.SeekingList
 import hr.asee.android.template.compose.ui.postlogin.users.Giver
 import hr.asee.android.template.compose.ui.postlogin.users.Seeker
 import hr.asee.android.template.compose.ui.postlogin.users.User
@@ -71,16 +78,20 @@ import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleSeeker) {
 
+
+    /*-------For testing-------*/
     exampleSeeker.addSeeking(exampleSeeking1)
     exampleSeeker.addSeeking(exampleSeeking2)
     exampleSeeker.addReservation(exampleReservation)
     exampleGiver.addOffer(exampleOffer1)
     exampleGiver.addOffer(exampleOffer2)
+    /*-------------------------*/
 
     val filterState by viewModel.filterState.collectAsState()
     val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
@@ -105,7 +116,12 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleS
                 scope = scope,
                 sheetState = sheetState,
                 filterState = filterState,
-                viewModel = viewModel
+                onFilterClicked = viewModel::onFilterClicked,
+                onCancelClicked = viewModel::onCancelClicked,
+                onResetClicked = viewModel::onResetClicked,
+                onDateStartSelect = viewModel::onDateStartSelect,
+                onDateEndSelect = viewModel::onDateEndSelect,
+                onDateSelect = viewModel::onDateSelect
             )
         },
         sheetBackgroundColor = MaterialTheme.colors.background,
@@ -166,6 +182,8 @@ fun HomeScreenContent(
     viewModel: HomeViewModel
 ) {
 
+    val noContent by remember{ mutableStateOf(user.seekings.size + user.reservations.size + user.offers.size == 0) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -224,7 +242,6 @@ fun HomeScreenContent(
 
         }
 
-
         DefaultScreenLayout(
             screenTitle = stringResource(id = R.string.home_screen_title_label),
             contentPadding = PaddingValues(all = 0.dp),
@@ -232,70 +249,135 @@ fun HomeScreenContent(
             modifier = Modifier.fillMaxHeight()
         ) {
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-                if (user is Seeker) {
-                    Button(
-                        modifier = Modifier
-                            .height(57.dp)
-                            .fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = AssecoBlue,
-                            contentColor = Color.White,
-                            disabledBackgroundColor = LightGray,
-                            disabledContentColor = Color.White
+            Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+                Button(
+                    modifier = Modifier
+                        .height(57.dp)
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AssecoBlue,
+                        contentColor = Color.White,
+                        disabledBackgroundColor = LightGray,
+                        disabledContentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(15),
+                    onClick = {
+                        if (user is Seeker) viewModel.seekParking()
+                        else viewModel.offerParking()
+                              },
+                ) {
+                    LabelText(
+                        text = stringResource(
+                            id = if (user is Giver) R.string.home_screen_giver_offer_button_label
+                            else R.string.home_screen_seeker_seek_button_label
                         ),
-                        shape = RoundedCornerShape(15),
-                        onClick = { viewModel.seekParking() },
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.home_screen_seeker_seek_button_label),
-                            fontSize = 18.sp,
-                            fontFamily = Geomanist,
-                            fontWeight = FontWeight.Bold
+                        fontSize = 18.sp,
+                    )
+                }
+
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(state = rememberScrollState())
+                ) {
+
+                    if (noContent) {
+                        Spacer(modifier = Modifier.height(100.dp))
+
+                        LabelText(
+                            text = stringResource(id = R.string.home_screen_no_content_label),
+                            fontSize = 20.sp,
+                            color = LightGray
+                        )
+                    } else {
+                        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                            LabelText(
+                                text = stringResource(
+                                    id = if (user is Giver) R.string.home_screen_giver_offer_list_label
+                                    else R.string.home_screen_seeker_reservation_list_label
+                                ),
+                                fontSize = 20.sp,
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            FilterIcon(
+                                isFiltered = (filterState.dateStartSelected != LocalDate.MIN) ||
+                                        (filterState.dateEndSelected != LocalDate.MAX),
+                                tint = MaterialTheme.colors.onBackground,
+                                modifier = Modifier.offset(x = 20.dp),
+                                onFilterClicked = {
+                                    scope.launch {
+                                        if (sheetState.isVisible)
+                                            sheetState.hide()
+                                        else sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                    }
+                                }
+                            )
+                        }
+
+                        if (user is Giver) {
+                            OfferList(
+                                offerList = user.offers,
+                                user = user,
+                                filterState = filterState,
+                                onGiverOfferClicked = viewModel::onGiverOfferClicked,
+                                onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
+                                onRemoveOfferClicked = viewModel::onRemoveOfferClicked
+                            )
+                        } else {
+                            ReservationList(
+                                reservationList = user.reservations,
+                                user = user,
+                                filterState = filterState,
+                                onGiverReservationClicked = viewModel::onGiverReservationClicked,
+                                onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
+                                onCancelReservationClicked = viewModel::onCancelReservationClicked
+                            )
+                        }
+
+                        LabelText(
+                            text = stringResource(
+                                id = if (user is Giver) R.string.home_screen_giver_reservation_list_label
+                                else R.string.home_screen_seeker_offer_list_label
+                            ),
+                            fontSize = 20.sp,
+                            modifier = Modifier.align(Alignment.Start)
+                        )
+
+                        if (user is Giver) {
+                            ReservationList(
+                                reservationList = user.reservations,
+                                user = user,
+                                filterState = filterState,
+                                onGiverReservationClicked = viewModel::onGiverReservationClicked,
+                                onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
+                                onCancelReservationClicked = viewModel::onCancelReservationClicked
+                            )
+                        } else {
+                            OfferList(
+                                offerList = user.offers,
+                                user = user,
+                                filterState = filterState,
+                                onGiverOfferClicked = viewModel::onGiverOfferClicked,
+                                onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
+                                onRemoveOfferClicked = viewModel::onRemoveOfferClicked
+                            )
+                        }
+
+                        LabelText(
+                            text = stringResource(id = R.string.home_screen_seeking_list_label),
+                            fontSize = 20.sp,
+                            modifier = Modifier.align(Alignment.Start)
+                        )
+
+                        SeekingList(
+                            seekingList = user.seekings,
+                            filterState = filterState,
+                            onSeekingClicked = viewModel::onSeekingClicked
                         )
                     }
-
-                    HomeScreenSeekerContent(
-                        seeker = user,
-                        scope = scope,
-                        sheetState = sheetState,
-                        filterState = filterState,
-                        viewModel = viewModel
-                    )
-                } else {
-                    Button(
-                        modifier = Modifier
-                            .height(57.dp)
-                            .fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = AssecoBlue,
-                            contentColor = Color.White,
-                            disabledBackgroundColor = LightGray,
-                            disabledContentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(15),
-                        onClick = { viewModel.offerParking() }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.home_screen_giver_offer_button_label),
-                            fontSize = 18.sp,
-                            fontFamily = Geomanist,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    HomeScreenGiverContent(
-                        giver = user as Giver,
-                        scope = scope,
-                        sheetState = sheetState,
-                        filterState = filterState,
-                        viewModel = viewModel
-                    )
                 }
             }
 

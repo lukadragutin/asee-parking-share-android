@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -43,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.component.InputField
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.component.dialog.ScreenStateDialog
 import hr.asee.android.template.compose.ui.common.component.icon.TextVisibilityIcon
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
@@ -139,11 +139,9 @@ fun LoginScreenContent(
             onClick = onLoginClicked,
             enabled = !(emailState.text.isEmpty() || passwordState.text.isEmpty())
         ) {
-            Text(
+            LabelText(
                 text = stringResource(id = R.string.login_screen_login_button_label),
                 fontSize = 18.sp,
-                fontFamily = Geomanist,
-                fontWeight = FontWeight.Bold
             )
         }
 
@@ -158,12 +156,10 @@ fun LoginScreenContent(
                 fontFamily = Geomanist
             )
             Spacer(modifier = Modifier.width(5.dp))
-            Text(
+            LabelText(
                 text = stringResource(id = R.string.login_screen_sign_up_message_label),
                 color = MaterialTheme.colors.onSurface,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = Geomanist,
                 modifier = Modifier.clickable { onSignUpClicked }
             )
         }

@@ -12,8 +12,6 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
 
     override fun navigateToDirection(navigationDirection: NavigationItem.NavigationDirection) {
         when (navigationDirection) {
-            NavigationItem.NavigationDirection.USERS -> navigate(PostLoginDirection.Users, clearBackstack = true)
-            NavigationItem.NavigationDirection.API_INFO -> navigate(PostLoginDirection.ApiInfo, clearBackstack = true)
             NavigationItem.NavigationDirection.LOGOUT -> logout()
             NavigationItem.NavigationDirection.HOME -> navigate(PostLoginDirection.Home, clearBackstack = true)
             NavigationItem.NavigationDirection.PARKING_MANAGER -> navigate(PostLoginDirection.ParkingManager, clearBackstack = false)

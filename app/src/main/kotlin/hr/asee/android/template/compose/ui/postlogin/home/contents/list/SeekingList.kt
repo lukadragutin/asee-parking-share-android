@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.common.service.Seeking
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekingCard
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
@@ -23,7 +22,7 @@ import hr.asee.android.template.compose.ui.theme.LightGray
 fun SeekingList(
     seekingList: Set<Seeking>,
     filterState: DatePickerState,
-    viewModel: HomeViewModel
+    onSeekingClicked: () -> Unit
 ) {
     var numShown = 0
 
@@ -31,7 +30,10 @@ fun SeekingList(
         seekingList.forEach() { seeking ->
             if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart.toLocalDate()) &&
                 !filterState.dateEndSelected!!.isBefore(seeking.dateEnd.toLocalDate())) {
-                SeekingCard(seeking = seeking, viewModel = viewModel)
+                SeekingCard(
+                    seeking = seeking,
+                    onSeekingClicked = onSeekingClicked
+                )
                 numShown++
             }
         }

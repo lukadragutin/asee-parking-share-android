@@ -28,19 +28,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Offer
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun SeekerOfferCard(offer: Offer, viewModel: HomeViewModel) {
+fun SeekerOfferCard(
+    offer: Offer,
+    onOfferClicked: () -> Unit
+) {
+    val dateFormat = "d.M.yyyy"
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { viewModel.onOfferClicked() },
+            .clickable { onOfferClicked() },
         backgroundColor = MaterialTheme.colors.onPrimary,
         shape = RoundedCornerShape(15)
     ) {
@@ -50,10 +55,7 @@ fun SeekerOfferCard(offer: Offer, viewModel: HomeViewModel) {
             modifier = Modifier.padding(start = 15.dp, bottom = 8.dp, top = 8.dp)
         ) {
             Image(
-                painter = painterResource(
-                    id = if (isSystemInDarkTheme()) R.mipmap.parking_offer_dark
-                         else R.mipmap.parking_offer
-                ),
+                painter = painterResource(id = R.mipmap.parking_offer),
                 contentDescription = stringResource(id = R.string.home_screen_seeker_offer_card_image_content_description),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
@@ -62,31 +64,25 @@ fun SeekerOfferCard(offer: Offer, viewModel: HomeViewModel) {
             )
 
             Column(modifier = Modifier.padding(top = 8.dp)) {
-                Text(
+                LabelText(
                     text = offer.parkingSpace.location,
-                    fontFamily = Geomanist,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 16.sp
                 )
 
                 Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
                     Column(modifier = Modifier.padding(vertical = 8.dp)) {
 
-                        Text(
+                        LabelText(
                             text = stringResource(id = R.string.home_screen_seeker_offer_card_start_date_label),
                             color = DarkGray,
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
-                        Text(
+                        LabelText(
                             text = stringResource(id = R.string.home_screen_seeker_offer_card_end_date_label),
                             color = DarkGray,
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
                         )
                     }
 
@@ -95,15 +91,13 @@ fun SeekerOfferCard(offer: Offer, viewModel: HomeViewModel) {
                     Column(horizontalAlignment = Alignment.End,
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
-                        Text(
-                            text = offer.dateStart.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
-                            fontFamily = Geomanist,
+                        LabelText(
+                            text = offer.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
                         Text(
-                            text = offer.dateEnd.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
+                            text = offer.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
                             fontFamily = Geomanist,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold

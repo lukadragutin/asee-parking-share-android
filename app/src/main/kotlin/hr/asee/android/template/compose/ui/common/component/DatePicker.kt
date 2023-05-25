@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -67,7 +66,7 @@ fun DatePicker(
                 modifier = Modifier.width(150.dp)
             ) {
                 Text(
-                    text = state.dateStart?.format(DateTimeFormatter.ofPattern("d MMMM yyyy"))
+                    text = state.dateStart?.format(DateTimeFormatter.ofPattern(DatePickerState.DATE_FORMAT))
                         ?: stringResource(id = R.string.date_picker_unselected_start_date_label),
                     fontFamily = Geomanist,
                     fontWeight = FontWeight.Bold,
@@ -105,7 +104,7 @@ fun DatePicker(
                 modifier = Modifier.width(150.dp)
             ) {
                 Text(
-                    text = state.dateEnd?.format(DateTimeFormatter.ofPattern("d MMMM yyyy"))
+                    text = state.dateEnd?.format(DateTimeFormatter.ofPattern(DatePickerState.DATE_FORMAT))
                         ?: stringResource(id = R.string.date_picker_unselected_end_date_label),
                     fontFamily = Geomanist,
                     fontWeight = FontWeight.Bold,

@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.common.service.Offer
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverOfferCard
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekerOfferCard
 import hr.asee.android.template.compose.ui.postlogin.users.Giver
@@ -27,7 +26,9 @@ fun OfferList(
     offerList: Set<Offer>,
     user: User,
     filterState: DatePickerState,
-    viewModel: HomeViewModel
+    onGiverOfferClicked: () -> Unit,
+    onSeekerOfferClicked: () -> Unit,
+    onRemoveOfferClicked: () -> Unit
 ) {
     var numShown = 0
 
@@ -35,8 +36,19 @@ fun OfferList(
         offerList.forEach() { offer ->
             if (!filterState.dateStartSelected!!.isAfter(offer.dateStart.toLocalDate()) &&
                 !filterState.dateEndSelected!!.isBefore(offer.dateEnd.toLocalDate())) {
-                if (user is Giver) GiverOfferCard(offer = offer, viewModel = viewModel)
-                else SeekerOfferCard(offer = offer, viewModel = viewModel)
+                if (user is Giver) {
+                    GiverOfferCard(
+                        offer = offer,
+                        onOfferClicked = onGiverOfferClicked,
+                        onRemoveOfferClicked = onRemoveOfferClicked
+                    )
+                }
+                else {
+                    SeekerOfferCard(
+                        offer = offer,
+                        onOfferClicked = onSeekerOfferClicked
+                    )
+                }
                 numShown++
             }
         }

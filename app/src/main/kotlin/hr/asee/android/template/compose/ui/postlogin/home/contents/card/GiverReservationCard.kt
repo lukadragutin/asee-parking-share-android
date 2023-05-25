@@ -26,19 +26,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Reservation
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun GiverReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
+fun GiverReservationCard(
+    reservation: Reservation,
+    onReservationClicked: () -> Unit
+) {
+    val dateFormat = "d.M.yyyy"
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { viewModel.onReservationClicked() },
+            .clickable { onReservationClicked() },
         backgroundColor = MaterialTheme.colors.onPrimary,
         shape = RoundedCornerShape(15)
     ) {
@@ -48,41 +53,32 @@ fun GiverReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
             modifier = Modifier.padding(start = 15.dp, bottom = 8.dp, top = 8.dp)
         ) {
             Image(
-                painter = painterResource(
-                    id = if (isSystemInDarkTheme()) R.mipmap.parking_offer_dark
-                         else R.mipmap.parking_offer
-                ),
+                painter = painterResource(id = R.mipmap.parking_offer),
                 contentDescription = stringResource(id = R.string.home_screen_giver_reservation_card_image_content_description),
                 modifier = Modifier
                     .height(60.dp)
                     .width(51.dp)
             )
             Column(modifier = Modifier.padding(top = 8.dp)) {
-                Text(
+                LabelText(
                     text = reservation.parkingSpace.location,
-                    fontFamily = Geomanist,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 16.sp
                 )
 
                 Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
                     Column(modifier = Modifier.padding(vertical = 8.dp)) {
 
-                        Text(
+                        LabelText(
                             text = stringResource(id = R.string.home_screen_giver_reservation_card_start_date_label),
                             color = DarkGray,
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
-                        Text(
+                        LabelText(
                             text = stringResource(id = R.string.home_screen_giver_reservation_card_end_date_label),
                             color = DarkGray,
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
                         )
                     }
 
@@ -92,14 +88,14 @@ fun GiverReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
                         Text(
-                            text = reservation.dateStart.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
+                            text = reservation.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
                             fontFamily = Geomanist,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
                         Text(
-                            text = reservation.dateEnd.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
+                            text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
                             fontFamily = Geomanist,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold

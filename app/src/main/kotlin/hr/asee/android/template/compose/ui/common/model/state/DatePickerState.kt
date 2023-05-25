@@ -9,4 +9,8 @@ data class DatePickerState(
     var endFocused: Boolean = false,
     var dateStartSelected: LocalDate? = LocalDate.MIN,
     var dateEndSelected: LocalDate? = LocalDate.MAX
-)
+) {
+    companion object {
+        const val DATE_FORMAT = "d MMMM yyyy"
+    }
+}

@@ -1,6 +1,5 @@
 package hr.asee.android.template.compose.ui.postlogin.users
 
-import hr.asee.android.template.compose.ui.common.service.Offer
 import hr.asee.android.template.compose.ui.common.service.Reservation
 import hr.asee.android.template.compose.ui.common.service.Seeking
 import java.time.LocalDateTime
@@ -36,13 +35,8 @@ class Seeker(
         resetDate = resetDate
     ) {
 
-    var seekings = mutableSetOf<Seeking>()
-    var reservations = mutableSetOf<Reservation>()
-    var requests = mutableSetOf<Offer>()
-
     fun addSeeking(seeking: Seeking) {
         seekings.add(seeking)
-        User.seekings.add(seeking)
     }
     fun addReservation(reservation: Reservation) {
         reservations.add(reservation)
@@ -50,6 +44,7 @@ class Seeker(
     }
 }
 
+/*-------For testing-------*/
 val exampleSeeker = Seeker(
     firstName = "seeker",
     lastName = "one",
@@ -57,3 +52,4 @@ val exampleSeeker = Seeker(
     password = "seeker1",
     createdDate = LocalDateTime.of(2023, 4, 18, 14, 1)
 )
+/*-------------------------*/

@@ -2,7 +2,6 @@ package hr.asee.android.template.compose.ui.postlogin.home.contents.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,33 +14,34 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Reservation
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.theme.DarkGray
-import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.Gray
 import hr.asee.android.template.compose.ui.theme.Orange
 import java.time.format.DateTimeFormatter
 
-
-
 @Composable
-fun SeekerReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
+fun SeekerReservationCard(
+    reservation: Reservation,
+    onReservationClicked: () -> Unit,
+    onCancelReservationClicked: (Reservation) -> Unit
+) {
+    val dateFormat = "d.M.yyyy"
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { viewModel.onReservationClicked() },
+            .clickable { onReservationClicked() },
         backgroundColor = MaterialTheme.colors.onPrimary,
         shape = RoundedCornerShape(15)
     ) {
@@ -56,10 +56,7 @@ fun SeekerReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
                 modifier = Modifier.padding(8.dp)
             ) {
                 Image(
-                    painter = painterResource(
-                        id = if (isSystemInDarkTheme()) R.mipmap.outdoor_parking_dark
-                             else R.mipmap.outdoor_parking
-                    ),
+                    painter = painterResource(id = R.mipmap.outdoor_parking),
                     contentDescription = stringResource(id = R.string.home_screen_seeker_reservation_card_image_content_description),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -70,31 +67,25 @@ fun SeekerReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
                 Spacer(modifier = Modifier.width(20.dp))
                 
                 Column() {
-                    Text(
+                    LabelText(
                         text = reservation.parkingSpace.location,
-                        fontFamily = Geomanist,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 16.sp
                     )
 
                     Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
 
-                            Text(
+                            LabelText(
                                 text = stringResource(id = R.string.home_screen_seeker_reservation_card_start_date_label),
                                 color = DarkGray,
-                                fontFamily = Geomanist,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(10.dp))
-                            Text(
+                            LabelText(
                                 text = stringResource(id = R.string.home_screen_seeker_reservation_card_end_date_label),
                                 color = DarkGray,
-                                fontFamily = Geomanist,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
                             )
                         }
 
@@ -103,18 +94,14 @@ fun SeekerReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
                         Column(
                             modifier = Modifier.padding(vertical = 8.dp)
                         ) {
-                            Text(
-                                text = reservation.dateStart.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
-                                fontFamily = Geomanist,
+                            LabelText(
+                                text = reservation.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = reservation.dateEnd.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
-                                fontFamily = Geomanist,
+                            LabelText(
+                                text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
@@ -130,15 +117,13 @@ fun SeekerReservationCard(reservation: Reservation, viewModel: HomeViewModel) {
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            Text(
+            LabelText(
                 text = stringResource(id = R.string.home_screen_seeker_reservation_card_cancel_reservation_button_label),
                 color = Orange,
                 fontSize = 16.sp,
-                fontFamily = Geomanist,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .clickable { viewModel.onCancelReservationClicked(reservation = reservation)}
+                    .clickable { onCancelReservationClicked(reservation)}
             )
         }
     }

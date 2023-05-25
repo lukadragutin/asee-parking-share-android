@@ -10,10 +10,8 @@ import hr.asee.android.template.data.interactor.LoginInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.domain.mapper.AccessTokenMapper
 import hr.asee.android.template.domain.repository.AuthenticationRepository
-import hr.asee.android.template.domain.repository.FilterRepository
 import hr.asee.android.template.domain.repository.NavigationItemsRepository
 import hr.asee.android.template.domain.repository.impl.AuthenticationRepositoryImpl
-import hr.asee.android.template.domain.repository.impl.FilterRepositoryImpl
 import hr.asee.android.template.domain.repository.impl.NavigationItemsRepositoryImpl
 
 @Module
@@ -35,8 +33,4 @@ object RepositoryModule {
         accessTokenMapper = accessTokenMapper,
         storeAccessTokenInteractor = storeAccessTokenInteractor,
     )
-
-    @Provides
-    @ViewModelScoped
-    fun provideFilterRepository(): FilterRepository = FilterRepositoryImpl()
 }

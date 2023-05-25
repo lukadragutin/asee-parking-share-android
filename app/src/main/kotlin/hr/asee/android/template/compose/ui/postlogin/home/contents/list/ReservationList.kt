@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.common.service.Reservation
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverReservationCard
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekerReservationCard
 import hr.asee.android.template.compose.ui.postlogin.users.Giver
@@ -27,7 +26,9 @@ fun ReservationList(
     reservationList: Set<Reservation>,
     user: User,
     filterState: DatePickerState,
-    viewModel: HomeViewModel
+    onGiverReservationClicked: () -> Unit,
+    onSeekerReservationClicked: () -> Unit,
+    onCancelReservationClicked: (Reservation) -> Unit
 ) {
     var numShown = 0
 
@@ -35,8 +36,19 @@ fun ReservationList(
         reservationList.forEach() { reservation ->
             if (!filterState.dateStartSelected!!.isAfter(reservation.dateStart.toLocalDate()) &&
                 !filterState.dateEndSelected!!.isBefore(reservation.dateEnd.toLocalDate())) {
-                if (user is Giver) GiverReservationCard(reservation = reservation, viewModel = viewModel)
-                else SeekerReservationCard(reservation = reservation, viewModel = viewModel)
+                if (user is Giver) {
+                    GiverReservationCard(
+                        reservation = reservation,
+                        onReservationClicked = onGiverReservationClicked
+                    )
+                }
+                else {
+                    SeekerReservationCard(
+                        reservation = reservation,
+                        onReservationClicked = onSeekerReservationClicked,
+                        onCancelReservationClicked = onCancelReservationClicked
+                    )
+                }
                 numShown++
             }
         }

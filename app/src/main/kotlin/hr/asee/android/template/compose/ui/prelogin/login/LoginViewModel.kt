@@ -37,10 +37,6 @@ class LoginViewModel @Inject constructor(
         _uiState.update { UiState.None }
     }
 
-    fun showEmailInfo() {
-        showMessage(LoginMessages.EMAIL_INFO)
-    }
-
     fun login() {
         showLoading()
         runSuspend { loginInternal() }

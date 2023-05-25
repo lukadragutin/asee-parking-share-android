@@ -25,11 +25,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val _bottomNavBarState = MutableStateFlow(BottomNavBarState(items = Config.BOTTOM_NAV_BAR_ITEMS, onElementClicked = this::onNavElementClicked))
     val bottomNavBarState: StateFlow<BottomNavBarState> = _bottomNavBarState
-//
-//    init {
-//        runSuspend { getAllBottomNavItemsUseCase().onSuccess { items -> _bottomNavBarState.update { it.copy(items = items, selectedItem = it.items.firstOrNull()) } } }
-//    }
-//
+
     private fun onNavElementClicked(item: NavigationItem) {
         router.navigateToDirection(item.direction)
 

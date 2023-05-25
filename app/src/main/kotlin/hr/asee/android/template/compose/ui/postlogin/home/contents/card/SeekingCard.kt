@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,23 +23,26 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Seeking
-import hr.asee.android.template.compose.ui.postlogin.home.HomeViewModel
 import hr.asee.android.template.compose.ui.theme.DarkGray
-import hr.asee.android.template.compose.ui.theme.Geomanist
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun SeekingCard(seeking: Seeking, viewModel: HomeViewModel) {
+fun SeekingCard(
+    seeking: Seeking,
+    onSeekingClicked: () -> Unit
+) {
+    val dateFormat = "d.M.yyyy"
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { viewModel.onSeekingClicked() },
+            .clickable { onSeekingClicked() },
         backgroundColor = MaterialTheme.colors.onPrimary,
         shape = RoundedCornerShape(15)
     ) {
@@ -50,10 +52,7 @@ fun SeekingCard(seeking: Seeking, viewModel: HomeViewModel) {
             modifier = Modifier.padding(start = 15.dp, bottom = 8.dp, top = 8.dp)
         ) {
             Image(
-                painter = painterResource(
-                    id = if (isSystemInDarkTheme()) R.mipmap.parking_seeking_dark
-                         else R.mipmap.parking_seeking
-                ),
+                painter = painterResource(id = R.mipmap.parking_seeking),
                 contentDescription = stringResource(id = R.string.home_screen_seeking_card_image_content_description),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
@@ -62,31 +61,25 @@ fun SeekingCard(seeking: Seeking, viewModel: HomeViewModel) {
             )
 
             Column(modifier = Modifier.padding(top = 8.dp)) {
-                Text(
+                LabelText(
                     text = stringResource(id = R.string.home_screen_seeking_card_title_label),
-                    fontFamily = Geomanist,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 16.sp
                 )
 
                 Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
                     Column(modifier = Modifier.padding(vertical = 8.dp)) {
 
-                        Text(
+                        LabelText(
                             text = stringResource(id = R.string.home_screen_seeking_card_start_date_label),
                             color = DarkGray,
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
-                        Text(
+                        LabelText(
                             text = stringResource(id = R.string.home_screen_seeking_card_end_date_label),
                             color = DarkGray,
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
                         )
                     }
 
@@ -96,18 +89,14 @@ fun SeekingCard(seeking: Seeking, viewModel: HomeViewModel) {
                         horizontalAlignment = Alignment.End,
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
-                        Text(
-                            text = seeking.dateStart.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
-                            fontFamily = Geomanist,
+                        LabelText(
+                            text = seeking.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
-                        Text(
-                            text = seeking.dateEnd.format(DateTimeFormatter.ofPattern("d.M.yyyy")),
-                            fontFamily = Geomanist,
+                        LabelText(
+                            text = seeking.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

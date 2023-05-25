@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.theme.AssecoBlue
 
 @Composable
 fun FilterIcon(
@@ -32,6 +33,6 @@ fun FilterIcon(
             ),
         painter = painterResource(id = R.drawable.filter),
         contentDescription = stringResource(id = R.string.filter_icon_content_description),
-        tint = if (isFiltered) Color(0xFF2BA1DC) else tint
+        tint = if (isFiltered) AssecoBlue else tint
     )
 }
