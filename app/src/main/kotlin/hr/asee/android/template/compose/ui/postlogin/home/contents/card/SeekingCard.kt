@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Seeking
 import hr.asee.android.template.compose.ui.theme.DarkGray
@@ -37,7 +38,6 @@ fun SeekingCard(
     seeking: Seeking,
     onSeekingClicked: () -> Unit
 ) {
-    val dateFormat = "d.M.yyyy"
 
     Card(
         modifier = Modifier
@@ -90,12 +90,12 @@ fun SeekingCard(
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
                         LabelText(
-                            text = seeking.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
+                            text = seeking.dateStart.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                             fontSize = 14.sp,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
                         LabelText(
-                            text = seeking.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
+                            text = seeking.dateEnd.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                             fontSize = 14.sp,
                         )
                     }

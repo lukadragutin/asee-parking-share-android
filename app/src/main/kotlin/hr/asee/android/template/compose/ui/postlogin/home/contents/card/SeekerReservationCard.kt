@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Reservation
 import hr.asee.android.template.compose.ui.theme.DarkGray
@@ -36,7 +37,6 @@ fun SeekerReservationCard(
     onReservationClicked: () -> Unit,
     onCancelReservationClicked: (Reservation) -> Unit
 ) {
-    val dateFormat = "d.M.yyyy"
 
     Card(
         modifier = Modifier
@@ -95,12 +95,12 @@ fun SeekerReservationCard(
                             modifier = Modifier.padding(vertical = 8.dp)
                         ) {
                             LabelText(
-                                text = reservation.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
+                                text = reservation.dateStart.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                                 fontSize = 14.sp,
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             LabelText(
-                                text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
+                                text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                                 fontSize = 14.sp,
                             )
                         }

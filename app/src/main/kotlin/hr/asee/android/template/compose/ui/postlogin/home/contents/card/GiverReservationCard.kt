@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Reservation
 import hr.asee.android.template.compose.ui.theme.DarkGray
@@ -38,7 +39,6 @@ fun GiverReservationCard(
     reservation: Reservation,
     onReservationClicked: () -> Unit
 ) {
-    val dateFormat = "d.M.yyyy"
 
     Card(
         modifier = Modifier
@@ -88,14 +88,14 @@ fun GiverReservationCard(
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
                         Text(
-                            text = reservation.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
+                            text = reservation.dateStart.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                             fontFamily = Geomanist,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
                         Text(
-                            text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
+                            text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                             fontFamily = Geomanist,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold

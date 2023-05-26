@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.service.Offer
 import hr.asee.android.template.compose.ui.theme.DarkGray
@@ -36,7 +37,6 @@ fun GiverOfferCard(
     onOfferClicked: () -> Unit,
     onRemoveOfferClicked: () -> Unit
 ) {
-    val dateFormat = "d.M.yyyy"
 
     Card(
         modifier = Modifier
@@ -94,12 +94,12 @@ fun GiverOfferCard(
                             modifier = Modifier.padding(vertical = 8.dp)
                         ) {
                             LabelText(
-                                text = offer.dateStart.format(DateTimeFormatter.ofPattern(dateFormat)),
+                                text = offer.dateStart.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                                 fontSize = 14.sp,
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             LabelText(
-                                text = offer.dateEnd.format(DateTimeFormatter.ofPattern(dateFormat)),
+                                text = offer.dateEnd.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
                                 fontSize = 14.sp,
                             )
                         }

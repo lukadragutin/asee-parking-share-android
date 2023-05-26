@@ -6,6 +6,7 @@ import hr.asee.android.template.domain.model.navigation.NavigationItem
 object Config {
     const val DATA_STORE_PREFERENCES_NAME = "dataStorePreferences"
     const val REQRES_BASE_URL = "https://localhost:8080"
+    const val CARD_DATE_FORMAT = "d.M.yyyy"
 
     val BOTTOM_NAV_BAR_ITEMS = listOf(
         NavigationItem(
