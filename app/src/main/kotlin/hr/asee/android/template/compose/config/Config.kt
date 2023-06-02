@@ -5,7 +5,7 @@ import hr.asee.android.template.domain.model.navigation.NavigationItem
 
 object Config {
     const val DATA_STORE_PREFERENCES_NAME = "dataStorePreferences"
-    const val REQRES_BASE_URL = "https://reqres.in/"
+    const val REQRES_BASE_URL = "http://10.0.2.2:8080/"
 
     val BOTTOM_NAV_BAR_ITEMS = listOf(
         NavigationItem(

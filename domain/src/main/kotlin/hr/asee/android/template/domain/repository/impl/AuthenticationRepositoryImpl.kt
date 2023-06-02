@@ -8,10 +8,11 @@ import hr.asee.android.template.data.model.remote.body.ApiRegisterRequest
 import hr.asee.android.template.domain.mapper.AccessTokenMapper
 import hr.asee.android.template.domain.model.common.AccessToken
 import hr.asee.android.template.domain.repository.AuthenticationRepository
+import java.util.Calendar
 
 class AuthenticationRepositoryImpl(
     private val loginInteractor: LoginInteractor,
-    //private val registerInteractor: RegisterInteractor,
+    private val registerInteractor: RegisterInteractor,
     private val accessTokenMapper: AccessTokenMapper,
     private val storeAccessTokenInteractor: StoreAccessTokenInteractor,
 ) : AuthenticationRepository {
@@ -24,9 +25,36 @@ class AuthenticationRepositoryImpl(
         return accessTokenMapper.toAccessToken(loginInteractor(ApiLoginRequest(email = email, password = password)))
     }
 
-    /*override suspend fun register(name: String, email: String, password: String, confirmpassword : String): AccessToken {
-        return accessTokenMapper.toAccessToken(registerInteractor(ApiRegisterRequest(name = name, email = email, password = password, confirmpassword = confirmpassword)))
-    }*/
+    override suspend fun register(id: Int,
+                                  login: String,
+                                  firstName: String,
+                                  lastName: String,
+                                  email: String,
+                                  password: String,
+                                  role : String,
+                                  activated: Boolean,
+                                  langKey: String,
+                                  createdBy: String,
+                                  createdDate: String,
+                                  lastModifiedBy: String,
+                                  lastModifiedDate: String,
+                                  authorities: Array<String>
+                                  ): Unit {
+        registerInteractor(ApiRegisterRequest(id = id,
+                                              login = login,
+                                              firstName = firstName,
+                                              lastName = firstName,
+                                              email = email,
+                                              password = password,
+                                              role = role,
+                                              activated = activated,
+                                              langKey = langKey,
+                                              createdBy = createdBy,
+                                              createdDate = createdDate,
+                                              lastModifiedBy = lastModifiedBy,
+                                              lastModifiedDate = lastModifiedDate,
+                                              authorities = authorities))
+    }
 
     override suspend fun storeAccessToken(accessToken: AccessToken) {
         storeAccessTokenInteractor(key = KEY_ACCESS_TOKEN, accessToken = accessToken.value)

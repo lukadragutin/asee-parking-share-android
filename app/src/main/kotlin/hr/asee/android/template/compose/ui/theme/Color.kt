@@ -10,4 +10,5 @@ val AssecoBlue = Color(0xFF2BA1DC)
 val LightGray = Color(0xFFAAAFAF)
 val DarkGray = Color(0xFF7D8282)
 val AssecoYellow = Color(0xFFFF9800)
+val BackgroundBlack = Color(0xFF2D3237)
 

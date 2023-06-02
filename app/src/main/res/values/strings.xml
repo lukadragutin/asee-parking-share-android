@@ -18,6 +18,9 @@
     <string name="ok" >OK</string>
     <string name="sign_in" >Sign in</string>
     <string name="password_can_not_be_empty_please_check_entered_password_and_tra_again" >Password can not be empty. Please check entered password and try again.</string>
+    <string name="email_can_not_be_empty_please_check_entered_email_and_tra_again" >E-mail can not be empty. Please check entered e-mail and try again.</string>
+    <string name="username_can_not_be_empty_please_check_entered_username_and_tra_again" >Username can not be empty. Please check entered username and try again.</string>
+    <string name="confirm_password_can_not_be_empty_please_check_entered_confirm_password_and_tra_again" >Confirm password can not be empty. Please check entered confirm password and try again.</string>
     <string name="unexpected_storage_exception_happened_while_trying_to_log_in_please_try_again" >Unexpected storage error happened while trying to login. Please try again.</string>
     <string name="entered_user_is_not_found_please_check_info_for_valid_user_info" >Entered user is not found. Please check info for valid user info.</string>
     <string name="email_or_username_is_missing_please_check_login_credentials_and_try_again" >Email or username is missing. Please check login credentials and try again.</string>
@@ -70,6 +73,15 @@
     <string name="register_screen_password_not_correct_text_label" translatable="false">@string/password_not_correct</string>
     <string name="register_screen_password_too_short_text_label" translatable="false">@string/password_too_short</string>
     <string name="register_screen_passwords_not_equal_text_label" translatable="false">@string/passwords_not_equal</string>
+    <string name="register_screen_missing_password_error_title" translatable="false">@string/an_error_occurred</string>
+    <string name="register_screen_missing_username_error_title" translatable="false">@string/an_error_occurred</string>
+    <string name="register_screen_missing_email_error_title" translatable="false">@string/an_error_occurred</string>
+    <string name="register_screen_missing_confirm_password_error_title" translatable="false">@string/an_error_occurred</string>
+    <string name="register_screen_missing_password_error_message" translatable="false">@string/password_can_not_be_empty_please_check_entered_password_and_tra_again</string>
+    <string name="register_screen_missing_email_error_message" translatable="false">@string/email_can_not_be_empty_please_check_entered_email_and_tra_again</string>
+    <string name="register_screen_missing_username_error_message" translatable="false">@string/username_can_not_be_empty_please_check_entered_username_and_tra_again</string>
+    <string name="register_screen_missing_confirm_password_error_message" translatable="false">@string/confirm_password_can_not_be_empty_please_check_entered_confirm_password_and_tra_again</string>
+
 
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_users_icon_content_description" translatable="false">@string/users</string>

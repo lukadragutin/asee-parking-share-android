@@ -33,6 +33,6 @@ object UseCaseModule {
     @Provides
     @ViewModelScoped
     fun provideRegisterUseCase(authenticationRepository: AuthenticationRepository): RegisterUseCase {
-        return RegisterUseCaseImpl()
+        return RegisterUseCaseImpl(authenticationRepository = authenticationRepository)
     }
 }

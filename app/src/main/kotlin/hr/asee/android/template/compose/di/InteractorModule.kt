@@ -9,6 +9,7 @@ import hr.asee.android.template.data.interactor.LoginInteractor
 import hr.asee.android.template.data.interactor.RegisterInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.data.interactor.impl.LoginInteractorImpl
+import hr.asee.android.template.data.interactor.impl.RegisterInteractorImpl
 import hr.asee.android.template.data.interactor.impl.StoreAccessTokenInteractorImpl
 import hr.asee.android.template.data.local.storage.ApplicationStorage
 import hr.asee.android.template.data.network.ReqresApiService
@@ -26,12 +27,12 @@ object InteractorModule {
         reqResServiceErrorResolver = reqResServiceErrorResolver,
     )
 
-    /*@Provides
+    @Provides
     @ViewModelScoped
     fun provideRegisterInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): RegisterInteractor = RegisterInteractorImpl(
         reqresApiService = retrofit.create(ReqresApiService::class.java),
         reqResServiceErrorResolver = reqResServiceErrorResolver,
-    )*/
+    )
 
     @Provides
     @ViewModelScoped

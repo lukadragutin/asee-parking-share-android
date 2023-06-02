@@ -76,6 +76,7 @@ dependencies {
     implementation(Dependencies.Accompanist.webView)
     implementation(Dependencies.coil)
     implementation(Dependencies.datastore)
+
     pager()
     hilt()
     retrofit()

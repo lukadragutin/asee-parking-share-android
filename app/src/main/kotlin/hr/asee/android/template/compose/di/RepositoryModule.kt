@@ -27,12 +27,12 @@ object RepositoryModule {
     @ViewModelScoped
     fun provideAuthenticationRepository(
         loginInteractor: LoginInteractor,
-        //registerInteractor : RegisterInteractor,
+        registerInteractor : RegisterInteractor,
         accessTokenMapper: AccessTokenMapper,
         storeAccessTokenInteractor: StoreAccessTokenInteractor,
     ): AuthenticationRepository = AuthenticationRepositoryImpl(
         loginInteractor = loginInteractor,
-        //registerInteractor = registerInteractor,
+        registerInteractor = registerInteractor,
         accessTokenMapper = accessTokenMapper,
         storeAccessTokenInteractor = storeAccessTokenInteractor,
     )

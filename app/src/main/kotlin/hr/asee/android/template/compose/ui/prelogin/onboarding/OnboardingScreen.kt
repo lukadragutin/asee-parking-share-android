@@ -26,7 +26,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
 
     OnboardingContent(
         onboardingItems = onboardingItems,
-        onNextClicked = viewModel::navigateToRegister,
+        onNextClicked = viewModel::navigateToLogin,
     )
 }
 

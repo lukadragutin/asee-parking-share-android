@@ -76,22 +76,22 @@ RegisterViewModel @Inject constructor(
     }
 
     private suspend fun registerInternal() {
-        registerUseCase(RegisterUseCase.RegisterRequest(name = nameState.value.text, email = emailState.value.text, password = emailState.value.text, confirmpassword = confirmPasswordState.value.text)).onFinished(
+        registerUseCase(RegisterUseCase.RegisterRequest(login = nameState.value.text, email = emailState.value.text, password = emailState.value.text)).onFinished(
             successCallback = this::onRegisterSuccessful,
             errorCallback = this::onRegisterError,
         )
     }
 
     private fun onRegisterSuccessful() {
-        router.navigateToPostLoginScreen()
+        router.navigateToLoginScreen()
     }
 
     private fun onRegisterError(errorData: ErrorData) {
         when (errorData.errorType) {
             RegisterUseCase.RegisterError.MISSING_PASSWORD_ERROR -> showError(RegisterMessages.MISSING_PASSWORD_ERROR)
-            RegisterUseCase.RegisterError.STORE_ACCESS_TOKEN_ERROR -> showError(RegisterMessages.STORE_ACCESS_TOKEN_ERROR)
-            RegisterUseCase.RegisterError.USER_NOT_FOUND_ERROR -> showError(RegisterMessages.USER_NOT_FOUND_ERROR)
-            RegisterUseCase.RegisterError.MISSING_EMAIL_OR_USERNAME_ERROR -> showError(RegisterMessages.MISSING_EMAIL_OR_USERNAME_ERROR)
+            RegisterUseCase.RegisterError.MISSING_EMAIL_ERROR -> showError(RegisterMessages.MISSING_EMAIL_ERROR)
+            RegisterUseCase.RegisterError.MISSING_CONFIRM_PASSWORD_ERROR -> showError(RegisterMessages.MISSING_CONFIRM_PASSWORD_ERROR)
+            RegisterUseCase.RegisterError.MISSING_USERNAME_ERROR -> showError(RegisterMessages.MISSING_USERNAME_ERROR)
             else -> showError(CommonMessages.UNEXPECTED_ERROR)
         }
     }
