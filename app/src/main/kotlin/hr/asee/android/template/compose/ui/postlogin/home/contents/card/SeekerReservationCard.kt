@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
-import hr.asee.android.template.compose.ui.common.service.Reservation
+import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Gray
 import hr.asee.android.template.compose.ui.theme.Orange
@@ -63,9 +63,9 @@ fun SeekerReservationCard(
                         .height(46.dp)
                         .width(69.dp)
                 )
-                
+
                 Spacer(modifier = Modifier.width(20.dp))
-                
+
                 Column() {
                     LabelText(
                         text = reservation.parkingSpace.location,

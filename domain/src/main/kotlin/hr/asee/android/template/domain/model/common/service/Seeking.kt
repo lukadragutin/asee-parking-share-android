@@ -1,14 +1,14 @@
-package hr.asee.android.template.compose.ui.common.service
+package hr.asee.android.template.domain.model.common.service
 
-import hr.asee.android.template.compose.ui.postlogin.users.Seeker
-import hr.asee.android.template.compose.ui.postlogin.users.exampleSeeker
+import hr.asee.android.template.domain.model.common.User
+import hr.asee.android.template.domain.model.common.exampleSeeker
 import java.time.LocalDateTime
 
 class Seeking(
     val id: Int = generateId(),
     val dateStart: LocalDateTime,
     val dateEnd: LocalDateTime,
-    val seeker: Seeker
+    val seeker: User
 ) {
     companion object {
         private var latestId = 1

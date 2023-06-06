@@ -1,4 +1,4 @@
-package hr.asee.android.template.compose.ui.common.service
+package hr.asee.android.template.domain.model.common.service
 
 import java.time.LocalDateTime
 

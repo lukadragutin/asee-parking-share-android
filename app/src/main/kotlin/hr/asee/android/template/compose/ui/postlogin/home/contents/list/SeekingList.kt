@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.common.service.Seeking
+import hr.asee.android.template.domain.model.common.service.Seeking
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekingCard
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray

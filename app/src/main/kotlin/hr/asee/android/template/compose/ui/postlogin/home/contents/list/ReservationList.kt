@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.common.service.Reservation
+import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverReservationCard
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekerReservationCard
-import hr.asee.android.template.compose.ui.postlogin.users.Giver
-import hr.asee.android.template.compose.ui.postlogin.users.User
+import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
 

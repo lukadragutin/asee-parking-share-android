@@ -1,7 +1,7 @@
-package hr.asee.android.template.compose.ui.postlogin.users
+package hr.asee.android.template.domain.model.common
 
-import hr.asee.android.template.compose.ui.common.service.Offer
-import hr.asee.android.template.compose.ui.common.service.Reservation
+import hr.asee.android.template.domain.model.common.service.Offer
+import hr.asee.android.template.domain.model.common.service.Reservation
 import java.time.LocalDateTime
 
 class Giver(
@@ -9,14 +9,13 @@ class Giver(
     firstName: String,
     lastName: String,
     email: String,
-    password: String,
     activated: Boolean = true,
     langKey: String = "English",
     createdBy: String = "admin",
     createdDate: LocalDateTime,
     lastModifiedBy: String = createdBy,
     lastModifiedDate: LocalDateTime = createdDate,
-    authorities: List<String>? = null,
+    authorities: List<String> = listOf(),
     resetDate: LocalDateTime? = null
 ):
     User(
@@ -24,7 +23,6 @@ class Giver(
         firstName = firstName,
         lastName = lastName,
         email = email,
-        password = password,
         activated = activated,
         langKey = langKey,
         createdBy = createdBy,
@@ -49,7 +47,6 @@ val exampleGiver = Giver(
     firstName = "Test",
     lastName = "User",
     email = "test.user@test.com",
-    password = "testuser",
     createdDate = LocalDateTime.of(2023, 4, 17, 17, 8)
 )
 /*-------------------------*/

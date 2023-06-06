@@ -18,7 +18,7 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun login(email: String, password: String): AccessToken {
-        return accessTokenMapper.toAccessToken(loginInteractor(ApiLoginRequest(email = email, password = password)))
+        return accessTokenMapper.toAccessToken(loginInteractor(ApiLoginRequest(email = email, password = password, rememberMe = true)))
     }
 
     override suspend fun storeAccessToken(accessToken: AccessToken) {

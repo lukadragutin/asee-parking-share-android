@@ -5,5 +5,6 @@ import com.google.gson.annotations.SerializedName
 
 data class ApiLoginRequest(
     @SerializedName("email") val email: String,
-    @SerializedName("password") val password: String
+    @SerializedName("password") val password: String,
+    @SerializedName("rememberMe") val rememberMe: Boolean = true
 )

@@ -12,19 +12,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.common.service.Offer
+import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverOfferCard
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekerOfferCard
-import hr.asee.android.template.compose.ui.postlogin.users.Giver
-import hr.asee.android.template.compose.ui.postlogin.users.User
+import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
 
 @Composable
 fun OfferList(
-    offerList: Set<Offer>,
+    offerList: List<Offer>,
     user: User,
+    accountState: AccountState,
     filterState: DatePickerState,
     onGiverOfferClicked: () -> Unit,
     onSeekerOfferClicked: () -> Unit,
@@ -36,7 +38,7 @@ fun OfferList(
         offerList.forEach() { offer ->
             if (!filterState.dateStartSelected!!.isAfter(offer.dateStart.toLocalDate()) &&
                 !filterState.dateEndSelected!!.isBefore(offer.dateEnd.toLocalDate())) {
-                if (user is Giver) {
+                if (accountState.user is Giver && offer.parkingSpace.owner == accountState.user) {
                     GiverOfferCard(
                         offer = offer,
                         onOfferClicked = onGiverOfferClicked,

@@ -1,7 +1,7 @@
-package hr.asee.android.template.compose.ui.postlogin.users
+package hr.asee.android.template.domain.model.common
 
-import hr.asee.android.template.compose.ui.common.service.Reservation
-import hr.asee.android.template.compose.ui.common.service.Seeking
+import hr.asee.android.template.domain.model.common.service.Reservation
+import hr.asee.android.template.domain.model.common.service.Seeking
 import java.time.LocalDateTime
 
 class Seeker(
@@ -9,14 +9,13 @@ class Seeker(
     firstName: String,
     lastName: String,
     email: String,
-    password: String,
     activated: Boolean = true,
     langKey: String = "English",
     createdBy: String = "admin",
     createdDate: LocalDateTime,
     lastModifiedBy: String = createdBy,
     lastModifiedDate: LocalDateTime = createdDate,
-    authorities: List<String>? = null,
+    authorities: List<String> = listOf(),
     resetDate: LocalDateTime? = null
 ):
     User(
@@ -24,7 +23,6 @@ class Seeker(
         firstName = firstName,
         lastName = lastName,
         email = email,
-        password = password,
         activated = activated,
         langKey = langKey,
         createdBy = createdBy,
@@ -49,7 +47,6 @@ val exampleSeeker = Seeker(
     firstName = "seeker",
     lastName = "one",
     email = "seeker1@test.com",
-    password = "seeker1",
     createdDate = LocalDateTime.of(2023, 4, 18, 14, 1)
 )
 /*-------------------------*/

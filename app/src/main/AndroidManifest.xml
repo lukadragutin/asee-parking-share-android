@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidComposeCodingTemplate"
-        android:usesCleartextTraffic="false"
+        android:usesCleartextTraffic="true"
         tools:ignore="DataExtractionRules,UnusedAttribute">
         <activity
             android:name=".ui.main.MainActivity"

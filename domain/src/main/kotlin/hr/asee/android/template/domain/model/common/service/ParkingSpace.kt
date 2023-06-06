@@ -1,7 +1,7 @@
-package hr.asee.android.template.compose.ui.common.service
+package hr.asee.android.template.domain.model.common.service
 
-import hr.asee.android.template.compose.ui.postlogin.users.Giver
-import hr.asee.android.template.compose.ui.postlogin.users.exampleGiver
+import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.exampleGiver
 
 class ParkingSpace(
     val id: Int = generateId(),

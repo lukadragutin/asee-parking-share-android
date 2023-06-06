@@ -4,7 +4,7 @@ import hr.asee.android.template.data.interactor.impl.LoginInteractorImpl
 import hr.asee.android.template.data.model.remote.body.ApiLoginRequest
 import hr.asee.android.template.data.model.remote.response.ApiAccessToken
 import hr.asee.android.template.data.model.remote.response.common.ApiError
-import hr.asee.android.template.data.network.ReqresApiService
+import hr.asee.android.template.data.network.AuthenticationApiService
 import hr.asee.android.template.data.resolver.ReqResServiceErrorResolver
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
@@ -21,15 +21,15 @@ import retrofit2.Response
 
 class LoginInteractorTest {
 
-    private lateinit var reqResService: ReqresApiService
+    private lateinit var reqResService: AuthenticationApiService
     lateinit var reqResServiceErrorResolver: ReqResServiceErrorResolver
     lateinit var loginInteractor: LoginInteractor
 
     @BeforeEach
     fun setUp() {
-        reqResService = mock(ReqresApiService::class.java)
+        reqResService = mock(AuthenticationApiService::class.java)
         reqResServiceErrorResolver = mock(ReqResServiceErrorResolver::class.java)
-        loginInteractor = LoginInteractorImpl(reqresApiService = reqResService, reqResServiceErrorResolver = reqResServiceErrorResolver)
+        loginInteractor = LoginInteractorImpl(authenticationApiService = reqResService, reqResServiceErrorResolver = reqResServiceErrorResolver)
     }
 
     @Test

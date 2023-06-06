@@ -58,24 +58,26 @@ import hr.asee.android.template.compose.ui.common.component.icon.FilterIcon
 import hr.asee.android.template.compose.ui.common.component.icon.SettingsIcon
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.common.service.exampleOffer1
-import hr.asee.android.template.compose.ui.common.service.exampleOffer2
-import hr.asee.android.template.compose.ui.common.service.exampleReservation
-import hr.asee.android.template.compose.ui.common.service.exampleSeeking1
-import hr.asee.android.template.compose.ui.common.service.exampleSeeking2
+import hr.asee.android.template.compose.ui.common.model.state.AccountState
+import hr.asee.android.template.domain.model.common.service.exampleOffer1
+import hr.asee.android.template.domain.model.common.service.exampleOffer2
+import hr.asee.android.template.domain.model.common.service.exampleReservation
+import hr.asee.android.template.domain.model.common.service.exampleSeeking1
+import hr.asee.android.template.domain.model.common.service.exampleSeeking2
 import hr.asee.android.template.compose.ui.postlogin.home.contents.FilterPopupScreen
 import hr.asee.android.template.compose.ui.postlogin.home.contents.ProfilePicture
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.OfferList
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.ReservationList
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.SeekingList
-import hr.asee.android.template.compose.ui.postlogin.users.Giver
-import hr.asee.android.template.compose.ui.postlogin.users.Seeker
-import hr.asee.android.template.compose.ui.postlogin.users.User
-import hr.asee.android.template.compose.ui.postlogin.users.exampleGiver
-import hr.asee.android.template.compose.ui.postlogin.users.exampleSeeker
+import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.Seeker
+import hr.asee.android.template.domain.model.common.User
+import hr.asee.android.template.domain.model.common.exampleGiver
+import hr.asee.android.template.domain.model.common.exampleSeeker
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
+import hr.asee.android.template.domain.model.common.service.Offer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -96,6 +98,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleS
     val filterState by viewModel.filterState.collectAsState()
     val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+    val accountState by viewModel.accountState.collectAsState()
 
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
@@ -161,6 +164,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleS
                 scope = scope,
                 sheetState = sheetState,
                 filterState = filterState,
+                accountState = accountState,
                 viewModel = viewModel
             )
 
@@ -179,6 +183,7 @@ fun HomeScreenContent(
     scope: CoroutineScope,
     sheetState: ModalBottomSheetState,
     filterState: DatePickerState,
+    accountState: AccountState,
     viewModel: HomeViewModel
 ) {
 
@@ -198,15 +203,15 @@ fun HomeScreenContent(
             Column {
                 Text(
                     text = buildAnnotatedString {
-                         withStyle(
-                             SpanStyle(
-                                 fontFamily = Geomanist,
-                                 fontWeight = FontWeight.Bold,
-                                 fontSize = 16.sp
-                             )
-                         ) {
-                             append(stringResource(id = R.string.home_screen_welcome_label))
-                         }
+                        withStyle(
+                            SpanStyle(
+                                fontFamily = Geomanist,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                        ) {
+                            append(stringResource(id = R.string.home_screen_welcome_label))
+                        }
                         append(" ")
                         withStyle(
                             SpanStyle(
@@ -216,15 +221,15 @@ fun HomeScreenContent(
                                 color = AssecoBlue
                             )
                         ) {
-                            append(user.firstName)
+                            append(accountState.user!!.firstName)
                         }
                     },
                 )
 
                 Text(
                     text = stringResource(
-                        id = if (user is Seeker) R.string.home_screen_seeker_role_label
-                             else R.string.home_screen_giver_role_label),
+                        id = if (accountState.user is Seeker) R.string.home_screen_seeker_role_label
+                        else R.string.home_screen_giver_role_label),
                     fontSize = 14.sp,
                     fontFamily = Geomanist,
                     color = LightGray
@@ -262,13 +267,13 @@ fun HomeScreenContent(
                     ),
                     shape = RoundedCornerShape(15),
                     onClick = {
-                        if (user is Seeker) viewModel.seekParking()
+                        if (accountState.user is Seeker) viewModel.seekParking()
                         else viewModel.offerParking()
-                              },
+                    },
                 ) {
                     LabelText(
                         text = stringResource(
-                            id = if (user is Giver) R.string.home_screen_giver_offer_button_label
+                            id = if (accountState.user is Giver) R.string.home_screen_giver_offer_button_label
                             else R.string.home_screen_seeker_seek_button_label
                         ),
                         fontSize = 18.sp,
@@ -296,7 +301,7 @@ fun HomeScreenContent(
                         Row(horizontalArrangement = Arrangement.SpaceBetween) {
                             LabelText(
                                 text = stringResource(
-                                    id = if (user is Giver) R.string.home_screen_giver_offer_list_label
+                                    id = if (accountState.user is Giver) R.string.home_screen_giver_offer_list_label
                                     else R.string.home_screen_seeker_reservation_list_label
                                 ),
                                 fontSize = 20.sp,
@@ -317,10 +322,11 @@ fun HomeScreenContent(
                             )
                         }
 
-                        if (user is Giver) {
+                        if (accountState.user is Giver) {
                             OfferList(
-                                offerList = user.offers,
+                                offerList = accountState.offers as List<Offer>,
                                 user = user,
+                                accountState = accountState,
                                 filterState = filterState,
                                 onGiverOfferClicked = viewModel::onGiverOfferClicked,
                                 onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
@@ -357,8 +363,9 @@ fun HomeScreenContent(
                             )
                         } else {
                             OfferList(
-                                offerList = user.offers,
+                                offerList = accountState.offers as List<Offer>,
                                 user = user,
+                                accountState = accountState,
                                 filterState = filterState,
                                 onGiverOfferClicked = viewModel::onGiverOfferClicked,
                                 onSeekerOfferClicked = viewModel::onSeekerOfferClicked,

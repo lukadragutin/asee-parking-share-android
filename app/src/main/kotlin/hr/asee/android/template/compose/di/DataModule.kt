@@ -8,16 +8,18 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import hr.asee.android.template.compose.BuildConfig
 import hr.asee.android.template.compose.config.Config
+import hr.asee.android.template.data.interactor.GetAccessTokenInteractor
 import hr.asee.android.template.data.local.storage.ApplicationStorage
 import hr.asee.android.template.data.local.storage.impl.ApplicationStorageImpl
+import hr.asee.android.template.data.network.AccessTokenInterceptor
 import hr.asee.android.template.data.resolver.ReqResServiceErrorResolver
 import hr.asee.android.template.data.resolver.impl.ReqResServiceErrorResolverImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.BuildConfig
 
 val Context.dataStore by preferencesDataStore(Config.DATA_STORE_PREFERENCES_NAME)
 
@@ -33,7 +35,10 @@ object DataModule {
 
     @Provides
     @ViewModelScoped
-    fun provideRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
+    fun provideRetrofit(
+        gsonConverterFactory: GsonConverterFactory,
+        getAccessTokenInteractor: GetAccessTokenInteractor
+    ): Retrofit {
         val reqresRetrofit = Retrofit.Builder()
             .addConverterFactory(gsonConverterFactory)
             .baseUrl(Config.REQRES_BASE_URL)
@@ -43,6 +48,7 @@ object DataModule {
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
+                .addInterceptor(AccessTokenInterceptor(getAccessTokenInteractor))
                 .build()
             reqresRetrofit.client(client)
         }

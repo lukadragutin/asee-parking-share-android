@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
-import hr.asee.android.template.compose.ui.common.service.Offer
+import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Gray
 import hr.asee.android.template.compose.ui.theme.Orange
@@ -62,7 +62,7 @@ fun GiverOfferCard(
                         .height(46.dp)
                         .width(69.dp)
                 )
-                
+
                 Spacer(modifier = Modifier.width(20.dp))
 
                 Column() {
@@ -87,7 +87,7 @@ fun GiverOfferCard(
                                 fontSize = 14.sp,
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.weight(1f))
 
                         Column(
@@ -109,13 +109,13 @@ fun GiverOfferCard(
             }
 
             Divider(
-                thickness = 1.dp, 
+                thickness = 1.dp,
                 color = Gray,
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
-            
+
             Spacer(modifier = Modifier.height(5.dp))
-            
+
             LabelText(
                 text = stringResource(id = R.string.home_screen_giver_offer_card_remove_offer_button_label),
                 color = Orange,

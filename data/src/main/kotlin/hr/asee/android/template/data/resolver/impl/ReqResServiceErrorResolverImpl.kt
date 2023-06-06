@@ -27,7 +27,7 @@ class ReqResServiceErrorResolverImpl : ReqResServiceErrorResolver {
             return GeneralException(throwable)
         }
 
-        return when (apiError.error.lowercase()) {
+        return when (apiError.title.lowercase()) {
             MISSING_PASSWORD_ERROR.lowercase() -> MissingPasswordException()
             USER_NOT_FOUND_ERROR.lowercase() -> UserNotFoundException()
             MISSING_EMAIL_OR_USERNAME_ERROR.lowercase() -> MissingEmailOrUsernameException()
