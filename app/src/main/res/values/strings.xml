@@ -37,6 +37,7 @@
     <string name="password_not_correct" >Must be minimum 8 characters and consist of letters, numbers and special characters.</string>
     <string name="password_too_short" >Password must have at least 8 characters.</string>
     <string name="passwords_not_equal" >Passwords are not equal.</string>
+    <string name="parking_manager" >Parking manager</string>
 
     <!-- Non-translatable -->
     <!-- Common -->
@@ -81,6 +82,9 @@
     <string name="register_screen_missing_email_error_message" translatable="false">@string/email_can_not_be_empty_please_check_entered_email_and_tra_again</string>
     <string name="register_screen_missing_username_error_message" translatable="false">@string/username_can_not_be_empty_please_check_entered_username_and_tra_again</string>
     <string name="register_screen_missing_confirm_password_error_message" translatable="false">@string/confirm_password_can_not_be_empty_please_check_entered_confirm_password_and_tra_again</string>
+
+    <!-- Parking manager screen -->
+    <string name="parking_manager_screen_title_label" translatable="false">@string/parking_manager</string>
 
 
     <!-- Bottom nav bar -->
