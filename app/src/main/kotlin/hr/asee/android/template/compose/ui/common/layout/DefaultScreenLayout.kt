@@ -17,13 +17,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DefaultScreenLayout(
     screenTitle: String,
+    modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(all = 20.dp),
     background: Color = MaterialTheme.colors.background,
     onBackground: Color = MaterialTheme.colors.onBackground,
     content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(background)
             .padding(contentPadding)

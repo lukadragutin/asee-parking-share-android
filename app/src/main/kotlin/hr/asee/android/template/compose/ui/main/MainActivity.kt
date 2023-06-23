@@ -23,8 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AndroidComposeCodingTemplateTheme {
                 ComposeTemplateRoot(
-                    navigationDelegate = navigationDelegate,
-                    bottomNavBarDelegate = bottomNavBarDelegate,
+                    navigationDelegate = navigationDelegate
                 )
             }
         }

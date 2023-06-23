@@ -37,7 +37,55 @@
     <string name="password_not_correct" >Must be minimum 8 characters and consist of letters, numbers and special characters.</string>
     <string name="password_too_short" >Password must have at least 8 characters.</string>
     <string name="passwords_not_equal" >Passwords are not equal.</string>
-    <string name="parking_manager" >Parking manager</string>
+    <string name="parking_manager_title" >Parking manager</string>
+    <string name="seeker_reservations_button" >Reservations</string>
+    <string name="seeker_requests_button" >Requests</string>
+    <string name="seeker_seeking_button" >Seeking</string>
+    <string name="giver_requests_button" >Requests</string>
+    <string name="giver_reservations_button" >Reservations</string>
+    <string name="giver_offers_button" >Offers</string>
+    <string name="outdoor_parking">Outdoor parking</string>
+    <string name="start_date">Start date:</string>
+    <string name="end_date">End date:</string>
+    <string name="cancel_reservation">Cancel reservation</string>
+    <string name="no_new_reservations">No new reservations</string>
+    <string name="no_reservations_to_show">No reservations to show</string>
+    <string name="parking_manager">Parking manager</string>
+    <string name="car_sharing">Car sharing</string>
+    <string name="parking_request">Parking request</string>
+    <string name="parking_retrival_request">Parking retrival request</string>
+    <string name="reservation_id">Reservation ID: </string>
+    <string name="forward_image">Forward </string>
+    <string name="no_new_requests">No new requests</string>
+    <string name="no_seekings_to_show">No seekings to show</string>
+    <string name="parking_seeking">Parking seeking</string>
+    <string name="parking_seeking_request">Parking seeking request</string>
+    <string name="no_offers">No offers</string>
+    <string name="remove_offer">Remove offer</string>
+    <string name="parking_reservation_request">Parking reservation request</string>
+    <string name="parking_reservation">Parking reservation</string>
+    <string name="cancel_reservation_popup_question">Are you sure you want to proceed?</string>
+    <string name="cancel_reservation_popup_proceed">Proceed</string>
+    <string name="cancel_reservation_popup_cancel">Cancel</string>
+    <string name="back_image">Back </string>
+    <string name="seeking_request_title">Edit seeking request</string>
+    <string name="edit_seeking_request_image">Edit seeking request</string>
+    <string name="start_date_capitalized">Start Date</string>
+    <string name="end_date_capitalized">End Date</string>
+    <string name="not_selected">Not selected</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="parking_offer_title">Edit parking offer</string>
+    <string name="edit_parking_offer_image">Edit parking offer</string>
+    <string name="parking_number">Parking number</string>
+    <string name="reserve_parking_space_title">Reserve parking space</string>
+    <string name="reserve_parking_space_image">Reserve parking space</string>
+    <string name="reservation_period">Reservation period</string>
+    <string name="request_back_button">Request back</string>
+    <string name="request_popup_allow_button">Allow parking retrival</string>
+    <string name="request_popup_deny_button">Deny request</string>
+    <string name="request_popup_question">Are you sure you want to do this?</string>
+
 
     <!-- Non-translatable -->
     <!-- Common -->
@@ -84,7 +132,73 @@
     <string name="register_screen_missing_confirm_password_error_message" translatable="false">@string/confirm_password_can_not_be_empty_please_check_entered_confirm_password_and_tra_again</string>
 
     <!-- Parking manager screen -->
-    <string name="parking_manager_screen_title_label" translatable="false">@string/parking_manager</string>
+    <string name="parking_manager_screen_title_label" translatable="false">@string/parking_manager_title</string>
+    <string name="parking_manager_screen_seeker_reservations_button_label" translatable="false">@string/seeker_reservations_button</string>
+    <string name="parking_manager_screen_seeker_requests_button_label" translatable="false">@string/seeker_requests_button</string>
+    <string name="parking_manager_screen_seeker_seeking_button_label" translatable="false">@string/seeker_seeking_button</string>
+    <string name="parking_manager_screen_giver_reservations_button_label" translatable="false">@string/giver_reservations_button</string>
+    <string name="parking_manager_screen_giver_requests_button_label" translatable="false">@string/giver_requests_button</string>
+    <string name="parking_manager_screen_giver_offers_button_label" translatable="false">@string/giver_offers_button</string>
+    <string name="parking_manager_screen_seeker_reservation_card_image_content_description" translatable="false">@string/outdoor_parking</string>
+    <string name="parking_manager_screen_seeker_reservation_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="parking_manager_screen_seeker_reservation_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="parking_manager_screen_seeker_reservation_card_cancel_reservation_label" translatable="false">@string/cancel_reservation</string>
+    <string name="parking_manager_screen_no_new_reservations_label" translatable="false">@string/no_new_reservations</string>
+    <string name="parking_manager_screen_no_reservations_label" translatable="false">@string/no_reservations_to_show</string>
+    <string name="parking_manager_screen_seeker_request_card_image_content_description" translatable="false">@string/parking_request</string>
+    <string name="parking_manager_screen_seeker_request_parking_retrival_request_label" translatable="false">@string/parking_retrival_request</string>
+    <string name="parking_manager_screen_seeker_request_reservation_id_label" translatable="false">@string/reservation_id</string>
+    <string name="parking_manager_screen_seeker_request_card_forward_image_content_description" translatable="false">@string/forward_image</string>
+    <string name="parking_manager_screen_no_new_requests_label" translatable="false">@string/no_new_requests</string>
+    <string name="parking_manager_screen_no_seekings_label" translatable="false">@string/no_seekings_to_show</string>
+    <string name="parking_manager_screen_seeking_card_image_content_description" translatable="false">@string/parking_seeking</string>
+    <string name="parking_manager_screen_parking_seeking_request_label" translatable="false">@string/parking_seeking_request</string>
+    <string name="parking_manager_screen_seeking_reservation_id_label" translatable="false">@string/reservation_id</string>
+    <string name="parking_manager_screen_seeker_seeking_card_forward_image_content_description" translatable="false">@string/forward_image</string>
+    <string name="parking_manager_screen_no_seekings_to_show_label" translatable="false">@string/no_seekings_to_show</string>
+    <string name="parking_manager_screen_no_offers_label" translatable="false">@string/no_offers</string>
+    <string name="parking_manager_screen_giver_offer_card_start_date_label" translatable="false">@string/start_date</string>
+    <string name="parking_manager_screen_giver_offer_card_end_date_label" translatable="false">@string/end_date</string>
+    <string name="parking_manager_screen_giver_offer_card_image_content_description" translatable="false">@string/outdoor_parking</string>
+    <string name="parking_manager_screen_giver_offer_card_remove_offer_button_label" translatable="false">@string/remove_offer</string>
+    <string name="parking_manager_screen_giver_request_card_image_content_description" translatable="false">@string/parking_request</string>
+    <string name="parking_manager_screen_giver_request_parking_reservation_request_label" translatable="false">@string/parking_reservation_request</string>
+    <string name="parking_manager_screen_giver_reservation_parking_reservation_label" translatable="false">@string/parking_reservation</string>
+    <string name="parking_manager_screen_giver_reservation_card_image_content_description" translatable="false">@string/parking_request</string>
+    <string name="parking_manager_screen_cancel_reservation_popup_screen_title_label" translatable="false">@string/cancel_reservation</string>
+    <string name="parking_manager_screen_cancel_reservation_popup_screen_question_label" translatable="false">@string/cancel_reservation_popup_question</string>
+    <string name="parking_manager_screen_cancel_reservation_popup_screen_proceed_button" translatable="false">@string/cancel_reservation_popup_proceed</string>
+    <string name="parking_manager_screen_cancel_reservation_popup_screen_cancel_button" translatable="false">@string/cancel_reservation_popup_cancel</string>
+    <string name="parking_manager_screen_remove_offer_popup_screen_title_label" translatable="false">@string/remove_offer</string>
+
+
+    <!-- Edit seeking request screen -->
+    <string name="seeking_request_screen_back_image_content_description" translatable="false">@string/back_image</string>
+    <string name="seeking_request_screen_title_label" translatable="false">@string/seeking_request_title</string>
+    <string name="seeking_request_screen_edit_seeking_request_image_content_description" translatable="false">@string/edit_seeking_request_image</string>
+    <string name="seeking_request_screen_date_picker_start_date_label" translatable="false">@string/start_date_capitalized</string>
+    <string name="seeking_request_screen_date_picker_end_date_label" translatable="false">@string/end_date_capitalized</string>
+    <string name="seeking_request_screen_date_picker_unselected_start_date_label" translatable="false">@string/not_selected</string>
+    <string name="seeking_request_screen_date_picker_unselected_end_date_label" translatable="false">@string/not_selected</string>
+    <string name="seeking_request_screen_edit_button_label" translatable="false">@string/edit</string>
+    <string name="seeking_request_screen_cancel_button_label" translatable="false">@string/cancel</string>
+
+    <!-- Edit parking offer screen -->
+    <string name="parking_offer_screen_title_label" translatable="false">@string/parking_offer_title</string>
+    <string name="parking_offer_screen_edit_parking_offer_image_content_description" translatable="false">@string/edit_parking_offer_image</string>
+    <string name="parking_offer_screen_parking_number_label" translatable="false">@string/parking_number</string>
+
+    <!-- Reserve parking space screen -->
+    <string name="reserve_parking_space_screen_back_image_content_description" translatable="false">@string/back_image</string>
+    <string name="reserve_parking_space_screen_title_label" translatable="false">@string/reserve_parking_space_title</string>
+    <string name="reserve_parking_space_screen_reserve_parking_space_image_content_description" translatable="false">@string/reserve_parking_space_image</string>
+    <string name="reserve_parking_space_screen_parking_number_label" translatable="false">@string/parking_number</string>
+    <string name="reserve_parking_space_screen_reservation_period_label" translatable="false">@string/reservation_period</string>
+    <string name="reserve_parking_space_screen_request_back_button_label" translatable="false">@string/request_back_button</string>
+    <string name="reserve_parking_space_screen_request_popup_screen_allow_button" translatable="false">@string/request_popup_allow_button</string>
+    <string name="reserve_parking_space_screen_request_popup_screen_deny_button" translatable="false">@string/request_popup_deny_button</string>
+    <string name="reserve_parking_space_screen_request_popup_screen_cancel_button" translatable="false">@string/cancel</string>
+    <string name="reserve_parking_space_screen_request_popup_screen_question_label" translatable="false">@string/request_popup_question</string>
 
 
     <!-- Bottom nav bar -->
@@ -94,6 +208,10 @@
     <string name="bottom_nav_bar_users_label" translatable="false">@string/users</string>
     <string name="bottom_nav_bar_api_info_label" translatable="false">@string/api_info</string>
     <string name="bottom_nav_bar_logout_label" translatable="false">@string/logout</string>
+    <string name="bottom_nav_bar_home_icon_content_description" translatable="false">@string/car_sharing</string>
+    <string name="bottom_nav_bar_home_label" translatable="false">@string/car_sharing</string>
+    <string name="bottom_nav_bar_parking_manager_icon_content_description" translatable="false">@string/parking_manager</string>
+    <string name="bottom_nav_bar_parking_manager_label" translatable="false">@string/parking_manager</string>
 
     <!-- Common dialog -->
     <string name="common_dialog_message_network_exception_title" translatable="false">@string/an_error_occurred</string>

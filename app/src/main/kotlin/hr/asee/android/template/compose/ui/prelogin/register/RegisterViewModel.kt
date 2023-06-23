@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.ButtonState
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState

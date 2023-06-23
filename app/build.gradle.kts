@@ -17,6 +17,7 @@ android {
         applicationId = Config.applicationId
         versionCode = Config.versionCode
         versionName = Config.versionName
+        minSdk = Config.minSdk
     }
 
     /*val releaseSigningConfigName = "release"

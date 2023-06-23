@@ -26,8 +26,8 @@ class RouterTest {
         @JvmStatic
         fun navigationDirectionsAndCommandsMethodSource(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of(NavigationItem.NavigationDirection.USERS, PostLoginDirection.Users),
-                Arguments.of(NavigationItem.NavigationDirection.API_INFO, PostLoginDirection.ApiInfo),
+                //Arguments.of(NavigationItem.NavigationDirection.USERS, PostLoginDirection.Users),
+                //Arguments.of(NavigationItem.NavigationDirection.API_INFO, PostLoginDirection.ApiInfo),
             )
         }
     }

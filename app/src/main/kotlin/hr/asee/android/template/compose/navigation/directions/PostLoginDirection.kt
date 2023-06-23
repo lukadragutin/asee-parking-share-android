@@ -12,13 +12,6 @@ object PostLoginDirection {
             get() = "postLogin"
     }
 
-    val Users = object : NavigationCommand {
-        override val arguments: List<NamedNavArgument>
-            get() = emptyList()
-        override val destination: String
-            get() = "users"
-    }
-
     // Example of a route with arguments
 //    object User {
 //        const val KEY_USER_ID = "userId"
@@ -36,10 +29,52 @@ object PostLoginDirection {
 //        }
 //    }
 
-    val ApiInfo = object : NavigationCommand {
+    /*val ApiInfo = object : NavigationCommand {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
         override val destination: String
             get() = "apiInfo"
+    }*/
+
+    val Home = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "home"
+    }
+
+    val ParkingManager = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "parkingManager"
+    }
+
+    val SeekingRequest = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "seekingRequest"
+    }
+
+    val ParkingOffer = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "parkingOffer"
+    }
+
+    val ReserveParkingSpace = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "reserveParkingSpace"
+    }
+
+    val Settings = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "settings"
     }
 }

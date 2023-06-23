@@ -10,8 +10,8 @@ data class NavigationItem(
     @StringRes val contentDescription: Int? = null,
 ) {
     enum class NavigationDirection {
-        USERS,
-        API_INFO,
+        HOME,
+        PARKING_MANAGER,
         LOGOUT
     }
 }

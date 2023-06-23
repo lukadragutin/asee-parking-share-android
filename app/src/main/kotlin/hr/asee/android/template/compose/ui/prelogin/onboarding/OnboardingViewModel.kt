@@ -1,7 +1,7 @@
 package hr.asee.android.template.compose.ui.prelogin.onboarding
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.domain.model.OnboardingItem
 import hr.asee.android.template.domain.model.OnboardingType
 import kotlinx.coroutines.flow.MutableStateFlow
