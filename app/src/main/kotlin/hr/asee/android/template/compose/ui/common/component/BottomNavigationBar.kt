@@ -42,7 +42,7 @@ fun BottomNavigationBar(
         items.forEach { element ->
             BottomNavigationItem(
                 selected = element == selectedElement,
-                onClick = { onNavElementClicked },
+                onClick = { onNavElementClicked(element) },
                 icon = {
                     Icon(
                         painter = painterResource(id = element.icon),

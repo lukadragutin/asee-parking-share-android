@@ -70,6 +70,9 @@ fun InputField(
         shape = MaterialTheme.shapes.small,
         singleLine = isSingleLine,
         visualTransformation = visualTransformation,
-        textStyle = TextStyle(fontSize = 14.sp)
+        textStyle = TextStyle(
+            color = MaterialTheme.colors.onSurface,
+            fontSize = 14.sp
+        )
     )
 }

@@ -5,23 +5,31 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import hr.asee.android.template.data.interactor.AddParkingSpaceInteractor
+import hr.asee.android.template.data.interactor.ChangeParkingLocationInteractor
 import hr.asee.android.template.data.interactor.GetAccessTokenInteractor
 import hr.asee.android.template.data.interactor.GetAccountInteractor
 import hr.asee.android.template.data.interactor.GetOffersInteractor
+import hr.asee.android.template.data.interactor.GetParkingSpaceByIdInteractor
 import hr.asee.android.template.data.interactor.GetParkingSpacesInteractor
 import hr.asee.android.template.data.interactor.GetReservationsInteractor
 import hr.asee.android.template.data.interactor.GetSeekingsInteractor
 import hr.asee.android.template.data.interactor.GetUserByLoginInteractor
 import hr.asee.android.template.data.interactor.LoginInteractor
+import hr.asee.android.template.data.interactor.PutReservationByIdInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
+import hr.asee.android.template.data.interactor.impl.AddParkingSpaceInteractorImpl
+import hr.asee.android.template.data.interactor.impl.ChangeParkingLocationInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetAccessTokenInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetAccountInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetOffersInteractorImpl
+import hr.asee.android.template.data.interactor.impl.GetParkingSpaceByIdInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetParkingsSpacesInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetReservationsInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetSeekingsInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetUserByLoginInteractorImpl
 import hr.asee.android.template.data.interactor.impl.LoginInteractorImpl
+import hr.asee.android.template.data.interactor.impl.PutReservationByIdInteractorImpl
 import hr.asee.android.template.data.interactor.impl.StoreAccessTokenInteractorImpl
 import hr.asee.android.template.data.local.storage.ApplicationStorage
 import hr.asee.android.template.data.network.AuthenticationApiService
@@ -98,6 +106,38 @@ object InteractorModule {
     fun provideGetParkingSpacesInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): GetParkingSpacesInteractor =
         GetParkingsSpacesInteractorImpl(
             parkingSpaceApiService = retrofit.create(ParkingSpaceApiService::class.java),
+            reqResServiceErrorResolver = reqResServiceErrorResolver
+        )
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetParkingSpaceByIdInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): GetParkingSpaceByIdInteractor =
+        GetParkingSpaceByIdInteractorImpl(
+            parkingSpaceApiService = retrofit.create(ParkingSpaceApiService::class.java),
+            reqResServiceErrorResolver = reqResServiceErrorResolver
+        )
+
+    @Provides
+    @ViewModelScoped
+    fun provideAddParkingSpaceInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): AddParkingSpaceInteractor =
+        AddParkingSpaceInteractorImpl(
+            parkingSpaceApiService = retrofit.create(ParkingSpaceApiService::class.java),
+            reqResServiceErrorResolver = reqResServiceErrorResolver
+        )
+
+    @Provides
+    @ViewModelScoped
+    fun provideChangeParkingLocationInteractpr(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): ChangeParkingLocationInteractor =
+        ChangeParkingLocationInteractorImpl(
+            parkingSpaceApiService = retrofit.create(ParkingSpaceApiService::class.java),
+            reqResServiceErrorResolver = reqResServiceErrorResolver
+        )
+
+    @Provides
+    @ViewModelScoped
+    fun providePutReservationByIdInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): PutReservationByIdInteractor =
+        PutReservationByIdInteractorImpl(
+            reservationApiService = retrofit.create(ReservationApiService::class.java),
             reqResServiceErrorResolver = reqResServiceErrorResolver
         )
 }

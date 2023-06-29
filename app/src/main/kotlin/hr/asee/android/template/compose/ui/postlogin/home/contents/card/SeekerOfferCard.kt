@@ -39,13 +39,13 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun SeekerOfferCard(
     offer: Offer,
-    onOfferClicked: () -> Unit
+    onOfferClicked: (Int) -> Unit
 ) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onOfferClicked() },
+            .clickable { onOfferClicked(offer.id) },
         backgroundColor = MaterialTheme.colors.onPrimary,
         shape = RoundedCornerShape(15)
     ) {

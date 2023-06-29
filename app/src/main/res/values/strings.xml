@@ -21,8 +21,8 @@
     <string name="unexpected_storage_exception_happened_while_trying_to_log_in_please_try_again">Unexpected storage error happened while trying to login. Please try again.</string>
     <string name="entered_user_is_not_found_please_check_info_for_valid_user_info">Entered user is not found. Please check info for valid user info.</string>
     <string name="email_or_username_is_missing_please_check_login_credentials_and_try_again">Email or username is missing. Please check login credentials and try again.</string>
-    <string name="application_icon">Application icon</string>
-    <string name="jetpack_compose_logo">Jetpack Compose logo</string>
+    <string name="welcome_image">Welcome image</string>
+    <string name="create_account_image">Create account image</string>
     <string name="next">Next</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
@@ -69,6 +69,39 @@
     <string name="no_offers_to_show">No offers to show</string>
     <string name="no_reservations_to_show">No reservations to show</string>
     <string name="no_seekings_to_show">No seekings to show</string>
+    <string name="back">Back</string>
+    <string name="settings">Settings</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="user_management">User management</string>
+    <string name="change_password">Change password</string>
+    <string name="parking_information">Parking information</string>
+    <string name="your_parking_spaces">Your parking spaces</string>
+    <string name="name">Name</string>
+    <string name="last_name">Last name</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_changes">Confirm changes</string>
+    <string name="plus">+</string>
+    <string name="no_parking_spaces_to_show">No parking spaces to show</string>
+    <string name="parking_space_icon">Parking space icon</string>
+    <string name="parking_number">Parking number</string>
+    <string name="edit_parking_space">Edit Parking Space</string>
+    <string name="add_parking_space">Add Parking Space</string>
+    <string name="add_new_parking_space">Add new parking space</string>
+    <string name="register_now">Register now</string>
+    <string name="login_with_your_account">Login with your account</string>
+    <string name="proceed">Proceed</string>
+    <string name="are_you_sure_you_want_to_proceed">Are you sure you want to proceed?</string>
+    <string name="reserve_parking_space">Reserve parking space</string>
+    <string name="reservation_period">Reservation Period</string>
+    <string name="request_back">Request back</string>
+    <string name="create">Create</string>
+    <string name="create_parking_space_request">Create parking space request</string>
+    <string name="select_parking">Select parking</string>
+    <string name="choose_available_parking_space">Choose available parking space</string>
+    <string name="select">Select</string>
 
     <!-- Non-translatable -->
     <!-- Common -->
@@ -76,16 +109,22 @@
     <string name="ok_button_label" translatable="false">@string/ok</string>
     <string name="filter_icon_content_description" translatable="false">@string/filter</string>
     <string name="settings_icon_content_description" translatable="false">@string/open_settings</string>
+    <string name="settings_button_forward_icon_content_description" translatable="false">@string/forward</string>
+    <string name="back_button_icon_content_description" translatable="false">@string/back</string>
+    <string name="parking_space_display_image_content_description" translatable="false">@string/parking_space_icon</string>
+    <string name="parking_space_display_parking_number_label" translatable="false">@string/parking_number</string>
+    <string name="proceed_button_label" translatable="false">@string/proceed</string>
+    <string name="cancel_button_label" translatable="false">@string/cancel</string>
+    <string name="date_picker_start_date_label" translatable="false">@string/start_date_capitalized</string>
+    <string name="date_picker_end_date_label" translatable="false">@string/end_date</string>
+    <string name="date_picker_unselected_start_date_label" translatable="false">@string/not_selected</string>
+    <string name="date_picker_unselected_end_date_label" translatable="false">@string/not_selected</string>
 
     <!-- Filter popup screen -->
     <string name="filter_popup_cancel_button_label" translatable="false">@string/cancel</string>
     <string name="filter_popup_title_label" translatable="false">@string/filter</string>
     <string name="filter_popup_instruction_label" translatable="false">@string/choose_start_and_end_date</string>
     <string name="filter_popup_reset_button_label" translatable="false">@string/reset</string>
-    <string name="date_picker_start_date_label" translatable="false">@string/start_date_capitalized</string>
-    <string name="date_picker_end_date_label" translatable="false">@string/end_date</string>
-    <string name="date_picker_unselected_start_date_label" translatable="false">@string/not_selected</string>
-    <string name="date_picker_unselected_end_date_label" translatable="false">@string/not_selected</string>
     <string name="filter_popup_filter_button_label" translatable="false">@string/filter</string>
 
     <!-- Home screen -->
@@ -132,6 +171,10 @@
     <string name="home_screen_invalid_dates_error_message" translatable="false">@string/end_date_cant_be_before_start_date</string>
     <string name="home_screen_dates_not_selected_error_title" translatable="false">@string/an_error_occurred</string>
     <string name="home_screen_dates_not_selected_error_message" translatable="false">@string/start_date_or_end_date_has_not_been_selected</string>
+    <string name="home_screen_cancel_reservation_popup_screen_title_label" translatable="false">@string/cancel_reservation</string>
+    <string name="home_screen_cancel_reservation_popup_screen_question_label" translatable="false">@string/are_you_sure_you_want_to_proceed</string>
+    <string name="home_screen_remove_offer_popup_screen_title_label" translatable="false">@string/remove_offer</string>
+    <string name="home_screen_remove_offer_popup_screen_question_label" translatable="false">@string/are_you_sure_you_want_to_proceed</string>
 
     <!-- Login screen -->
     <string name="login_screen_welcome_label" translatable="false">@string/login</string>
@@ -153,6 +196,12 @@
     <string name="login_screen_no_account_message_label" translatable="false">@string/dont_have_an_account</string>
     <string name="login_screen_logo_content_description" translatable="false">@string/logo</string>
     <string name="login_screen_sign_up_message_label" translatable="false">@string/sign_up</string>
+
+    <!-- Settings screen -->
+    <string name="settings_screen_title_label" translatable="false">@string/settings</string>
+    <string name="settings_screen_dark_mode_toggle_label" translatable="false">@string/dark_mode</string>
+    <string name="settings_screen_edit_profile_button_label" translatable="false">@string/edit_profile</string>
+    <string name="settings_screen_forward_icon_content_description" translatable="false">@string/forward</string>
     
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_users_icon_content_description" translatable="false">@string/users</string>
@@ -166,6 +215,60 @@
     <string name="bottom_nav_bar_parking_manager_icon_content_description" translatable="false">@string/parking_manager</string>
     <string name="bottom_nav_bar_parking_manager_label" translatable="false">@string/parking_manager</string>
 
+    <!-- User management screen -->
+    <string name="user_management_screen_title_label" translatable="false">@string/user_management</string>
+    <string name="user_management_screen_name_field_label" translatable="false">@string/name</string>
+    <string name="user_management_screen_last_name_field_label" translatable="false">@string/last_name</string>
+    <string name="user_management_screen_parking_information_label" translatable="false">@string/parking_information</string>
+    <string name="user_management_screen_change_password_button_label" translatable="false">@string/change_password</string>
+    <string name="user_management_screen_your_parking_spaces_button_label" translatable="false">@string/your_parking_spaces</string>
+    <string name="user_management_screen_forward_icon_content_description" translatable="false">@string/forward</string>
+
+    <!-- Change password screen -->
+    <string name="change_password_screen_title_label" translatable="false">@string/change_password</string>
+    <string name="change_password_screen_old_password_field_label" translatable="false">@string/old_password</string>
+    <string name="change_password_screen_new_password_field_label" translatable="false">@string/new_password</string>
+    <string name="change_password_screen_confirm_password_field_label" translatable="false">@string/confirm_password</string>
+    <string name="change_password_screen_confirm_button_label" translatable="false">@string/confirm_changes</string>
+
+    <!-- Parking spaces screen -->
+    <string name="parking_spaces_screen_title_label" translatable="false">@string/your_parking_spaces</string>
+    <string name="parking_spaces_screen_add_parking_space_button_text_label" translatable="false">@string/plus</string>
+    <string name="parking_spaces_screen_no_parking_spaces_label" translatable="false">@string/no_parking_spaces_to_show</string>
+    
+    <!-- Edit parking space screen -->
+    <string name="edit_parking_space_screen_title_label" translatable="false">@string/edit_parking_space</string>
+    <string name="edit_parking_space_confirm_button_label" translatable="false">@string/confirm_changes</string>
+    <string name="edit_parking_space_parking_number_field_label" translatable="false">@string/parking_number</string>
+
+    <!-- Add parking space screen -->
+    <string name="add_parking_space_screen_title_label" translatable="false">@string/add_parking_space</string>
+    <string name="add_parking_space_screen_button_label" translatable="false">@string/add_new_parking_space</string>
+    <string name="add_parking_space_screen_parking_number_field_label" translatable="false">@string/parking_number</string>
+
+    <!-- Reserve parking space screen -->
+    <string name="reserve_parking_space_screen_title_label" translatable="false">@string/reserve_parking_space</string>
+    <string name="reserve_parking_space_screen_reservation_period_label" translatable="false">@string/reservation_period</string>
+    <string name="reserve_parking_space_screen_seeker_button_label" translatable="false">@string/reserve_parking_space</string>
+    <string name="reserve_parking_space_screen_giver_button_label" translatable="false">@string/request_back</string>
+
+    <!-- Create seeking screen -->
+    <string name="create_seeking_screen_title_label" translatable="false">@string/create_parking_space_request</string>
+    <string name="create_seeking_screen_create_button_label" translatable="false">@string/create</string>
+    <string name="create_seeking_screen_cancel_button_label" translatable="false">@string/cancel</string>
+    <string name="create_seeking_screen_image_content_description" translatable="false">@string/parking_space_icon</string>
+
+    <!-- Create offer screen -->
+    <string name="create_offer_screen_title_label" translatable="false">@string/offer_parking_space</string>
+    <string name="create_offer_screen_create_button_label" translatable="false">@string/create</string>
+    <string name="create_offer_screen_cancel_button_label" translatable="false">@string/cancel</string>
+
+    <!-- Select parking space popup screen -->
+    <string name="select_parking_space_screen_title_label" translatable="false">@string/select_parking</string>
+    <string name="select_parking_space_screen_instruction_label" translatable="false">@string/choose_available_parking_space</string>
+    <string name="select_parking_space_screen_cancel_button_label" translatable="false">@string/cancel</string>
+    <string name="select_parking_space_screen_select_button_label" translatable="false">@string/select</string>
+    
     <!-- Common dialog -->
     <string name="common_dialog_message_network_exception_title" translatable="false">@string/an_error_occurred</string>
     <string name="common_dialog_message_network_exception_message" translatable="false">@string/there_is_a_problem_with_a_network_connection_please_check_your_network_connection_and_try_again</string>
@@ -175,7 +278,9 @@
     <string name="common_dialog_message_unexpected_error_message" translatable="false">@string/unexpected_error_happened_sorry</string>
 
     <!-- Onboarding screen -->
-    <string name="onboarding_application_icon_content_description" translatable="false">@string/application_icon</string>
-    <string name="onboarding_jetpack_compose_icon_content_description" translatable="false">@string/jetpack_compose_logo</string>
+    <string name="onboarding_welcome_image_content_description" translatable="false">@string/welcome_image</string>
+    <string name="onboarding_create_account_image_content_description" translatable="false">@string/create_account_image</string>
     <string name="onboarding_screen_next_button_label" translatable="false">@string/next</string>
+    <string name="onboarding_screen_register_button_label" translatable="false">@string/register_now</string>
+    <string name="onboarding_screen_login_button_label" translatable="false">@string/login_with_your_account</string>
 </resources>

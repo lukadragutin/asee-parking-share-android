@@ -13,7 +13,7 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
     override fun navigateToDirection(navigationDirection: NavigationItem.NavigationDirection) {
         when (navigationDirection) {
             NavigationItem.NavigationDirection.LOGOUT -> logout()
-            NavigationItem.NavigationDirection.HOME -> navigate(PostLoginDirection.Home, clearBackstack = true)
+            NavigationItem.NavigationDirection.HOME -> navigate(PostLoginDirection.Home, clearBackstack = false)
             NavigationItem.NavigationDirection.PARKING_MANAGER -> navigate(PostLoginDirection.ParkingManager, clearBackstack = false)
         }
     }
@@ -59,10 +59,12 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
     }
 
     override fun navigateToHomeScreen() {
+        showBottomNavBar()
         navigationDelegate.navigate(navigationCommand = PostLoginDirection.Home)
     }
 
     override fun navigateToParkingManagerScreen() {
+        showBottomNavBar()
         navigationDelegate.navigate(navigationCommand = PostLoginDirection.ParkingManager)
     }
 
@@ -72,5 +74,37 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
 
     override fun navigateToUserManagementScreen() {
         navigationDelegate.navigate(navigationCommand = PostLoginDirection.UserManagement)
+    }
+
+    override fun navigateToChangePasswordScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ChangePassword)
+    }
+
+    override fun navigateToParkingSpacesScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ParkingSpaces)
+    }
+
+    override fun navigateToAddParkingSpaceScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.AddParkingSpace)
+    }
+
+    override fun navigateToEditParkingSpaceScreen(parkingSpaceId: Int) {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.EditParkingSpace.editParkingSpaceRoute(parkingSpaceId))
+    }
+
+    override fun navigateToReserveParkingSpaceSeekerScreen(offerId: Int) {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ReserveParkingSpaceSeeker.reserveParkingSpaceRoute(offerId))
+    }
+
+    override fun navigateToReserveParkingSpaceGiverScreen(reservationId: Int) {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ReserveParkingSpaceGiver.reserveParkingSpaceRoute(reservationId))
+    }
+
+    override fun navigateToCreateSeekingScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.CreateSeeking)
+    }
+
+    override fun navigateToCreateOfferScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.CreateOffer)
     }
 }

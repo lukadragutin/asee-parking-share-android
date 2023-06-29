@@ -7,23 +7,33 @@ import java.time.LocalDateTime
 
 sealed class User(
     val id: Int,
-    val firstName: String,
-    val lastName: String,
+    var firstName: String,
+    var lastName: String,
     val email: String,
-    val activated: Boolean,
+    var activated: Boolean,
     val langKey: String,
     val createdBy: String,
     val createdDate: LocalDateTime,
-    val lastModifiedBy: String,
-    val lastModifiedDate: LocalDateTime,
+    var lastModifiedBy: String,
+    var lastModifiedDate: LocalDateTime,
     val authorities: List<String>,
-    val resetDate: LocalDateTime?
+    var resetDate: LocalDateTime?
 ) {
     companion object {
         private var latestId = 1
 
         fun generateId(): Int {
             return latestId++
+        }
+
+        fun changeFirstName(user: User, newName: String): User {
+            user.firstName = newName
+            return user
+        }
+
+        fun changeLastName(user: User, newName: String): User {
+            user.lastName = newName
+            return user
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,8 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
@@ -50,15 +49,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config
 import hr.asee.android.template.compose.delegate.event.NavBarEvent
 import hr.asee.android.template.compose.ui.common.component.BottomNavigationBar
 import hr.asee.android.template.compose.ui.common.component.LabelText
+import hr.asee.android.template.compose.ui.common.component.button.BlueButton
+import hr.asee.android.template.compose.ui.common.component.button.CancelButton
+import hr.asee.android.template.compose.ui.common.component.button.ProceedButton
+import hr.asee.android.template.compose.ui.common.component.dialog.BaseAlertDialog
 import hr.asee.android.template.compose.ui.common.component.dialog.ScreenStateDialog
 import hr.asee.android.template.compose.ui.common.component.icon.FilterIcon
 import hr.asee.android.template.compose.ui.common.component.icon.SettingsIcon
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.common.model.state.AccountState
+import hr.asee.android.template.compose.ui.common.model.state.AlertDialogState
 import hr.asee.android.template.domain.model.common.service.exampleOffer1
 import hr.asee.android.template.domain.model.common.service.exampleOffer2
 import hr.asee.android.template.domain.model.common.service.exampleReservation
@@ -69,6 +74,7 @@ import hr.asee.android.template.compose.ui.postlogin.home.contents.ProfilePictur
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.OfferList
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.ReservationList
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.SeekingList
+import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
 import hr.asee.android.template.domain.model.common.Giver
 import hr.asee.android.template.domain.model.common.Seeker
 import hr.asee.android.template.domain.model.common.User
@@ -77,10 +83,10 @@ import hr.asee.android.template.domain.model.common.exampleSeeker
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
-import hr.asee.android.template.domain.model.common.service.Offer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -96,6 +102,8 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleS
     /*-------------------------*/
 
     val filterState by viewModel.filterState.collectAsState()
+    val cancelReservationDialogState by viewModel.cancelReservationDialogState.collectAsState()
+    val removeOfferDialogState by viewModel.removeOfferDialogState.collectAsState()
     val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
     val accountState by viewModel.accountState.collectAsState()
@@ -113,61 +121,68 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleS
         }
     }
 
-    ModalBottomSheetLayout(
-        sheetContent = {
-            FilterPopupScreen(
-                scope = scope,
-                sheetState = sheetState,
-                filterState = filterState,
-                onFilterClicked = viewModel::onFilterClicked,
-                onCancelClicked = viewModel::onCancelClicked,
-                onResetClicked = viewModel::onResetClicked,
-                onDateStartSelect = viewModel::onDateStartSelect,
-                onDateEndSelect = viewModel::onDateEndSelect,
-                onDateSelect = viewModel::onDateSelect
-            )
-        },
-        sheetBackgroundColor = MaterialTheme.colors.background,
-        sheetState = sheetState,
-        sheetShape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
-        modifier = Modifier
-            .fillMaxSize()
+    AndroidComposeCodingTemplateTheme(
+        darkTheme = (if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) as Boolean
     ) {
 
-        LaunchedEffect(viewModel.bottomNavBarDelegate) {
-            viewModel.bottomNavBarDelegate.getNavBarEvents().collect { event ->
-                when (event) {
-                    NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
-                    NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
+        ModalBottomSheetLayout(
+            sheetContent = {
+                FilterPopupScreen(
+                    scope = scope,
+                    sheetState = sheetState,
+                    filterState = filterState,
+                    onFilterClicked = viewModel::onFilterClicked,
+                    onCancelClicked = viewModel::onCancelClicked,
+                    onResetClicked = viewModel::onResetClicked,
+                    onDateStartSelect = viewModel::onDateStartSelect,
+                    onDateEndSelect = viewModel::onDateEndSelect,
+                    onDateSelect = viewModel::onDateSelect
+                )
+            },
+            sheetBackgroundColor = MaterialTheme.colors.background,
+            sheetState = sheetState,
+            sheetShape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+
+            LaunchedEffect(viewModel.bottomNavBarDelegate) {
+                viewModel.bottomNavBarDelegate.getNavBarEvents().collect { event ->
+                    when (event) {
+                        NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
+                        NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
+                    }
                 }
             }
-        }
 
-        Scaffold(
-            bottomBar = {
-                AnimatedVisibility(
-                    visible = bottomNavBarState.isVisible,
-                    enter = slideInVertically(initialOffsetY = { it }),
-                    exit = slideOutVertically(targetOffsetY = { it })
-                ) {
-                    BottomNavigationBar(
-                        items = bottomNavBarState.items,
-                        onNavElementClicked = bottomNavBarState.onElementClicked,
-                        selectedElement = bottomNavBarState.selectedItem,
-                    )
-                }
-            },
-        ) { paddingValues ->
-            HomeScreenContent(
-                user = user,
-                modifier = Modifier.padding(paddingValues),
-                scope = scope,
-                sheetState = sheetState,
-                filterState = filterState,
-                accountState = accountState,
-                viewModel = viewModel
-            )
+            Scaffold(
+                bottomBar = {
+                    AnimatedVisibility(
+                        visible = bottomNavBarState.isVisible,
+                        enter = slideInVertically(initialOffsetY = { it }),
+                        exit = slideOutVertically(targetOffsetY = { it })
+                    ) {
+                        BottomNavigationBar(
+                            items = bottomNavBarState.items,
+                            onNavElementClicked = bottomNavBarState.onElementClicked,
+                            selectedElement = bottomNavBarState.selectedItem,
+                        )
+                    }
+                },
+            ) { paddingValues ->
+                HomeScreenContent(
+                    user = user,
+                    modifier = Modifier.padding(paddingValues),
+                    scope = scope,
+                    sheetState = sheetState,
+                    filterState = filterState,
+                    cancelReservationDialogState = cancelReservationDialogState,
+                    removeOfferDialogState = removeOfferDialogState,
+                    accountState = accountState,
+                    viewModel = viewModel
+                )
 
+            }
         }
     }
 
@@ -183,11 +198,49 @@ fun HomeScreenContent(
     scope: CoroutineScope,
     sheetState: ModalBottomSheetState,
     filterState: DatePickerState,
+    cancelReservationDialogState: AlertDialogState,
+    removeOfferDialogState: AlertDialogState,
     accountState: AccountState,
     viewModel: HomeViewModel
 ) {
 
     val noContent by remember{ mutableStateOf(user.seekings.size + user.reservations.size + user.offers.size == 0) }
+
+    if(cancelReservationDialogState.isVisible)  {
+        BaseAlertDialog(
+            modifier = modifier,
+            isLoading = false,
+            title = stringResource(id = R.string.home_screen_cancel_reservation_popup_screen_title_label),
+            message = stringResource(id = R.string.home_screen_cancel_reservation_popup_screen_question_label),
+            buttonsLayout = {
+                Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                    Spacer(modifier = Modifier.width(30.dp))
+                    ProceedButton(onClick = viewModel::onCancelReservationClicked)
+                    Spacer(modifier = Modifier.width(45.dp))
+                    CancelButton(onClick = viewModel::onCancelClickedReservationCard)
+                }
+            },
+            onDismissRequest = viewModel::onCancelReservationClicked
+        )
+    }
+
+    if(removeOfferDialogState.isVisible)  {
+        BaseAlertDialog(
+            modifier = modifier,
+            isLoading = false,
+            title = stringResource(id = R.string.home_screen_remove_offer_popup_screen_title_label),
+            message = stringResource(id = R.string.home_screen_remove_offer_popup_screen_question_label),
+            buttonsLayout = {
+                Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                    Spacer(modifier = Modifier.width(30.dp))
+                    ProceedButton(onClick = viewModel::onRemoveOfferClicked)
+                    Spacer(modifier = Modifier.width(45.dp))
+                    CancelButton(onClick = viewModel::onCancelClickedOfferCard)
+                }
+            },
+            onDismissRequest = viewModel::onRemoveOfferClicked
+        )
+    }
 
     Column(
         modifier = modifier
@@ -196,7 +249,7 @@ fun HomeScreenContent(
             .padding(start = 20.dp, end = 20.dp, top = 20.dp)
     ) {
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            ProfilePicture(onClicked = { viewModel.onProfilePictureClicked() })
+            ProfilePicture(onClicked = viewModel::onProfilePictureClicked)
 
             Spacer(modifier = modifier.width(23.dp))
 
@@ -207,7 +260,8 @@ fun HomeScreenContent(
                             SpanStyle(
                                 fontFamily = Geomanist,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colors.onSurface
                             )
                         ) {
                             append(stringResource(id = R.string.home_screen_welcome_label))
@@ -226,12 +280,11 @@ fun HomeScreenContent(
                     },
                 )
 
-                Text(
+                LabelText(
                     text = stringResource(
                         id = if (accountState.user is Seeker) R.string.home_screen_seeker_role_label
                         else R.string.home_screen_giver_role_label),
                     fontSize = 14.sp,
-                    fontFamily = Geomanist,
                     color = LightGray
                 )
 
@@ -242,7 +295,7 @@ fun HomeScreenContent(
             SettingsIcon(
                 modifier = Modifier.offset(x = 20.dp),
                 tint = MaterialTheme.colors.onBackground,
-                onSettingsClicked = { viewModel.onSettingsClicked() }
+                onSettingsClicked = viewModel::onSettingsClicked
             )
 
         }
@@ -255,31 +308,16 @@ fun HomeScreenContent(
         ) {
 
             Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
-                Button(
-                    modifier = Modifier
-                        .height(57.dp)
-                        .fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = AssecoBlue,
-                        contentColor = Color.White,
-                        disabledBackgroundColor = LightGray,
-                        disabledContentColor = Color.White
+                BlueButton(
+                    label = stringResource(
+                        id = if (accountState.user is Giver) R.string.home_screen_giver_offer_button_label
+                        else R.string.home_screen_seeker_seek_button_label,
                     ),
-                    shape = RoundedCornerShape(15),
-                    onClick = {
+                    onClick ={
                         if (accountState.user is Seeker) viewModel.seekParking()
                         else viewModel.offerParking()
-                    },
-                ) {
-                    LabelText(
-                        text = stringResource(
-                            id = if (accountState.user is Giver) R.string.home_screen_giver_offer_button_label
-                            else R.string.home_screen_seeker_seek_button_label
-                        ),
-                        fontSize = 18.sp,
+                    }
                     )
-                }
-
 
                 Column(
                     verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -308,8 +346,8 @@ fun HomeScreenContent(
                             )
                             Spacer(modifier = Modifier.weight(1f))
                             FilterIcon(
-                                isFiltered = (filterState.dateStartSelected != LocalDate.MIN) ||
-                                        (filterState.dateEndSelected != LocalDate.MAX),
+                                isFiltered = (filterState.dateStartSelected != LocalDateTime.MIN) ||
+                                        (filterState.dateEndSelected != LocalDateTime.MAX),
                                 tint = MaterialTheme.colors.onBackground,
                                 modifier = Modifier.offset(x = 20.dp),
                                 onFilterClicked = {
@@ -324,8 +362,6 @@ fun HomeScreenContent(
 
                         if (accountState.user is Giver) {
                             OfferList(
-                                offerList = accountState.offers as List<Offer>,
-                                user = user,
                                 accountState = accountState,
                                 filterState = filterState,
                                 onGiverOfferClicked = viewModel::onGiverOfferClicked,
@@ -334,8 +370,7 @@ fun HomeScreenContent(
                             )
                         } else {
                             ReservationList(
-                                reservationList = user.reservations,
-                                user = user,
+                                accountState = accountState,
                                 filterState = filterState,
                                 onGiverReservationClicked = viewModel::onGiverReservationClicked,
                                 onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
@@ -345,17 +380,16 @@ fun HomeScreenContent(
 
                         LabelText(
                             text = stringResource(
-                                id = if (user is Giver) R.string.home_screen_giver_reservation_list_label
+                                id = if (accountState.user is Giver) R.string.home_screen_giver_reservation_list_label
                                 else R.string.home_screen_seeker_offer_list_label
                             ),
                             fontSize = 20.sp,
                             modifier = Modifier.align(Alignment.Start)
                         )
 
-                        if (user is Giver) {
+                        if (accountState.user is Giver) {
                             ReservationList(
-                                reservationList = user.reservations,
-                                user = user,
+                                accountState = accountState,
                                 filterState = filterState,
                                 onGiverReservationClicked = viewModel::onGiverReservationClicked,
                                 onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
@@ -363,8 +397,6 @@ fun HomeScreenContent(
                             )
                         } else {
                             OfferList(
-                                offerList = accountState.offers as List<Offer>,
-                                user = user,
                                 accountState = accountState,
                                 filterState = filterState,
                                 onGiverOfferClicked = viewModel::onGiverOfferClicked,

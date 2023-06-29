@@ -21,37 +21,39 @@ import hr.asee.android.template.domain.model.common.Giver
 import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
+import hr.asee.android.template.domain.model.common.Seeker
 
 @Composable
 fun OfferList(
-    offerList: List<Offer>,
-    user: User,
     accountState: AccountState,
     filterState: DatePickerState,
     onGiverOfferClicked: () -> Unit,
-    onSeekerOfferClicked: () -> Unit,
+    onSeekerOfferClicked: (Int) -> Unit,
     onRemoveOfferClicked: () -> Unit
 ) {
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        offerList.forEach() { offer ->
-            if (!filterState.dateStartSelected!!.isAfter(offer.dateStart.toLocalDate()) &&
-                !filterState.dateEndSelected!!.isBefore(offer.dateEnd.toLocalDate())) {
+        accountState.offers!!.forEach() { offer ->
+            if (!filterState.dateStartSelected!!.isAfter(offer.dateStart) &&
+                !filterState.dateEndSelected!!.isBefore(offer.dateEnd)) {
                 if (accountState.user is Giver && offer.parkingSpace.owner == accountState.user) {
                     GiverOfferCard(
                         offer = offer,
                         onOfferClicked = onGiverOfferClicked,
                         onRemoveOfferClicked = onRemoveOfferClicked
                     )
+
+                    numShown++
                 }
-                else {
+                else if (accountState.user is Seeker) {
                     SeekerOfferCard(
                         offer = offer,
                         onOfferClicked = onSeekerOfferClicked
                     )
+
+                    numShown++
                 }
-                numShown++
             }
         }
 

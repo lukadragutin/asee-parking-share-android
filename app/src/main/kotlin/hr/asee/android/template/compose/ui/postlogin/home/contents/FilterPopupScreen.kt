@@ -25,8 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config.DARK_THEME
 import hr.asee.android.template.compose.ui.common.component.DatePicker
 import hr.asee.android.template.compose.ui.common.component.LabelText
+import hr.asee.android.template.compose.ui.common.component.button.BlueButton
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.DarkGray
@@ -35,6 +37,7 @@ import hr.asee.android.template.compose.ui.theme.Orange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,13 +50,13 @@ fun FilterPopupScreen(
     onResetClicked: () -> Unit,
     onDateStartSelect: () -> Unit,
     onDateEndSelect: () -> Unit,
-    onDateSelect: (LocalDate) -> Unit
+    onDateSelect: (LocalDateTime) -> Unit
 ) {
 
     val calendarView = CalendarView(
         ContextThemeWrapper(
             LocalContext.current,
-            if (isSystemInDarkTheme()) R.style.CalendarViewCustomDark
+            if ((DARK_THEME == true) or isSystemInDarkTheme()) R.style.CalendarViewCustomDark
             else R.style.CalendarViewCustomLight
         )
     )
@@ -116,32 +119,18 @@ fun FilterPopupScreen(
             onDateSelect = onDateSelect
         )
 
-        Button(
+        BlueButton(
+            label = stringResource(id = R.string.filter_popup_filter_button_label),
             modifier = Modifier
-                .height(57.dp)
-                .fillMaxWidth()
                 .padding(horizontal = 20.dp)
                 .offset(y = (-50).dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = AssecoBlue,
-                contentColor = Color.White,
-                disabledBackgroundColor = LightGray,
-                disabledContentColor = Color.White
-            ),
-            shape = RoundedCornerShape(15),
             onClick = {
-                    if (onFilterClicked()) {
-                        scope.launch {
-                            sheetState.hide()
-                        }
-                    }
-            },
-        ) {
-            LabelText(
-                text = stringResource(id = R.string.filter_popup_filter_button_label),
-                fontSize = 18.sp
-            )
-        }
+            if (onFilterClicked()) {
+                scope.launch {
+                    sheetState.hide()
+                }
+            }
+        })
 
     }
 }

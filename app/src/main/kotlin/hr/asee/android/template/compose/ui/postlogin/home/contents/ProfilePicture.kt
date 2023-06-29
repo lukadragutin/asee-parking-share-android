@@ -21,7 +21,7 @@ import hr.asee.android.template.compose.ui.theme.AssecoBlue
 fun ProfilePicture(
     modifier: Modifier = Modifier,
     @DrawableRes image: Int = R.mipmap.stock_profile_picture,
-    onClicked: () -> Unit
+    onClicked: () -> Unit = {}
 ) {
     Image(
         painter = painterResource(id = image),
@@ -32,6 +32,6 @@ fun ProfilePicture(
             .width(40.dp)
             .clip(CircleShape)
             .border(width = 1.dp, color = AssecoBlue, shape = CircleShape)
-            .clickable { onClicked }
+            .clickable(onClick = onClicked)
     )
 }

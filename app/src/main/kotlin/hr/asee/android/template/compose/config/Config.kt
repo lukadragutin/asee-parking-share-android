@@ -10,6 +10,7 @@ object Config {
     const val CARD_DATE_FORMAT = "d.M.yyyy"
     val MIN_DATE = LocalDateTime.MIN
     val MAX_DATE = LocalDateTime.MAX
+    var DARK_THEME : Boolean? = null
 
     val BOTTOM_NAV_BAR_ITEMS = listOf(
         NavigationItem(

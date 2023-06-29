@@ -6,4 +6,6 @@ import hr.asee.android.template.domain.model.common.service.ParkingSpace
 interface ParkingSpaceMapper {
 
     fun toParkingSpace(apiParkingSpace: ApiParkingSpace): ParkingSpace
+
+    fun toApiParkingSpace(parkingSpace: ParkingSpace): ApiParkingSpace
 }

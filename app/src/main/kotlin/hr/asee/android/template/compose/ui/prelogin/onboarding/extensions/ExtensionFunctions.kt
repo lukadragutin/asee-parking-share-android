@@ -5,14 +5,14 @@ import hr.asee.android.template.domain.model.OnboardingType
 
 fun OnboardingType.getDrawableResource(): Int {
     return when (this) {
-        OnboardingType.APPLICATION -> R.drawable.img_android_logo
-        OnboardingType.JETPACK_COMPOSE -> R.drawable.img_jetpack_compose
+        OnboardingType.WELCOME -> R.mipmap.onboarding_welcome
+        OnboardingType.CREATE_ACCOUNT -> R.mipmap.onboarding_create_account
     }
 }
 
 fun OnboardingType.getContentDescription(): Int {
     return when (this) {
-        OnboardingType.APPLICATION -> R.string.onboarding_application_icon_content_description
-        OnboardingType.JETPACK_COMPOSE -> R.string.onboarding_jetpack_compose_icon_content_description
+        OnboardingType.WELCOME -> R.string.onboarding_welcome_image_content_description
+        OnboardingType.CREATE_ACCOUNT -> R.string.onboarding_create_account_image_content_description
     }
 }

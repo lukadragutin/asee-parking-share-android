@@ -28,8 +28,8 @@ fun SeekingList(
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         seekingList.forEach() { seeking ->
-            if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart.toLocalDate()) &&
-                !filterState.dateEndSelected!!.isBefore(seeking.dateEnd.toLocalDate())) {
+            if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart) &&
+                !filterState.dateEndSelected!!.isBefore(seeking.dateEnd)) {
                 SeekingCard(
                     seeking = seeking,
                     onSeekingClicked = onSeekingClicked

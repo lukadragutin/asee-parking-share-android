@@ -22,4 +22,15 @@ class ReservationMapperImpl(
             seeker = userCompactMapper.toUser(apiReservation.seeker)
         )
     }
+
+    override fun toApiReservation(reservation: Reservation): ApiReservation {
+        return ApiReservation(
+            id = reservation.id,
+            dateStart = reservation.dateStart.toString(),
+            dateEnd = reservation.dateEnd.toString(),
+            cancellationPending = reservation.cancellationPending,
+            parkingSpace = parkingSpaceMapper.toApiParkingSpace(reservation.parkingSpace),
+            seeker = userCompactMapper.toApiUserCompact(reservation.seeker)
+        )
+    }
 }

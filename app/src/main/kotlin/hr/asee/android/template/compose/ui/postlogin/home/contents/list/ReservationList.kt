@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverReservationCard
@@ -23,20 +24,19 @@ import hr.asee.android.template.compose.ui.theme.LightGray
 
 @Composable
 fun ReservationList(
-    reservationList: Set<Reservation>,
-    user: User,
+    accountState: AccountState,
     filterState: DatePickerState,
-    onGiverReservationClicked: () -> Unit,
+    onGiverReservationClicked: (Int) -> Unit,
     onSeekerReservationClicked: () -> Unit,
-    onCancelReservationClicked: (Reservation) -> Unit
+    onCancelReservationClicked: () -> Unit
 ) {
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        reservationList.forEach() { reservation ->
-            if (!filterState.dateStartSelected!!.isAfter(reservation.dateStart.toLocalDate()) &&
-                !filterState.dateEndSelected!!.isBefore(reservation.dateEnd.toLocalDate())) {
-                if (user is Giver) {
+        accountState.reservations!!.forEach() { reservation ->
+            if (!filterState.dateStartSelected!!.isAfter(reservation.dateStart) &&
+                !filterState.dateEndSelected!!.isBefore(reservation.dateEnd)) {
+                if (accountState.user is Giver) {
                     GiverReservationCard(
                         reservation = reservation,
                         onReservationClicked = onGiverReservationClicked

@@ -25,4 +25,20 @@ interface Router {
     fun navigateToSettingsScreen()
 
     fun navigateToUserManagementScreen()
+
+    fun navigateToChangePasswordScreen()
+
+    fun navigateToParkingSpacesScreen()
+
+    fun navigateToEditParkingSpaceScreen(parkingSpaceId: Int)
+
+    fun navigateToAddParkingSpaceScreen()
+
+    fun navigateToReserveParkingSpaceSeekerScreen(offerId: Int)
+
+    fun navigateToReserveParkingSpaceGiverScreen(reservationId: Int)
+
+    fun navigateToCreateSeekingScreen()
+
+    fun navigateToCreateOfferScreen()
 }

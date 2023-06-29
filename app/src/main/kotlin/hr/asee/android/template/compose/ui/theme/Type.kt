@@ -17,12 +17,12 @@ val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Geomanist,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 16.sp,
     ),
     h1 = TextStyle(
         fontFamily = Geomanist,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
+        fontSize = 32.sp,
     ),
     h2 = TextStyle(
         fontFamily = Geomanist,

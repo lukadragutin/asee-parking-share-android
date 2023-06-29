@@ -7,7 +7,7 @@ import hr.asee.android.template.compose.delegate.BottomNavBarDelegate
 import hr.asee.android.template.compose.ui.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.common.model.state.AccountState
+import hr.asee.android.template.compose.ui.common.model.state.AlertDialogState
 import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.compose.ui.postlogin.home.model.HomeMessages
 import hr.asee.android.template.domain.model.common.resource.ErrorData
@@ -15,8 +15,7 @@ import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
 import hr.asee.android.template.domain.model.common.service.Seeking
 import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
-import hr.asee.android.template.domain.usecase.FilterByDateUseCase
-import hr.asee.android.template.domain.usecase.GetAccountUseCase
+import hr.asee.android.template.domain.usecase.DateSelectUseCase
 import hr.asee.android.template.domain.usecase.GetOffersUseCase
 import hr.asee.android.template.domain.usecase.GetParkingSpacesUseCase
 import hr.asee.android.template.domain.usecase.GetReservationsUseCase
@@ -24,17 +23,16 @@ import hr.asee.android.template.domain.usecase.GetSeekingsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val getAccountUseCase: GetAccountUseCase,
+open class HomeViewModel @Inject constructor(
     private val getSeekingsUseCase: GetSeekingsUseCase,
     private val getOffersUseCase: GetOffersUseCase,
     private val getReservationsUseCase: GetReservationsUseCase,
     private val getParkingSpacesUseCase: GetParkingSpacesUseCase,
-    private val filterByDateUseCase: FilterByDateUseCase,
+    private val dateSelectUseCase: DateSelectUseCase,
     private val getAllBottomNavItemsUseCase: GetAllBottomNavItemsUseCase,
     val bottomNavBarDelegate: BottomNavBarDelegate
 ) : BaseViewModel() {
@@ -42,39 +40,24 @@ class HomeViewModel @Inject constructor(
     init {
         runSuspend {
             getAccount()
-            getAllBottomNavItemsUseCase().onSuccess { items -> _bottomNavBarState.update { it.copy(items = items, selectedItem = it.items.firstOrNull()) } }
+            getAllBottomNavItemsUseCase().onSuccess { items -> _bottomNavBarState.update { it.copy(items = items, selectedItem = items[0]) } }
         }
     }
 
-    private val _accountState = MutableStateFlow(AccountState())
-    val accountState: StateFlow<AccountState> = _accountState
-
     private val _filterState = MutableStateFlow(DatePickerState())
     val filterState: StateFlow<DatePickerState> = _filterState
+
+    private val _cancelReservationDialogState = MutableStateFlow(AlertDialogState())
+    val cancelReservationDialogState: StateFlow<AlertDialogState> = _cancelReservationDialogState
+
+    private val _removeOfferDialogState = MutableStateFlow(AlertDialogState())
+    val removeOfferDialogState: StateFlow<AlertDialogState> = _removeOfferDialogState
 
     private suspend fun getAccount() {
         getSeekingsInternal()
         getOffersInternal()
         getReservationsInternal()
         getParkingSpacesInternal()
-        getUserInternal()
-    }
-
-    private suspend fun getUserInternal() {
-        getAccountUseCase().onFinished(
-            successCallback = this::getUserSuccess,
-            errorCallback = this::getUserError
-        )
-    }
-
-    private suspend fun getUserSuccess() {
-        _accountState.update { it.copy(user = getAccountUseCase().data) }
-    }
-
-    private fun getUserError(errorData: ErrorData) {
-        when (errorData.errorType) {
-            GetAccountUseCase.GetAccountError.GENERAL_GET_ACCOUNT_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
-        }
     }
 
     private suspend fun getSeekingsInternal() {
@@ -85,7 +68,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getSeekingsSuccess() {
-        _accountState.update { it.copy(seekings = getSeekingsUseCase(MIN_DATE, MAX_DATE).data as MutableList<Seeking>?) }
+        _accountState.update { it.copy(seekings = (getSeekingsUseCase(MIN_DATE, MAX_DATE).data as MutableList<Seeking>?)?.toMutableSet()) }
     }
 
     private fun getSeekingsError(errorData: ErrorData) {
@@ -102,7 +85,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getOffersSuccess() {
-        _accountState.update { it.copy(offers = getOffersUseCase(MIN_DATE, MAX_DATE).data as MutableList<Offer>) }
+        _accountState.update { it.copy(offers = (getOffersUseCase(MIN_DATE, MAX_DATE).data as MutableList<Offer>).toMutableSet()) }
     }
 
     private fun getOffersError(errorData: ErrorData) {
@@ -119,7 +102,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getReservationsSuccess() {
-        _accountState.update { it.copy(reservations = getReservationsUseCase().data as MutableList<Reservation>) }
+        _accountState.update { it.copy(reservations = (getReservationsUseCase().data as MutableList<Reservation>).toMutableSet()) }
     }
 
     private fun getReservationsError(errorData: ErrorData) {
@@ -136,7 +119,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getParkingSpacesSuccess() {
-        _accountState.update { it.copy(parkingSpaces = getParkingSpacesUseCase().data as MutableList<ParkingSpace>) }
+        _accountState.update { it.copy(parkingSpaces = (getParkingSpacesUseCase().data as MutableList<ParkingSpace>).toMutableSet()) }
     }
 
     private fun getParkingSpacesError(errorData: ErrorData) {
@@ -163,12 +146,12 @@ class HomeViewModel @Inject constructor(
             dateEnd = null,
             startFocused = false,
             endFocused = false,
-            dateStartSelected = LocalDate.MIN,
-            dateEndSelected = LocalDate.MAX
+            dateStartSelected = LocalDateTime.MIN,
+            dateEndSelected = LocalDateTime.MAX
         ) }
     }
 
-    fun onDateSelect(newDate: LocalDate) {
+    fun onDateSelect(newDate: LocalDateTime) {
         _filterState.update {
             if (it.startFocused) {
                 it.copy(dateStart = newDate)
@@ -194,7 +177,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun filterInternal() {
-        filterByDateUseCase(FilterByDateUseCase.Filter(dateStart = filterState.value.dateStart, dateEnd = filterState.value.dateEnd)).onFinished(
+        dateSelectUseCase(DateSelectUseCase.Dates(dateStart = filterState.value.dateStart, dateEnd = filterState.value.dateEnd)).onFinished(
             successCallback = this::onFilterSuccess,
             errorCallback = this::onFilterError
         )
@@ -213,22 +196,31 @@ class HomeViewModel @Inject constructor(
 
     private fun onFilterError(errorData: ErrorData) {
         when (errorData.errorType) {
-            FilterByDateUseCase.FilterByDateError.INVALID_DATES_ERROR -> showError(HomeMessages.INVALID_DATES_ERROR)
-            FilterByDateUseCase.FilterByDateError.DATES_NOT_SELECTED_ERROR -> showError(HomeMessages.DATES_NOT_SELECTED_ERROR)
+            DateSelectUseCase.DateSelectError.INVALID_DATES_ERROR -> showError(HomeMessages.INVALID_DATES_ERROR)
+            DateSelectUseCase.DateSelectError.DATES_NOT_SELECTED_ERROR -> showError(HomeMessages.DATES_NOT_SELECTED_ERROR)
             else -> showError(CommonMessages.UNEXPECTED_ERROR)
         }
     }
 
-    fun onCancelReservationClicked(reservation: Reservation) {
-        reservation.cancellationPending = true
+
+    fun onCancelReservationClicked() {
+        _cancelReservationDialogState.update { it.copy(isVisible = true) }
+    }
+
+    fun onCancelClickedReservationCard() {
+        _cancelReservationDialogState.update { it.copy(isVisible = false) }
+    }
+
+    fun onCancelClickedOfferCard() {
+        _removeOfferDialogState.update { it.copy(isVisible = false) }
     }
 
     fun onRemoveOfferClicked() {
-        /* TODO */
+        _removeOfferDialogState.update { it.copy(isVisible = true) }
     }
 
-    fun onGiverReservationClicked() {
-        /* TODO */
+    fun onGiverReservationClicked(reservationId: Int) {
+        router.navigateToReserveParkingSpaceGiverScreen(reservationId = reservationId)
     }
 
     fun onSeekerReservationClicked() {
@@ -239,8 +231,8 @@ class HomeViewModel @Inject constructor(
         /* TODO */
     }
 
-    fun onSeekerOfferClicked() {
-        /* TODO */
+    fun onSeekerOfferClicked(offerId: Int) {
+        router.navigateToReserveParkingSpaceSeekerScreen(offerId = offerId)
     }
 
     fun onSeekingClicked() {
@@ -248,18 +240,18 @@ class HomeViewModel @Inject constructor(
     }
 
     fun offerParking() {
-        /* TODO */
+        router.navigateToCreateOfferScreen()
     }
 
     fun seekParking() {
-        /* TODO */
+        router.navigateToCreateSeekingScreen()
     }
 
     fun onSettingsClicked() {
-        /* TODO */
+        router.navigateToSettingsScreen()
     }
 
     fun onProfilePictureClicked() {
-        /* TODO */
+        router.navigateToUserManagementScreen()
     }
 }

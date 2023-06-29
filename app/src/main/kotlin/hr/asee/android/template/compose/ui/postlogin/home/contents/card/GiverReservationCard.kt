@@ -37,13 +37,13 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun GiverReservationCard(
     reservation: Reservation,
-    onReservationClicked: () -> Unit
+    onReservationClicked: (Int) -> Unit
 ) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onReservationClicked() },
+            .clickable { onReservationClicked(reservation.id) },
         backgroundColor = MaterialTheme.colors.onPrimary,
         shape = RoundedCornerShape(15)
     ) {
@@ -87,18 +87,14 @@ fun GiverReservationCard(
                     Column(horizontalAlignment = Alignment.End,
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
-                        Text(
+                        LabelText(
                             text = reservation.dateStart.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
-                        Text(
+                        LabelText(
                             text = reservation.dateEnd.format(DateTimeFormatter.ofPattern(CARD_DATE_FORMAT)),
-                            fontFamily = Geomanist,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

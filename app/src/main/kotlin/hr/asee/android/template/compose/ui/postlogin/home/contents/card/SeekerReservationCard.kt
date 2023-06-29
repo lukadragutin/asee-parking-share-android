@@ -35,7 +35,7 @@ import java.time.format.DateTimeFormatter
 fun SeekerReservationCard(
     reservation: Reservation,
     onReservationClicked: () -> Unit,
-    onCancelReservationClicked: (Reservation) -> Unit
+    onCancelReservationClicked: () -> Unit
 ) {
 
     Card(
@@ -123,7 +123,7 @@ fun SeekerReservationCard(
                 fontSize = 16.sp,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .clickable { onCancelReservationClicked(reservation)}
+                    .clickable(onClick = onCancelReservationClicked)
             )
         }
     }
