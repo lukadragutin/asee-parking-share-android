@@ -6,114 +6,114 @@ import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.common.model.state.ParkingSpacePickerState
 import hr.asee.android.template.compose.ui.postlogin.home.model.HomeMessages
+import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.model.common.resource.ErrorData
-import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
 import hr.asee.android.template.domain.usecase.DateSelectUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateOfferViewModel @Inject constructor(
-    private val dateSelectUseCase: DateSelectUseCase
+	private val dateSelectUseCase: DateSelectUseCase
 ) : BaseViewModel() {
 
-    private val _datePickerState = MutableStateFlow(DatePickerState())
-    val datePickerState: StateFlow<DatePickerState> = _datePickerState
+	private val _parkingSpacesState = MutableStateFlow(setOf<ParkingSpace>())
+	val parkingSpacesState: StateFlow<Set<ParkingSpace>> = _parkingSpacesState
 
-    private val _parkingSpacePickerSpace = MutableStateFlow(ParkingSpacePickerState(
-        accountState.value.parkingSpaces!!.toList()[0],
-        accountState.value.parkingSpaces!!.toList()
-    ))
-    val parkingSpacePickerState: StateFlow<ParkingSpacePickerState> = _parkingSpacePickerSpace
+	private val _userState: MutableStateFlow<User> = MutableStateFlow(User.EMPTY)
+	val userState: StateFlow<User> = _userState
 
-    fun onDateStartSelect() {
-        _datePickerState.update { it.copy(startFocused = true, endFocused = false) }
-    }
+	private val _datePickerState = MutableStateFlow(DatePickerState())
+	val datePickerState: StateFlow<DatePickerState> = _datePickerState
 
-    fun onDateEndSelect() {
-        _datePickerState.update { it.copy(startFocused = false, endFocused = true) }
-    }
+	private val _parkingSpacePickerSpace = MutableStateFlow(ParkingSpacePickerState(
+		ParkingSpace.EMPTY,
+		parkingSpacesState.value.toList()
+	))
+	val parkingSpacePickerState: StateFlow<ParkingSpacePickerState> = _parkingSpacePickerSpace
 
-    fun onDateSelect(newDate: LocalDateTime) {
-        _datePickerState.update {
-            if (it.startFocused) {
-                it.copy(dateStart = newDate)
-            }
-            else if (it.endFocused) {
-                it.copy(dateEnd = newDate)
-            }
-            else it.copy()
-        }
-    }
+	fun onDateStartSelect() {
+		_datePickerState.update { it.copy(startFocused = true, endFocused = false) }
+	}
 
-    fun onCreateClicked(): Boolean {
-        try {
-            createClicked() }
-        catch (exception: Exception) {
-            return false
-        }
-        return true
-    }
+	fun onDateEndSelect() {
+		_datePickerState.update { it.copy(startFocused = false, endFocused = true) }
+	}
 
-    private fun createClicked() {
-        runSuspend { createOfferInternal() }
-    }
+	fun onDateSelect(newDate: LocalDateTime) {
+		_datePickerState.update {
+			if (it.startFocused) {
+				it.copy(dateStart = newDate)
+			} else if (it.endFocused) {
+				it.copy(dateEnd = newDate)
+			} else it.copy()
+		}
+	}
 
-    private suspend fun createOfferInternal() {
-        dateSelectUseCase(DateSelectUseCase.Dates(dateStart = datePickerState.value.dateStart, dateEnd = datePickerState.value.dateEnd)).onFinished(
-            successCallback = this::onCreateOfferSuccess,
-            errorCallback = this::onCreateOfferError
-        )
-    }
+	fun onCreateClicked(): Boolean {
+		try {
+			createClicked()
+		} catch (exception: Exception) {
+			return false
+		}
+		return true
+	}
 
-    private fun onCreateOfferSuccess() {
-        _datePickerState.update {
-            it.copy(
-                dateStartSelected = it.dateStart,
-                dateEndSelected = it.dateEnd,
-                startFocused = false,
-                endFocused = false
-            )
-        }
-        val offers = accountState.value.offers
-        offers?.add(
-            Offer(
-                dateStart = datePickerState.value.dateEndSelected!!,
-                dateEnd = datePickerState.value.dateEndSelected!!,
-                parkingSpace = parkingSpacePickerState.value.selectedOption
-            )
-        )
-        _accountState.update { it.copy(offers = offers) }
-        goBack()
-    }
+	private fun createClicked() {
+		runSuspend { createOfferInternal() }
+	}
 
-    private fun onCreateOfferError(errorData: ErrorData) {
-        when (errorData.errorType) {
-            DateSelectUseCase.DateSelectError.INVALID_DATES_ERROR -> showError(HomeMessages.INVALID_DATES_ERROR)
-            DateSelectUseCase.DateSelectError.DATES_NOT_SELECTED_ERROR -> showError(HomeMessages.DATES_NOT_SELECTED_ERROR)
-            else -> showError(CommonMessages.UNEXPECTED_ERROR)
-        }
-    }
+	private suspend fun createOfferInternal() {
+		dateSelectUseCase(DateSelectUseCase.Dates(dateStart = datePickerState.value.dateStart, dateEnd = datePickerState.value.dateEnd)).onFinished(
+			successCallback = this::onCreateOfferSuccess,
+			errorCallback = this::onCreateOfferError
+		)
+	}
 
-    fun onCancelClicked() {
-        _datePickerState.update { it.copy(
-            dateStart = null,
-            dateEnd = null,
-            dateStartSelected = null,
-            dateEndSelected = null,
-            startFocused = false,
-            endFocused = false
-        ) }
-        goBack()
-    }
+	private fun onCreateOfferSuccess() {
+		_datePickerState.update {
+			it.copy(
+				dateStartSelected = it.dateStart,
+				dateEndSelected = it.dateEnd,
+				startFocused = false,
+				endFocused = false
+			)
+		}
 
-    fun onRadioButtonClicked(parkingSpace: ParkingSpace) {
-        _parkingSpacePickerSpace.update { it.copy(
-            selectedOption = parkingSpace
-        ) }
-    }
+		goBack()
+	}
+
+	private fun onCreateOfferError(errorData: ErrorData) {
+		when (errorData.errorType) {
+			DateSelectUseCase.DateSelectError.INVALID_DATES_ERROR -> showError(HomeMessages.INVALID_DATES_ERROR)
+			DateSelectUseCase.DateSelectError.DATES_NOT_SELECTED_ERROR -> showError(HomeMessages.DATES_NOT_SELECTED_ERROR)
+			else -> showError(CommonMessages.UNEXPECTED_ERROR)
+		}
+	}
+
+	fun onCancelClicked() {
+		_datePickerState.update {
+			it.copy(
+				dateStart = null,
+				dateEnd = null,
+				dateStartSelected = null,
+				dateEndSelected = null,
+				startFocused = false,
+				endFocused = false
+			)
+		}
+		goBack()
+	}
+
+	fun onRadioButtonClicked(parkingSpace: ParkingSpace) {
+		_parkingSpacePickerSpace.update {
+			it.copy(
+				selectedOption = parkingSpace
+			)
+		}
+	}
 }

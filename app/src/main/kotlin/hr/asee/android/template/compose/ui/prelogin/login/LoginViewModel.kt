@@ -47,13 +47,12 @@ class LoginViewModel @Inject constructor(
     private suspend fun loginInternal() {
         loginUseCase(LoginUseCase.LoginRequest(email = emailState.value.text, password = passwordState.value.text)).onFinished(
             successCallback = this::onLoginSuccessful,
-            errorCallback = this::onLoginError,
+            errorCallback = this::onLoginError
         )
     }
 
-     fun onLoginSuccessful() {
-         runSuspend { getUserInternal() }
-        router.navigateToPostLoginScreen()
+     private fun onLoginSuccessful() {
+         router.navigateToPostLoginScreen()
     }
 
 
@@ -64,23 +63,6 @@ class LoginViewModel @Inject constructor(
             LoginUseCase.LoginError.USER_NOT_FOUND_ERROR -> showError(LoginMessages.USER_NOT_FOUND_ERROR)
             LoginUseCase.LoginError.MISSING_EMAIL_OR_USERNAME_ERROR -> showError(LoginMessages.MISSING_EMAIL_OR_USERNAME_ERROR)
             else -> showError(CommonMessages.UNEXPECTED_ERROR)
-        }
-    }
-
-    private suspend fun getUserInternal() {
-        getAccountUseCase().onFinished(
-            successCallback = this::getUserSuccess,
-            errorCallback = this::getUserError
-        )
-    }
-
-    private suspend fun getUserSuccess() {
-        _accountState.update { it.copy(user = getAccountUseCase().data) }
-    }
-
-    private fun getUserError(errorData: ErrorData) {
-        when (errorData.errorType) {
-            GetAccountUseCase.GetAccountError.GENERAL_GET_ACCOUNT_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
         }
     }
 

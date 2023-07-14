@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-import java.util.Date
 import java.text.SimpleDateFormat
-import java.io.FileInputStream
+import java.util.Date
 
 plugins {
     `android-compose-app-convention`
@@ -34,17 +32,18 @@ android {
         }
     }*/
 
-//    buildTypes {
-//        debug {
-//            isMinifyEnabled = false
-//        }
-//
+    buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+        }
+
 //        release {
 //            isMinifyEnabled = true
 //            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 //            signingConfig = signingConfigs.getByName(releaseSigningConfigName)
 //        }
-//    }
+    }
 
     val environmentFlavor = "environment"
     flavorDimensions.add(environmentFlavor)

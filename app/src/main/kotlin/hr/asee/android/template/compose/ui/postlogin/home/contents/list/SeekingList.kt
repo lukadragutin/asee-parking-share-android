@@ -13,21 +13,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.domain.model.common.service.Seeking
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekingCard
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
+import hr.asee.android.template.domain.model.common.service.Seeking
 
 @Composable
 fun SeekingList(
-    seekingList: Set<Seeking>,
+    seekings: Set<Seeking>,
     filterState: DatePickerState,
     onSeekingClicked: () -> Unit
 ) {
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        seekingList.forEach() { seeking ->
+        seekings.forEach() { seeking ->
             if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart) &&
                 !filterState.dateEndSelected!!.isBefore(seeking.dateEnd)) {
                 SeekingCard(

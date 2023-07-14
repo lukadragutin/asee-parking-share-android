@@ -8,6 +8,8 @@ interface ParkingSpaceRepository {
 
     suspend fun getParkingSpaceById(id: Int): ParkingSpace
 
+    suspend fun getParkingSpaceByGiver(giverId: Int): ParkingSpace
+
     suspend fun addParkingSpace(parkingSpace: ParkingSpace): ParkingSpace
 
     suspend fun changeParkingLocation(id: Int, newParkingSpace: ParkingSpace): ParkingSpace

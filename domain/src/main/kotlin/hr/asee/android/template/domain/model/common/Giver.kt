@@ -1,8 +1,7 @@
 package hr.asee.android.template.domain.model.common
 
 import hr.asee.android.template.domain.model.common.service.Offer
-import hr.asee.android.template.domain.model.common.service.Reservation
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 class Giver(
     id: Int = generateId(),
@@ -33,10 +32,6 @@ class Giver(
         resetDate = resetDate
     ) {
 
-    fun addReservation(reservation: Reservation) {
-        reservations.add(reservation)
-        reservation.seeker.reservations.add(reservation)
-    }
     fun addOffer(offer: Offer) {
         offers.add(offer)
     }

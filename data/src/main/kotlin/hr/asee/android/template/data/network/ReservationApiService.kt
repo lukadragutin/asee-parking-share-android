@@ -16,6 +16,16 @@ interface ReservationApiService {
         @Path("id") id: Int
     ): ApiReservation
 
+    @GET("/api/reservations/giver/{id}")
+    suspend fun getReservationsForGiver(
+        @Path("id") id: Int
+    ): List<ApiReservation>
+
+    @GET("/api/reservations/seeker/{id}")
+    suspend fun getReservationsForSeeker(
+        @Path("id") id: Int
+    ): List<ApiReservation>
+
     @PUT("/api/reservations/{id}")
     suspend fun putReservationById(
         @Path("id") id: Int,

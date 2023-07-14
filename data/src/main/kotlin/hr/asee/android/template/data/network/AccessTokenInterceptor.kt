@@ -6,17 +6,22 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AccessTokenInterceptor (
-    private val getAccessTokenInteractor: GetAccessTokenInteractor
-): Interceptor {
+class AccessTokenInterceptor(
+	private val getAccessTokenInteractor: GetAccessTokenInteractor
+) : Interceptor {
 
-    private val token = runBlocking { getAccessTokenInteractor(KEY_ACCESS_TOKEN) }
+	override fun intercept(chain: Interceptor.Chain): Response {
+		val request = if (chain.request().url.toString().endsWith("/api/authenticate")) {
+			chain.request()
+		} else {
+			chain.request().newBuilder()
+					.addHeader("Authorization", "Bearer ${getToken()}")
+					.build()
+		}
+		return chain.proceed(request)
+	}
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer $token")
-            .build()
-
-        return chain.proceed(request)
-    }
+	private fun getToken(): String {
+		return runBlocking { getAccessTokenInteractor(KEY_ACCESS_TOKEN) }
+	}
 }

@@ -2,7 +2,7 @@ package hr.asee.android.template.domain.usecase
 
 import hr.asee.android.template.domain.model.common.resource.EmptyResource
 import hr.asee.android.template.domain.model.common.resource.ErrorType
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 interface DateSelectUseCase {
 

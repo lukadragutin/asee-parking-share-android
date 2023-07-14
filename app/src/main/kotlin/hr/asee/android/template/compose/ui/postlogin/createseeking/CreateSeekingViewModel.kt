@@ -6,12 +6,11 @@ import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.home.model.HomeMessages
 import hr.asee.android.template.domain.model.common.resource.ErrorData
-import hr.asee.android.template.domain.model.common.service.Seeking
 import hr.asee.android.template.domain.usecase.DateSelectUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,13 +61,8 @@ class CreateSeekingViewModel @Inject constructor(
                 endFocused = false
             )
         }
-        val seekings = accountState.value.seekings
-        seekings?.add(Seeking(
-            dateStart = datePickerState.value.dateStartSelected!!,
-            dateEnd = datePickerState.value.dateEndSelected!!,
-            seeker = accountState.value.user!!
-        ))
-        _accountState.update { it.copy(seekings = seekings) }
+//        val seekings = accountState.value.seekings
+//        _accountState.update { it.copy(seekings = seekings) }
         goBack()
     }
 

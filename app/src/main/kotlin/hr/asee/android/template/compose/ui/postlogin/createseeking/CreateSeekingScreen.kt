@@ -2,12 +2,16 @@ package hr.asee.android.template.compose.ui.postlogin.createseeking
 
 import android.view.ContextThemeWrapper
 import android.widget.CalendarView
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -33,11 +37,8 @@ import hr.asee.android.template.compose.ui.common.component.button.BackButton
 import hr.asee.android.template.compose.ui.common.component.button.BlueButton
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.prelogin.onboarding.component.OnboardingButton
 import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
-import hr.asee.android.template.domain.model.common.service.Seeking
-import java.time.LocalDate
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 @Composable
 fun CreateSeekingScreen(viewModel: CreateSeekingViewModel = hiltViewModel()){

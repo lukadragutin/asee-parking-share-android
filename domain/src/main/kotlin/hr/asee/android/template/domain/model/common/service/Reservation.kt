@@ -1,8 +1,7 @@
 package hr.asee.android.template.domain.model.common.service
 
-import hr.asee.android.template.domain.model.common.User
-import hr.asee.android.template.domain.model.common.exampleSeeker
-import java.time.LocalDateTime
+import hr.asee.android.template.domain.model.common.UserCompact
+import org.threeten.bp.LocalDateTime
 
 
 class Reservation(
@@ -11,9 +10,11 @@ class Reservation(
     val dateEnd: LocalDateTime,
     var cancellationPending: Boolean = false,
     val parkingSpace: ParkingSpace,
-    val seeker: User
+    val seeker: UserCompact
 ) {
     companion object {
+        val EMPTY = Reservation(dateStart = LocalDateTime.now(), dateEnd = LocalDateTime.now(), parkingSpace = ParkingSpace.EMPTY, seeker = UserCompact.EMPTY)
+
         private var latestId = 1
 
         fun generateId(): Int {
@@ -27,5 +28,5 @@ val exampleReservation = Reservation(
     dateStart = LocalDateTime.of(2023, 4, 13, 22, 27, 0),
     dateEnd = LocalDateTime.of(2023, 4, 14, 18, 40, 0),
     parkingSpace = exampleParkingSpace1,
-    seeker = exampleSeeker
+    seeker = UserCompact.EMPTY
 )

@@ -56,6 +56,7 @@ dependencies {
     implementation(Dependencies.Lifecycle.runtimeKtx)
     implementation(Dependencies.Lifecycle.viewmodelCompose)
     implementation(Dependencies.Google.activityCompose)
+    implementation(Dependencies.threetenbp)
     compose()
 
     coreTest()

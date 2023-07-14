@@ -17,6 +17,11 @@ interface ParkingSpaceApiService {
         @Path("id") id: Int
     ): ApiParkingSpace
 
+    @GET("/api/parking-spaces/giver/{id}")
+    suspend fun getParkingSpaceForGiver(
+        @Path("id") id: Int
+    ): ApiParkingSpace
+
     @POST("/api/parking-spaces")
     suspend fun addParkingSpace(
         @Body apiParkingSpace: ApiParkingSpace

@@ -32,9 +32,8 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,372 +60,356 @@ import hr.asee.android.template.compose.ui.common.component.dialog.ScreenStateDi
 import hr.asee.android.template.compose.ui.common.component.icon.FilterIcon
 import hr.asee.android.template.compose.ui.common.component.icon.SettingsIcon
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
-import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.AlertDialogState
-import hr.asee.android.template.domain.model.common.service.exampleOffer1
-import hr.asee.android.template.domain.model.common.service.exampleOffer2
-import hr.asee.android.template.domain.model.common.service.exampleReservation
-import hr.asee.android.template.domain.model.common.service.exampleSeeking1
-import hr.asee.android.template.domain.model.common.service.exampleSeeking2
+import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.home.contents.FilterPopupScreen
 import hr.asee.android.template.compose.ui.postlogin.home.contents.ProfilePicture
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.OfferList
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.ReservationList
 import hr.asee.android.template.compose.ui.postlogin.home.contents.list.SeekingList
 import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
-import hr.asee.android.template.domain.model.common.Giver
-import hr.asee.android.template.domain.model.common.Seeker
-import hr.asee.android.template.domain.model.common.User
-import hr.asee.android.template.domain.model.common.exampleGiver
-import hr.asee.android.template.domain.model.common.exampleSeeker
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
+import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.Seeker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), user: User = exampleSeeker) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
+	val filterState by viewModel.filterState.collectAsState()
+	val cancelReservationDialogState by viewModel.cancelReservationDialogState.collectAsState()
+	val removeOfferDialogState by viewModel.removeOfferDialogState.collectAsState()
+	val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
+	val uiState by viewModel.uiState.collectAsState()
+	val accountState by viewModel.accountState.collectAsState()
 
-    /*-------For testing-------*/
-    exampleSeeker.addSeeking(exampleSeeking1)
-    exampleSeeker.addSeeking(exampleSeeking2)
-    exampleSeeker.addReservation(exampleReservation)
-    exampleGiver.addOffer(exampleOffer1)
-    exampleGiver.addOffer(exampleOffer2)
-    /*-------------------------*/
+	val scope = rememberCoroutineScope()
+	val sheetState = rememberModalBottomSheetState(
+		initialValue = ModalBottomSheetValue.Hidden,
+		confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+		skipHalfExpanded = true
+	)
 
-    val filterState by viewModel.filterState.collectAsState()
-    val cancelReservationDialogState by viewModel.cancelReservationDialogState.collectAsState()
-    val removeOfferDialogState by viewModel.removeOfferDialogState.collectAsState()
-    val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
-    val uiState by viewModel.uiState.collectAsState()
-    val accountState by viewModel.accountState.collectAsState()
+	BackHandler(sheetState.isVisible) {
+		scope.launch {
+			sheetState.hide()
+		}
+	}
 
-    val scope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
-        skipHalfExpanded = true
-    )
+	AndroidComposeCodingTemplateTheme(
+		darkTheme = ((if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) == true)
+	) {
 
-    BackHandler(sheetState.isVisible) {
-        scope.launch {
-            sheetState.hide()
-        }
-    }
+		ModalBottomSheetLayout(
+			sheetContent = {
+				FilterPopupScreen(
+					scope = scope,
+					sheetState = sheetState,
+					filterState = filterState,
+					onFilterClicked = viewModel::onFilterClicked,
+					onCancelClicked = viewModel::onCancelClicked,
+					onResetClicked = viewModel::onResetClicked,
+					onDateStartSelect = viewModel::onDateStartSelect,
+					onDateEndSelect = viewModel::onDateEndSelect,
+					onDateSelect = viewModel::onDateSelect
+				)
+			},
+			sheetBackgroundColor = MaterialTheme.colors.background,
+			sheetState = sheetState,
+			sheetShape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
+			modifier = Modifier
+					.fillMaxSize()
+		) {
 
-    AndroidComposeCodingTemplateTheme(
-        darkTheme = (if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) as Boolean
-    ) {
+			LaunchedEffect(viewModel.bottomNavBarDelegate) {
+				viewModel.bottomNavBarDelegate.getNavBarEvents().collect { event ->
+					when (event) {
+						NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
+						NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
+					}
+				}
+			}
 
-        ModalBottomSheetLayout(
-            sheetContent = {
-                FilterPopupScreen(
-                    scope = scope,
-                    sheetState = sheetState,
-                    filterState = filterState,
-                    onFilterClicked = viewModel::onFilterClicked,
-                    onCancelClicked = viewModel::onCancelClicked,
-                    onResetClicked = viewModel::onResetClicked,
-                    onDateStartSelect = viewModel::onDateStartSelect,
-                    onDateEndSelect = viewModel::onDateEndSelect,
-                    onDateSelect = viewModel::onDateSelect
-                )
-            },
-            sheetBackgroundColor = MaterialTheme.colors.background,
-            sheetState = sheetState,
-            sheetShape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+			Scaffold(
+				bottomBar = {
+					AnimatedVisibility(
+						visible = bottomNavBarState.isVisible,
+						enter = slideInVertically(initialOffsetY = { it }),
+						exit = slideOutVertically(targetOffsetY = { it })
+					) {
+						BottomNavigationBar(
+							items = bottomNavBarState.items,
+							onNavElementClicked = bottomNavBarState.onElementClicked,
+							selectedElement = bottomNavBarState.selectedItem,
+						)
+					}
+				},
+			) { paddingValues ->
+				HomeScreenContent(
+					modifier = Modifier.padding(paddingValues),
+					scope = scope,
+					sheetState = sheetState,
+					filterState = filterState,
+					cancelReservationDialogState = cancelReservationDialogState,
+					removeOfferDialogState = removeOfferDialogState,
+					accountState = accountState,
+					viewModel = viewModel
+				)
 
-            LaunchedEffect(viewModel.bottomNavBarDelegate) {
-                viewModel.bottomNavBarDelegate.getNavBarEvents().collect { event ->
-                    when (event) {
-                        NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
-                        NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
-                    }
-                }
-            }
+			}
+		}
+	}
 
-            Scaffold(
-                bottomBar = {
-                    AnimatedVisibility(
-                        visible = bottomNavBarState.isVisible,
-                        enter = slideInVertically(initialOffsetY = { it }),
-                        exit = slideOutVertically(targetOffsetY = { it })
-                    ) {
-                        BottomNavigationBar(
-                            items = bottomNavBarState.items,
-                            onNavElementClicked = bottomNavBarState.onElementClicked,
-                            selectedElement = bottomNavBarState.selectedItem,
-                        )
-                    }
-                },
-            ) { paddingValues ->
-                HomeScreenContent(
-                    user = user,
-                    modifier = Modifier.padding(paddingValues),
-                    scope = scope,
-                    sheetState = sheetState,
-                    filterState = filterState,
-                    cancelReservationDialogState = cancelReservationDialogState,
-                    removeOfferDialogState = removeOfferDialogState,
-                    accountState = accountState,
-                    viewModel = viewModel
-                )
-
-            }
-        }
-    }
-
-    ScreenStateDialog(state = uiState, onDismiss = viewModel::onMessageDismissed)
+	ScreenStateDialog(state = uiState, onDismiss = viewModel::onMessageDismissed)
 }
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreenContent(
-    user: User,
-    modifier: Modifier = Modifier,
-    scope: CoroutineScope,
-    sheetState: ModalBottomSheetState,
-    filterState: DatePickerState,
-    cancelReservationDialogState: AlertDialogState,
-    removeOfferDialogState: AlertDialogState,
-    accountState: AccountState,
-    viewModel: HomeViewModel
+	modifier: Modifier = Modifier,
+	scope: CoroutineScope,
+	sheetState: ModalBottomSheetState,
+	filterState: DatePickerState,
+	cancelReservationDialogState: AlertDialogState,
+	removeOfferDialogState: AlertDialogState,
+	accountState: AccountState,
+	viewModel: HomeViewModel
 ) {
 
-    val noContent by remember{ mutableStateOf(user.seekings.size + user.reservations.size + user.offers.size == 0) }
+	val noContent = derivedStateOf{ accountState.seekings.size + accountState.reservations.size + accountState.offers.size == 0 }
 
-    if(cancelReservationDialogState.isVisible)  {
-        BaseAlertDialog(
-            modifier = modifier,
-            isLoading = false,
-            title = stringResource(id = R.string.home_screen_cancel_reservation_popup_screen_title_label),
-            message = stringResource(id = R.string.home_screen_cancel_reservation_popup_screen_question_label),
-            buttonsLayout = {
-                Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                    Spacer(modifier = Modifier.width(30.dp))
-                    ProceedButton(onClick = viewModel::onCancelReservationClicked)
-                    Spacer(modifier = Modifier.width(45.dp))
-                    CancelButton(onClick = viewModel::onCancelClickedReservationCard)
-                }
-            },
-            onDismissRequest = viewModel::onCancelReservationClicked
-        )
-    }
+	if (cancelReservationDialogState.isVisible) {
+		BaseAlertDialog(
+			modifier = modifier,
+			isLoading = false,
+			title = stringResource(id = R.string.home_screen_cancel_reservation_popup_screen_title_label),
+			message = stringResource(id = R.string.home_screen_cancel_reservation_popup_screen_question_label),
+			buttonsLayout = {
+				Row(modifier = Modifier.padding(bottom = 8.dp)) {
+					Spacer(modifier = Modifier.width(30.dp))
+					ProceedButton(onClick = viewModel::onCancelReservationClicked)
+					Spacer(modifier = Modifier.width(45.dp))
+					CancelButton(onClick = viewModel::onCancelClickedReservationCard)
+				}
+			},
+			onDismissRequest = viewModel::onCancelReservationClicked
+		)
+	}
 
-    if(removeOfferDialogState.isVisible)  {
-        BaseAlertDialog(
-            modifier = modifier,
-            isLoading = false,
-            title = stringResource(id = R.string.home_screen_remove_offer_popup_screen_title_label),
-            message = stringResource(id = R.string.home_screen_remove_offer_popup_screen_question_label),
-            buttonsLayout = {
-                Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                    Spacer(modifier = Modifier.width(30.dp))
-                    ProceedButton(onClick = viewModel::onRemoveOfferClicked)
-                    Spacer(modifier = Modifier.width(45.dp))
-                    CancelButton(onClick = viewModel::onCancelClickedOfferCard)
-                }
-            },
-            onDismissRequest = viewModel::onRemoveOfferClicked
-        )
-    }
+	if (removeOfferDialogState.isVisible) {
+		BaseAlertDialog(
+			modifier = modifier,
+			isLoading = false,
+			title = stringResource(id = R.string.home_screen_remove_offer_popup_screen_title_label),
+			message = stringResource(id = R.string.home_screen_remove_offer_popup_screen_question_label),
+			buttonsLayout = {
+				Row(modifier = Modifier.padding(bottom = 8.dp)) {
+					Spacer(modifier = Modifier.width(30.dp))
+					ProceedButton(onClick = viewModel::onRemoveOfferClicked)
+					Spacer(modifier = Modifier.width(45.dp))
+					CancelButton(onClick = viewModel::onCancelClickedOfferCard)
+				}
+			},
+			onDismissRequest = viewModel::onRemoveOfferClicked
+		)
+	}
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp)
-    ) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            ProfilePicture(onClicked = viewModel::onProfilePictureClicked)
+	Column(
+		modifier = modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .padding(start = 20.dp, end = 20.dp, top = 20.dp)
+	) {
+		Row(horizontalArrangement = Arrangement.SpaceBetween) {
+			ProfilePicture(onClicked = viewModel::onProfilePictureClicked)
 
-            Spacer(modifier = modifier.width(23.dp))
+			Spacer(modifier = modifier.width(23.dp))
 
-            Column {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            SpanStyle(
-                                fontFamily = Geomanist,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colors.onSurface
-                            )
-                        ) {
-                            append(stringResource(id = R.string.home_screen_welcome_label))
-                        }
-                        append(" ")
-                        withStyle(
-                            SpanStyle(
-                                fontFamily = Geomanist,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                color = AssecoBlue
-                            )
-                        ) {
-                            append(accountState.user!!.firstName)
-                        }
-                    },
-                )
+			Column {
+				Text(
+					text = buildAnnotatedString {
+						withStyle(
+							SpanStyle(
+								fontFamily = Geomanist,
+								fontWeight = FontWeight.Bold,
+								fontSize = 16.sp,
+								color = MaterialTheme.colors.onSurface
+							)
+						) {
+							append(stringResource(id = R.string.home_screen_welcome_label))
+						}
+						append(" ")
+						withStyle(
+							SpanStyle(
+								fontFamily = Geomanist,
+								fontWeight = FontWeight.Bold,
+								fontSize = 16.sp,
+								color = AssecoBlue
+							)
+						) {
+							append(accountState.user!!.firstName)
+						}
+					},
+				)
 
-                LabelText(
-                    text = stringResource(
-                        id = if (accountState.user is Seeker) R.string.home_screen_seeker_role_label
-                        else R.string.home_screen_giver_role_label),
-                    fontSize = 14.sp,
-                    color = LightGray
-                )
+				LabelText(
+					text = stringResource(
+						id = if (accountState.user is Seeker) R.string.home_screen_seeker_role_label
+						else R.string.home_screen_giver_role_label),
+					fontSize = 14.sp,
+					color = LightGray
+				)
 
-            }
+			}
 
-            Spacer(modifier = modifier.weight(1f))
+			Spacer(modifier = modifier.weight(1f))
 
-            SettingsIcon(
-                modifier = Modifier.offset(x = 20.dp),
-                tint = MaterialTheme.colors.onBackground,
-                onSettingsClicked = viewModel::onSettingsClicked
-            )
+			SettingsIcon(
+				modifier = Modifier.offset(x = 20.dp),
+				tint = MaterialTheme.colors.onBackground,
+				onSettingsClicked = viewModel::onSettingsClicked
+			)
 
-        }
+		}
 
-        DefaultScreenLayout(
-            screenTitle = stringResource(id = R.string.home_screen_title_label),
-            contentPadding = PaddingValues(all = 0.dp),
-            background = Color.Transparent,
-            modifier = Modifier.fillMaxHeight()
-        ) {
+		DefaultScreenLayout(
+			screenTitle = stringResource(id = R.string.home_screen_title_label),
+			contentPadding = PaddingValues(all = 0.dp),
+			background = Color.Transparent,
+			modifier = Modifier.fillMaxHeight()
+		) {
 
-            Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
-                BlueButton(
-                    label = stringResource(
-                        id = if (accountState.user is Giver) R.string.home_screen_giver_offer_button_label
-                        else R.string.home_screen_seeker_seek_button_label,
-                    ),
-                    onClick ={
-                        if (accountState.user is Seeker) viewModel.seekParking()
-                        else viewModel.offerParking()
-                    }
-                    )
+			Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+				BlueButton(
+					label = stringResource(
+						id = if (accountState.user is Giver) R.string.home_screen_giver_offer_button_label
+						else R.string.home_screen_seeker_seek_button_label,
+					),
+					onClick = {
+						if (accountState.user is Seeker) viewModel.seekParking()
+						else viewModel.offerParking()
+					}
+				)
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(15.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(state = rememberScrollState())
-                ) {
+				Column(
+					verticalArrangement = Arrangement.spacedBy(15.dp),
+					horizontalAlignment = Alignment.CenterHorizontally,
+					modifier = Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(state = rememberScrollState())
+				) {
 
-                    if (noContent) {
-                        Spacer(modifier = Modifier.height(100.dp))
+					if (noContent.value) {
+						Spacer(modifier = Modifier.height(100.dp))
 
-                        LabelText(
-                            text = stringResource(id = R.string.home_screen_no_content_label),
-                            fontSize = 20.sp,
-                            color = LightGray
-                        )
-                    } else {
-                        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                            LabelText(
-                                text = stringResource(
-                                    id = if (accountState.user is Giver) R.string.home_screen_giver_offer_list_label
-                                    else R.string.home_screen_seeker_reservation_list_label
-                                ),
-                                fontSize = 20.sp,
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            FilterIcon(
-                                isFiltered = (filterState.dateStartSelected != LocalDateTime.MIN) ||
-                                        (filterState.dateEndSelected != LocalDateTime.MAX),
-                                tint = MaterialTheme.colors.onBackground,
-                                modifier = Modifier.offset(x = 20.dp),
-                                onFilterClicked = {
-                                    scope.launch {
-                                        if (sheetState.isVisible)
-                                            sheetState.hide()
-                                        else sheetState.animateTo(ModalBottomSheetValue.Expanded)
-                                    }
-                                }
-                            )
-                        }
+						LabelText(
+							text = stringResource(id = R.string.home_screen_no_content_label),
+							fontSize = 20.sp,
+							color = LightGray
+						)
+					} else {
+						Row(horizontalArrangement = Arrangement.SpaceBetween) {
+							LabelText(
+								text = stringResource(
+									id = if (accountState.user is Giver) R.string.home_screen_giver_offer_list_label
+									else R.string.home_screen_seeker_reservation_list_label
+								),
+								fontSize = 20.sp,
+							)
+							Spacer(modifier = Modifier.weight(1f))
+							FilterIcon(
+								isFiltered = (filterState.dateStartSelected != LocalDateTime.MIN) ||
+										(filterState.dateEndSelected != LocalDateTime.MAX),
+								tint = MaterialTheme.colors.onBackground,
+								modifier = Modifier.offset(x = 20.dp),
+								onFilterClicked = {
+									scope.launch {
+										if (sheetState.isVisible)
+											sheetState.hide()
+										else sheetState.animateTo(ModalBottomSheetValue.Expanded)
+									}
+								}
+							)
+						}
 
-                        if (accountState.user is Giver) {
-                            OfferList(
-                                accountState = accountState,
-                                filterState = filterState,
-                                onGiverOfferClicked = viewModel::onGiverOfferClicked,
-                                onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
-                                onRemoveOfferClicked = viewModel::onRemoveOfferClicked
-                            )
-                        } else {
-                            ReservationList(
-                                accountState = accountState,
-                                filterState = filterState,
-                                onGiverReservationClicked = viewModel::onGiverReservationClicked,
-                                onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
-                                onCancelReservationClicked = viewModel::onCancelReservationClicked
-                            )
-                        }
+						if (accountState.user is Giver) {
+							OfferList(
+								offers = accountState.offers,
+								user = accountState.user,
+								filterState = filterState,
+								onGiverOfferClicked = viewModel::onGiverOfferClicked,
+								onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
+								onRemoveOfferClicked = viewModel::onRemoveOfferClicked
+							)
+						} else {
+							ReservationList(
+								reservations = accountState.reservations,
+								user = accountState.user,
+								filterState = filterState,
+								onGiverReservationClicked = viewModel::onGiverReservationClicked,
+								onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
+								onCancelReservationClicked = viewModel::onCancelReservationClicked
+							)
+						}
 
-                        LabelText(
-                            text = stringResource(
-                                id = if (accountState.user is Giver) R.string.home_screen_giver_reservation_list_label
-                                else R.string.home_screen_seeker_offer_list_label
-                            ),
-                            fontSize = 20.sp,
-                            modifier = Modifier.align(Alignment.Start)
-                        )
+						LabelText(
+							text = stringResource(
+								id = if (accountState.user is Giver) R.string.home_screen_giver_reservation_list_label
+								else R.string.home_screen_seeker_offer_list_label
+							),
+							fontSize = 20.sp,
+							modifier = Modifier.align(Alignment.Start)
+						)
 
-                        if (accountState.user is Giver) {
-                            ReservationList(
-                                accountState = accountState,
-                                filterState = filterState,
-                                onGiverReservationClicked = viewModel::onGiverReservationClicked,
-                                onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
-                                onCancelReservationClicked = viewModel::onCancelReservationClicked
-                            )
-                        } else {
-                            OfferList(
-                                accountState = accountState,
-                                filterState = filterState,
-                                onGiverOfferClicked = viewModel::onGiverOfferClicked,
-                                onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
-                                onRemoveOfferClicked = viewModel::onRemoveOfferClicked
-                            )
-                        }
+						if (accountState.user is Giver) {
+							ReservationList(
+								reservations = accountState.reservations,
+								user = accountState.user,
+								filterState = filterState,
+								onGiverReservationClicked = viewModel::onGiverReservationClicked,
+								onSeekerReservationClicked = viewModel::onSeekerReservationClicked,
+								onCancelReservationClicked = viewModel::onCancelReservationClicked
+							)
+						} else {
+							OfferList(
+								offers = accountState.offers,
+								user = accountState.user,
+								filterState = filterState,
+								onGiverOfferClicked = viewModel::onGiverOfferClicked,
+								onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
+								onRemoveOfferClicked = viewModel::onRemoveOfferClicked
+							)
+						}
 
-                        LabelText(
-                            text = stringResource(id = R.string.home_screen_seeking_list_label),
-                            fontSize = 20.sp,
-                            modifier = Modifier.align(Alignment.Start)
-                        )
+						LabelText(
+							text = stringResource(id = R.string.home_screen_seeking_list_label),
+							fontSize = 20.sp,
+							modifier = Modifier.align(Alignment.Start)
+						)
 
-                        SeekingList(
-                            seekingList = user.seekings,
-                            filterState = filterState,
-                            onSeekingClicked = viewModel::onSeekingClicked
-                        )
-                    }
-                }
-            }
+						SeekingList(
+							seekings = accountState.seekings,
+							filterState = filterState,
+							onSeekingClicked = viewModel::onSeekingClicked
+						)
+					}
+				}
+			}
 
-        }
-    }
+		}
+	}
 
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+	HomeScreen()
 }

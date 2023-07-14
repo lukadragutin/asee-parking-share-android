@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import hr.asee.android.template.compose.config.Config
 import hr.asee.android.template.compose.navigation.Router
 import hr.asee.android.template.compose.ui.common.model.Message
-import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.UiState
 import hr.asee.android.template.compose.ui.main.model.BottomNavBarState
 import hr.asee.android.template.compose.util.log.Logger
@@ -24,8 +23,8 @@ abstract class BaseViewModel : ViewModel() {
     @Inject
     protected lateinit var logger: Logger
 
-    protected val _accountState = MutableStateFlow(AccountState())
-    val accountState: StateFlow<AccountState> = _accountState
+//    protected val _accountState = MutableStateFlow(AccountState())
+//    val accountState: StateFlow<AccountState> = _accountState
 
     protected val _bottomNavBarState = MutableStateFlow(BottomNavBarState(items = Config.BOTTOM_NAV_BAR_ITEMS, onElementClicked = this::onNavElementClicked))
     val bottomNavBarState: StateFlow<BottomNavBarState> = _bottomNavBarState

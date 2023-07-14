@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation(Dependencies.Kotlin.coroutines)
     implementation(Dependencies.Kotlin.annotation)
+    implementation(Dependencies.threetenbp)
     coreTest()
     coreInstrumentedTest()
 }

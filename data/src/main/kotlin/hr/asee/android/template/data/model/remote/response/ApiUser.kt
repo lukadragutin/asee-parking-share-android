@@ -13,8 +13,8 @@ data class ApiUser(
     @SerializedName("activated") val activated: Boolean,
     @SerializedName("langKey") val langKey: String,
     @SerializedName("createdBy") val createdBy: String,
-    @SerializedName("createdDate") val createdDate: String,
+    @SerializedName("createdDate") val createdDate: String?,
     @SerializedName("lastModifiedBy") val lastModifiedBy: String,
-    @SerializedName("lastModifiedDate") val lastModifiedDate: String,
+    @SerializedName("lastModifiedDate") val lastModifiedDate: String?,
     @SerializedName("authorities") val authorities: List<String>
 ): SerializableDataModel

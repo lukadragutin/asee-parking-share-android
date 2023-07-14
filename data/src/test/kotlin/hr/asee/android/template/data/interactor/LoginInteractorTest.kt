@@ -13,9 +13,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -35,7 +35,7 @@ class LoginInteractorTest {
     @Test
     fun `invoke should return valid ApiLoginResponse response when invoked`(): Unit = runBlocking {
         // Arrange
-        val mockApiRequest = ApiLoginRequest(email = "email", password = "password")
+        val mockApiRequest = ApiLoginRequest(username = "email", password = "password")
         val mockApiResponse = ApiAccessToken(accessToken = "token")
         `when`(reqResService.login(mockApiRequest)).thenReturn(mockApiResponse)
 
@@ -49,7 +49,7 @@ class LoginInteractorTest {
     @Test
     fun `invoke should resolve throwable to an Exception when API service throws error`(): Unit = runBlocking {
         // Arrange
-        val mockApiRequest = ApiLoginRequest(email = "email", password = "password")
+        val mockApiRequest = ApiLoginRequest(username = "email", password = "password")
         val mockErrorJson = "{\"error\": \"Missing password\"}"
         val mockApiThrowable = HttpException(
             Response.error<ApiError>(

@@ -4,7 +4,7 @@ import hr.asee.android.template.data.model.remote.response.ApiOffer
 import hr.asee.android.template.domain.mapper.OfferMapper
 import hr.asee.android.template.domain.mapper.ParkingSpaceMapper
 import hr.asee.android.template.domain.model.common.service.Offer
-import java.time.LocalDateTime
+import org.threeten.bp.ZonedDateTime
 
 class OfferMapperImpl(
     private val parkingSpaceMapper: ParkingSpaceMapper
@@ -13,8 +13,8 @@ class OfferMapperImpl(
     override fun toOffer(apiOffer: ApiOffer): Offer {
         return Offer(
             id = apiOffer.id,
-            dateStart = LocalDateTime.parse(apiOffer.dateStart),
-            dateEnd = LocalDateTime.parse(apiOffer.dateEnd),
+            dateStart = ZonedDateTime.parse(apiOffer.dateStart).toLocalDateTime(),
+            dateEnd = ZonedDateTime.parse(apiOffer.dateEnd).toLocalDateTime(),
             parkingSpace = parkingSpaceMapper.toParkingSpace(apiOffer.parkingSpace)
         )
     }

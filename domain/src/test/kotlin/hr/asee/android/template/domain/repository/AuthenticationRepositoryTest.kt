@@ -1,10 +1,12 @@
 package hr.asee.android.template.domain.repository
 
+import hr.asee.android.template.data.interactor.GetAccountInteractor
 import hr.asee.android.template.data.interactor.LoginInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.data.model.remote.body.ApiLoginRequest
 import hr.asee.android.template.data.model.remote.response.ApiAccessToken
 import hr.asee.android.template.domain.mapper.AccessTokenMapper
+import hr.asee.android.template.domain.mapper.UserMapper
 import hr.asee.android.template.domain.model.common.AccessToken
 import hr.asee.android.template.domain.repository.impl.AuthenticationRepositoryImpl
 import hr.asee.android.template.domain.util.MockitoHelper
@@ -12,9 +14,9 @@ import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 
 class AuthenticationRepositoryTest {
 
@@ -31,7 +33,9 @@ class AuthenticationRepositoryTest {
         authenticationRepository = AuthenticationRepositoryImpl(
             loginInteractor = loginInteractor,
             accessTokenMapper = accessTokenMapper,
-            storeAccessTokenInteractor = storeAccessTokenInteractor
+            storeAccessTokenInteractor = storeAccessTokenInteractor,
+            getAccountInteractor = mock(GetAccountInteractor::class.java),
+            userMapper = mock(UserMapper::class.java)
         )
     }
 
@@ -43,7 +47,7 @@ class AuthenticationRepositoryTest {
         val token = "token"
         val mockApiAccessToken = ApiAccessToken(accessToken = token)
         val expectedAccessToken = AccessToken(value = token)
-        val mockApiRequest = ApiLoginRequest(email = email, password = password)
+        val mockApiRequest = ApiLoginRequest(username = email, password = password)
         `when`(loginInteractor(mockApiRequest)).thenReturn(mockApiAccessToken)
         `when`(accessTokenMapper.toAccessToken(mockApiAccessToken)).thenReturn(expectedAccessToken)
 

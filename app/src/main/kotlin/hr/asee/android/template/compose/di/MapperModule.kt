@@ -5,7 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import hr.asee.android.template.data.interactor.GetUserByLoginInteractor
 import hr.asee.android.template.domain.mapper.AccessTokenMapper
 import hr.asee.android.template.domain.mapper.OfferMapper
 import hr.asee.android.template.domain.mapper.ParkingSpaceMapper
@@ -36,12 +35,7 @@ object MapperModule {
     @Provides
     @ViewModelScoped
     fun provideUserCompactMapper(
-        userMapper: UserMapper,
-        getUserByLoginInteractor: GetUserByLoginInteractor
-    ): UserCompactMapper = UserCompactMapperImpl(
-        getUserByLoginInteractor = getUserByLoginInteractor,
-        userMapper = userMapper
-    )
+    ): UserCompactMapper = UserCompactMapperImpl()
 
     @Provides
     @ViewModelScoped

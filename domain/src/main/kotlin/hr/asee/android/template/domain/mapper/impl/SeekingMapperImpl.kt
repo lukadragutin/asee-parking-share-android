@@ -4,7 +4,7 @@ import hr.asee.android.template.data.model.remote.response.ApiSeeking
 import hr.asee.android.template.domain.mapper.SeekingMapper
 import hr.asee.android.template.domain.mapper.UserCompactMapper
 import hr.asee.android.template.domain.model.common.service.Seeking
-import java.time.LocalDateTime
+import org.threeten.bp.ZonedDateTime
 
 class SeekingMapperImpl(
     private val userCompactMapper: UserCompactMapper
@@ -13,8 +13,8 @@ class SeekingMapperImpl(
     override fun toSeeking(apiSeeking: ApiSeeking): Seeking {
         return Seeking(
             id = apiSeeking.id,
-            dateStart = LocalDateTime.parse(apiSeeking.dateStart),
-            dateEnd = LocalDateTime.parse(apiSeeking.dateEnd),
+            dateStart = ZonedDateTime.parse(apiSeeking.dateStart).toLocalDateTime(),
+            dateEnd = ZonedDateTime.parse(apiSeeking.dateEnd).toLocalDateTime(),
             seeker = userCompactMapper.toUser(apiSeeking.seeker)
         )
     }

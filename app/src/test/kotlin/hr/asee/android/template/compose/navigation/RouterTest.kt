@@ -2,7 +2,6 @@ package hr.asee.android.template.compose.navigation
 
 import hr.asee.android.template.compose.delegate.BottomNavBarDelegate
 import hr.asee.android.template.compose.delegate.NavigationDelegate
-import hr.asee.android.template.compose.navigation.directions.PostLoginDirection
 import hr.asee.android.template.compose.navigation.directions.PreLoginDirection
 import hr.asee.android.template.compose.navigation.impl.RouterImpl
 import hr.asee.android.template.compose.util.MockitoHelper
@@ -25,10 +24,7 @@ class RouterTest {
         @Suppress("unused")
         @JvmStatic
         fun navigationDirectionsAndCommandsMethodSource(): Stream<Arguments> {
-            return Stream.of(
-                Arguments.of(NavigationItem.NavigationDirection.USERS, PostLoginDirection.Users),
-                Arguments.of(NavigationItem.NavigationDirection.API_INFO, PostLoginDirection.ApiInfo),
-            )
+            return Stream.of()
         }
     }
 

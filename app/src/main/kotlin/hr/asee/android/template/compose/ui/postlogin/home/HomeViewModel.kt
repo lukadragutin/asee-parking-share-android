@@ -1,37 +1,48 @@
 package hr.asee.android.template.compose.ui.postlogin.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.config.Config.MAX_DATE
-import hr.asee.android.template.compose.config.Config.MIN_DATE
 import hr.asee.android.template.compose.delegate.BottomNavBarDelegate
 import hr.asee.android.template.compose.ui.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
-import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
+import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.AlertDialogState
-import hr.asee.android.template.domain.model.common.service.Reservation
+import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.home.model.HomeMessages
+import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.Seeker
+import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.model.common.resource.ErrorData
 import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
+import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.domain.model.common.service.Seeking
-import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
 import hr.asee.android.template.domain.usecase.DateSelectUseCase
-import hr.asee.android.template.domain.usecase.GetOffersUseCase
-import hr.asee.android.template.domain.usecase.GetParkingSpacesUseCase
-import hr.asee.android.template.domain.usecase.GetReservationsUseCase
-import hr.asee.android.template.domain.usecase.GetSeekingsUseCase
+import hr.asee.android.template.domain.usecase.GetAccountUseCase
+import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
+import hr.asee.android.template.domain.usecase.offering.GetOfferingsForGiverUseCase
+import hr.asee.android.template.domain.usecase.offering.GetOffersUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpaceForGiverUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpacesUseCase
+import hr.asee.android.template.domain.usecase.reservation.GetReservationsForGiverUseCase
+import hr.asee.android.template.domain.usecase.reservation.GetReservationsForSeekerUseCase
+import hr.asee.android.template.domain.usecase.seeking.GetSeekingsForSeekerUseCase
+import hr.asee.android.template.domain.usecase.seeking.GetSeekingsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 open class HomeViewModel @Inject constructor(
+    private val getAccountUseCase: GetAccountUseCase,
     private val getSeekingsUseCase: GetSeekingsUseCase,
+    private val getSeekingsForSeekerUseCase: GetSeekingsForSeekerUseCase,
     private val getOffersUseCase: GetOffersUseCase,
-    private val getReservationsUseCase: GetReservationsUseCase,
-    private val getParkingSpacesUseCase: GetParkingSpacesUseCase,
+    private val getOfferingsForGiverUseCase: GetOfferingsForGiverUseCase,
+    private val getReservationsForGiverUseCase: GetReservationsForGiverUseCase,
+    private val getReservationsForSeekerUseCase: GetReservationsForSeekerUseCase,
+    private val getParkingSpaceForGiverUseCase: GetParkingSpaceForGiverUseCase,
     private val dateSelectUseCase: DateSelectUseCase,
     private val getAllBottomNavItemsUseCase: GetAllBottomNavItemsUseCase,
     val bottomNavBarDelegate: BottomNavBarDelegate
@@ -44,6 +55,9 @@ open class HomeViewModel @Inject constructor(
         }
     }
 
+    private val _accountState = MutableStateFlow(AccountState())
+    val accountState: StateFlow<AccountState> = _accountState
+
     private val _filterState = MutableStateFlow(DatePickerState())
     val filterState: StateFlow<DatePickerState> = _filterState
 
@@ -54,21 +68,121 @@ open class HomeViewModel @Inject constructor(
     val removeOfferDialogState: StateFlow<AlertDialogState> = _removeOfferDialogState
 
     private suspend fun getAccount() {
+        getAccountInternal()
+    }
+
+    private suspend fun getAccountInternal() {
+        getAccountUseCase().onFinished(
+            successCallback = this::getAccountSuccess,
+            errorCallback = this::getAccountError
+        )
+    }
+
+    private fun getAccountSuccess(user: User) {
+        _accountState.update { it.copy(user = user) }
+
+        runSuspend {
+            when(user) {
+                is Giver -> initGiver(user)
+                is Seeker -> initSeeker(user)
+                else -> initAdmin(user)
+            }
+        }
+    }
+
+    private suspend fun initGiver(giver: Giver) {
         getSeekingsInternal()
+        getOfferingsForGiverInternal(giverId = giver.id)
+        getReservationForGiverInternal(giverId = giver.id)
+        getParkingSpaceForGiverInternal(giverId = giver.id)
+    }
+
+    private suspend fun initSeeker(seeker: Seeker) {
+        getSeekingsForSeekerInternal(seekerId = seeker.id)
         getOffersInternal()
-        getReservationsInternal()
-        getParkingSpacesInternal()
+        getReservationsForSeekerInternal(seekerId = seeker.id)
+    }
+
+    private suspend fun getOfferingsForGiverInternal(giverId: Int) {
+        getOfferingsForGiverUseCase(giverId).onFinished(
+            this::getOfferingsForGiverSuccess,
+            this::getOfferingsForGiverError
+        )
+    }
+
+    private fun getOfferingsForGiverSuccess(offerings: List<Offer>) {
+        _accountState.update { _accountState.value.copy(offers = offerings.toSet()) }
+    }
+
+    private fun getOfferingsForGiverError(errorData: ErrorData) {
+        showError(CommonMessages.UNEXPECTED_ERROR)
+    }
+
+
+    private suspend fun getReservationForGiverInternal(giverId: Int) {
+        getReservationsForGiverUseCase(giverId).onFinished(
+            this::getReservationsForGiverSuccess,
+            this::getReservationsForGiverError
+        )
+    }
+
+    private fun getReservationsForGiverSuccess(reservations: List<Reservation>) {
+        _accountState.update { _accountState.value.copy(reservations = reservations.toSet()) }
+    }
+
+    private fun getReservationsForGiverError(errorData: ErrorData) {
+        showError(CommonMessages.UNEXPECTED_ERROR)
+    }
+
+    private suspend fun getSeekingsForSeekerInternal(seekerId: Int) {
+        getSeekingsForSeekerUseCase(seekerId).onFinished(
+            this::getSeekingsForSeekerSuccess,
+            this::getSeekingsForSeekerError
+        )
+    }
+
+    private fun getSeekingsForSeekerSuccess(seekings: List<Seeking>) {
+        _accountState.update { _accountState.value.copy(seekings = seekings.toSet()) }
+    }
+
+    private fun getSeekingsForSeekerError(errorData: ErrorData) {
+        showError(CommonMessages.UNEXPECTED_ERROR)
+    }
+
+    private suspend fun getReservationsForSeekerInternal(seekerId: Int) {
+        getReservationsForSeekerUseCase(seekerId).onFinished(
+            this::getReservationsForSeekerSuccess,
+            this::getReservationsForSeekerError
+        )
+    }
+
+    private fun getReservationsForSeekerSuccess(reservations: List<Reservation>) {
+        _accountState.update { _accountState.value.copy(reservations = reservations.toSet()) }
+    }
+
+    private fun getReservationsForSeekerError(errorData: ErrorData) {
+        showError(CommonMessages.UNEXPECTED_ERROR)
+    }
+
+    private fun initAdmin(user: User) {
+        //
+    }
+
+    private fun getAccountError(errorData: ErrorData) {
+        when(errorData.errorType) {
+            GetAccountUseCase.GetAccountError.GENERAL_GET_ACCOUNT_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
+        }
     }
 
     private suspend fun getSeekingsInternal() {
-        getSeekingsUseCase(MIN_DATE, MAX_DATE).onFinished(
+        getSeekingsUseCase().onFinished(
             successCallback = this::getSeekingsSuccess,
             errorCallback = this::getSeekingsError
         )
     }
 
-    private suspend fun getSeekingsSuccess() {
-        _accountState.update { it.copy(seekings = (getSeekingsUseCase(MIN_DATE, MAX_DATE).data as MutableList<Seeking>?)?.toMutableSet()) }
+    private fun getSeekingsSuccess(seekings: List<Seeking>) {
+        _accountState.update { it.copy(seekings = seekings.toMutableSet()) }
     }
 
     private fun getSeekingsError(errorData: ErrorData) {
@@ -78,14 +192,14 @@ open class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getOffersInternal() {
-        getOffersUseCase(MIN_DATE, MAX_DATE).onFinished(
+        getOffersUseCase().onFinished(
             successCallback = this::getOffersSuccess,
             errorCallback = this::getOffersError
         )
     }
 
-    private suspend fun getOffersSuccess() {
-        _accountState.update { it.copy(offers = (getOffersUseCase(MIN_DATE, MAX_DATE).data as MutableList<Offer>).toMutableSet()) }
+    private fun getOffersSuccess(offers: List<Offer>) {
+        _accountState.update { it.copy(offers = offers.toMutableSet()) }
     }
 
     private fun getOffersError(errorData: ErrorData) {
@@ -94,32 +208,15 @@ open class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getReservationsInternal() {
-        getReservationsUseCase().onFinished(
-            successCallback = this::getReservationsSuccess,
-            errorCallback = this::getReservationsError
-        )
-    }
-
-    private suspend fun getReservationsSuccess() {
-        _accountState.update { it.copy(reservations = (getReservationsUseCase().data as MutableList<Reservation>).toMutableSet()) }
-    }
-
-    private fun getReservationsError(errorData: ErrorData) {
-        when (errorData.errorType) {
-            GetReservationsUseCase.GetReservationsError.GENERAL_GET_RESERVATIONS_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
-        }
-    }
-
-    private suspend fun getParkingSpacesInternal() {
-        getParkingSpacesUseCase().onFinished(
+    private suspend fun getParkingSpaceForGiverInternal(giverId: Int) {
+        getParkingSpaceForGiverUseCase(giverId).onFinished(
             successCallback = this::getParkingSpacesSuccess,
             errorCallback = this::getParkingSpacesError
         )
     }
 
-    private suspend fun getParkingSpacesSuccess() {
-        _accountState.update { it.copy(parkingSpaces = (getParkingSpacesUseCase().data as MutableList<ParkingSpace>).toMutableSet()) }
+    private fun getParkingSpacesSuccess(parkingSpace: ParkingSpace) {
+        _accountState.update { it.copy(parkingSpaces = setOf(parkingSpace)) }
     }
 
     private fun getParkingSpacesError(errorData: ErrorData) {
@@ -236,7 +333,7 @@ open class HomeViewModel @Inject constructor(
     }
 
     fun onSeekingClicked() {
-        /* TODO */
+        // TODO
     }
 
     fun offerParking() {

@@ -28,9 +28,6 @@ class NavigationDelegateTest {
         @JvmStatic
         fun navigationCommandsDataSource(): Stream<Arguments> = Stream.of(
             Arguments.of(PostLoginDirection.Root),
-            Arguments.of(PostLoginDirection.ApiInfo),
-            Arguments.of(PostLoginDirection.Users),
-            Arguments.of(PreLoginDirection.Root),
             Arguments.of(PreLoginDirection.Login),
             Arguments.of(PreLoginDirection.Onboarding)
         )

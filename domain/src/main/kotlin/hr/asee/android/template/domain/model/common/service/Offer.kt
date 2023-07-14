@@ -1,6 +1,6 @@
 package hr.asee.android.template.domain.model.common.service
 
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 class Offer(
     val id: Int = generateId(),
@@ -10,6 +10,8 @@ class Offer(
 ) {
 
     companion object {
+        val EMPTY = Offer(dateStart = LocalDateTime.now(), dateEnd = LocalDateTime.now(), parkingSpace = ParkingSpace.EMPTY)
+
         private var latestId = 1
 
         fun generateId(): Int {

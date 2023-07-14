@@ -3,7 +3,7 @@ package hr.asee.android.template.domain.model.common
 import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.domain.model.common.service.Seeking
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 sealed class User(
     val id: Int,
@@ -35,6 +35,8 @@ sealed class User(
             user.lastName = newName
             return user
         }
+
+        val EMPTY = Seeker(0, "", "", "", false, "", "", LocalDateTime.now(), "", LocalDateTime.now(), listOf(), LocalDateTime.now())
     }
 
     var seekings: MutableSet<Seeking> = mutableSetOf()

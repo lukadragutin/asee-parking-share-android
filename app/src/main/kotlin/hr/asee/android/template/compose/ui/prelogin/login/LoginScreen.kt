@@ -68,7 +68,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                 LoginScreenContent(
                     emailState = emailState,
                     passwordState = passwordState,
-                    onLoginClicked = viewModel::onLoginSuccessful,
+                    onLoginClicked = viewModel::login,
                     onSignUpClicked = viewModel::signUp
                 )
             }

@@ -6,17 +6,22 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import hr.asee.android.template.compose.config.Config
-import hr.asee.android.template.data.interactor.AddParkingSpaceInteractor
-import hr.asee.android.template.data.interactor.ChangeParkingLocationInteractor
 import hr.asee.android.template.data.interactor.GetAccountInteractor
-import hr.asee.android.template.data.interactor.GetOffersInteractor
-import hr.asee.android.template.data.interactor.GetParkingSpaceByIdInteractor
-import hr.asee.android.template.data.interactor.GetParkingSpacesInteractor
-import hr.asee.android.template.data.interactor.GetReservationsInteractor
-import hr.asee.android.template.data.interactor.GetSeekingsInteractor
 import hr.asee.android.template.data.interactor.LoginInteractor
-import hr.asee.android.template.data.interactor.PutReservationByIdInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
+import hr.asee.android.template.data.interactor.offering.GetOfferingsForGiverInteractor
+import hr.asee.android.template.data.interactor.offering.GetOffersInteractor
+import hr.asee.android.template.data.interactor.parkingspace.AddParkingSpaceInteractor
+import hr.asee.android.template.data.interactor.parkingspace.ChangeParkingLocationInteractor
+import hr.asee.android.template.data.interactor.parkingspace.GetParkingSpaceByIdInteractor
+import hr.asee.android.template.data.interactor.parkingspace.GetParkingSpaceForGiverInteractor
+import hr.asee.android.template.data.interactor.parkingspace.GetParkingSpacesInteractor
+import hr.asee.android.template.data.interactor.reservation.GetReservationsForGiverInteractor
+import hr.asee.android.template.data.interactor.reservation.GetReservationsForSeekerInteractor
+import hr.asee.android.template.data.interactor.reservation.GetReservationsInteractor
+import hr.asee.android.template.data.interactor.reservation.PutReservationByIdInteractor
+import hr.asee.android.template.data.interactor.seeking.GetSeekingsForSeekerInteractor
+import hr.asee.android.template.data.interactor.seeking.GetSeekingsInteractor
 import hr.asee.android.template.domain.mapper.AccessTokenMapper
 import hr.asee.android.template.domain.mapper.OfferMapper
 import hr.asee.android.template.domain.mapper.ParkingSpaceMapper
@@ -65,12 +70,14 @@ object RepositoryModule {
     fun provideParkingSpaceRepository(
         getParkingSpaceByIdInteractor: GetParkingSpaceByIdInteractor,
         getParkingSpacesInteractor: GetParkingSpacesInteractor,
+        getParkingSpaceForGiverInteractor: GetParkingSpaceForGiverInteractor,
         addParkingSpaceInteractor: AddParkingSpaceInteractor,
         changeParkingLocationInteractor: ChangeParkingLocationInteractor,
         parkingSpaceMapper: ParkingSpaceMapper
     ): ParkingSpaceRepository = ParkingSpaceRepositoryImpl(
         getParkingSpaceByIdInteractor = getParkingSpaceByIdInteractor,
         getParkingSpacesInteractor = getParkingSpacesInteractor,
+        getParkingSpaceForGiverInteractor = getParkingSpaceForGiverInteractor,
         addParkingSpaceInteractor = addParkingSpaceInteractor,
         changeParkingLocationInteractor = changeParkingLocationInteractor,
         parkingSpaceMapper = parkingSpaceMapper
@@ -80,20 +87,26 @@ object RepositoryModule {
     @ViewModelScoped
     fun provideOfferRepository(
         offerMapper: OfferMapper,
-        getOffersInteractor: GetOffersInteractor
+        getOffersInteractor: GetOffersInteractor,
+        getOfferingsForGiverInteractor: GetOfferingsForGiverInteractor
     ): OfferRepository = OfferRepositoryImpl(
         offerMapper = offerMapper,
-        getOffersInteractor = getOffersInteractor
+        getOffersInteractor = getOffersInteractor,
+        getOfferingsForGiverInteractor = getOfferingsForGiverInteractor
     )
 
     @Provides
     @ViewModelScoped
     fun provideReservationRepository(
         getReservationsInteractor: GetReservationsInteractor,
+        getReservationsForGiverInteractor: GetReservationsForGiverInteractor,
+        getReservationsForSeekerInteractor: GetReservationsForSeekerInteractor,
         putReservationByIdInteractor: PutReservationByIdInteractor,
         reservationMapper: ReservationMapper
     ): ReservationRepository = ReservationRepositoryImpl(
         getReservationsInteractor = getReservationsInteractor,
+        getReservationsForGiverInteractor = getReservationsForGiverInteractor,
+        getReservationsForSeekerInteractor = getReservationsForSeekerInteractor,
         putReservationByIdInteractor = putReservationByIdInteractor,
         reservationMapper = reservationMapper
     )
@@ -101,10 +114,12 @@ object RepositoryModule {
     @Provides
     @ViewModelScoped
     fun provideSeekingRepository(
-        getSeekingsInteractor: GetSeekingsInteractor,
-        seekingMapper: SeekingMapper
+		getSeekingsInteractor: GetSeekingsInteractor,
+        getSeekingsForSeekerInteractor: GetSeekingsForSeekerInteractor,
+		seekingMapper: SeekingMapper
     ): SeekingRepository = SeekingRepositoryImpl(
         getSeekingsInteractor = getSeekingsInteractor,
+        getSeekingsForSeekerInteractor = getSeekingsForSeekerInteractor,
         seekingMapper = seekingMapper
     )
 }

@@ -13,24 +13,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.component.button.GrayButton
-import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
 import hr.asee.android.template.domain.model.common.Giver
+import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
 
 @Composable
 fun ParkingSpacesList(
-    accountState: AccountState,
+    parkingSpaces: Set<ParkingSpace>,
+    user: User,
     onParkingSpacesClicked: (Int) -> Unit
 ) {
 
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        accountState.parkingSpaces!!.forEach() { parkingSpace ->
+        parkingSpaces.forEach() { parkingSpace ->
 
-                if (accountState.user is Giver && parkingSpace.owner == accountState.user) {
+                if (user is Giver && parkingSpace.owner.id == user.id) {
                     GrayButton(onClick = { onParkingSpacesClicked(parkingSpace.id) }, label = "Parking " + parkingSpace.location)
 
                     numShown++

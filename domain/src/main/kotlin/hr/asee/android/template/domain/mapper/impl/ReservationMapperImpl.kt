@@ -5,7 +5,7 @@ import hr.asee.android.template.domain.mapper.ParkingSpaceMapper
 import hr.asee.android.template.domain.mapper.ReservationMapper
 import hr.asee.android.template.domain.mapper.UserCompactMapper
 import hr.asee.android.template.domain.model.common.service.Reservation
-import java.time.LocalDateTime
+import org.threeten.bp.ZonedDateTime
 
 class ReservationMapperImpl(
     private val parkingSpaceMapper: ParkingSpaceMapper,
@@ -15,8 +15,8 @@ class ReservationMapperImpl(
     override fun toReservation(apiReservation: ApiReservation): Reservation {
         return Reservation(
             id = apiReservation.id,
-            dateStart = LocalDateTime.parse(apiReservation.dateStart),
-            dateEnd = LocalDateTime.parse(apiReservation.dateEnd),
+            dateStart = ZonedDateTime.parse(apiReservation.dateStart).toLocalDateTime(),
+            dateEnd = ZonedDateTime.parse(apiReservation.dateEnd).toLocalDateTime(),
             cancellationPending = apiReservation.cancellationPending,
             parkingSpace = parkingSpaceMapper.toParkingSpace(apiReservation.parkingSpace),
             seeker = userCompactMapper.toUser(apiReservation.seeker)

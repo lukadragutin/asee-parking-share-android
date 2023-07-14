@@ -1,8 +1,6 @@
 package hr.asee.android.template.domain.model.common
 
-import hr.asee.android.template.domain.model.common.service.Reservation
-import hr.asee.android.template.domain.model.common.service.Seeking
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 class Seeker(
     id: Int = generateId(),
@@ -32,14 +30,6 @@ class Seeker(
         authorities = authorities,
         resetDate = resetDate
     ) {
-
-    fun addSeeking(seeking: Seeking) {
-        seekings.add(seeking)
-    }
-    fun addReservation(reservation: Reservation) {
-        reservations.add(reservation)
-        reservation.parkingSpace.owner?.reservations!!.add(reservation)
-    }
 }
 
 /*-------For testing-------*/

@@ -5,7 +5,7 @@ import hr.asee.android.template.data.model.remote.exception.home.InvalidDatesExc
 import hr.asee.android.template.domain.model.common.resource.EmptyResource
 import hr.asee.android.template.domain.model.common.resource.Resource
 import hr.asee.android.template.domain.usecase.DateSelectUseCase
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 class DateSelectUseCaseImpl: DateSelectUseCase {
 

@@ -8,6 +8,7 @@ import hr.asee.android.template.compose.navigation.NavigationCommand
 object PostLoginDirection {
 
     val Root = object : NavigationCommand {
+
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
         override val destination: String

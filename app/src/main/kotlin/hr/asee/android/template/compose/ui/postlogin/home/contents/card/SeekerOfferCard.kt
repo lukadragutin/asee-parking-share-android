@@ -30,10 +30,10 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
-import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Geomanist
-import java.time.format.DateTimeFormatter
+import hr.asee.android.template.domain.model.common.service.Offer
+import org.threeten.bp.format.DateTimeFormatter
 
 
 @Composable

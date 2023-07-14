@@ -6,11 +6,10 @@ import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.util.empty
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
-import hr.asee.android.template.domain.usecase.AddParkingSpaceUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.AddParkingSpaceUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,10 +25,10 @@ class AddParkingSpaceViewModel @Inject constructor(
     }
 
     fun onAddParkingSpaceClicked(parkingSpace: ParkingSpace) {
-        if (accountState.value.parkingSpaces?.contains(parkingSpace) == true) return
-        val parkingSpaces = accountState.value.parkingSpaces
-        parkingSpaces?.add(parkingSpace)
-        _accountState.update {it.copy(parkingSpaces = parkingSpaces) }
+//        if (accountState.value.parkingSpaces?.contains(parkingSpace) == true) return
+//        val parkingSpaces = accountState.value.parkingSpaces
+//        parkingSpaces?.add(parkingSpace)
+//        _accountState.update {it.copy(parkingSpaces = parkingSpaces) }
 
     }
 

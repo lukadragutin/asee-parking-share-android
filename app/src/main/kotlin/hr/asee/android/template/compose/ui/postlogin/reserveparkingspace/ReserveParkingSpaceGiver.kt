@@ -37,15 +37,13 @@ import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Orange
 import hr.asee.android.template.domain.model.common.service.Reservation
-import hr.asee.android.template.domain.model.common.service.exampleReservation
-import java.time.format.DateTimeFormatter
+import org.threeten.bp.format.DateTimeFormatter
 
 @Composable
 fun ReserveParkingSpaceGiverScreen(viewModel: ReserveParkingSpaceViewModel = hiltViewModel(), reservationId: Int = 0) {
 
-
-    val accountState by viewModel.accountState.collectAsState()
-    val reservation = viewModel.getReservation(accountState, reservationId)
+    viewModel.getReservation(reservationId)
+    val reservation by viewModel.reservationState.collectAsState()
 
     AndroidComposeCodingTemplateTheme(
         darkTheme = (if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) as Boolean
@@ -65,7 +63,7 @@ fun ReserveParkingSpaceGiverScreen(viewModel: ReserveParkingSpaceViewModel = hil
             ) {
 
                 ReserveParkingSpaceGiverScreenContent(
-                    reservation = reservation as Reservation,
+                    reservation = reservation,
                     onRequestBackClicked = viewModel::onRequestBackClicked
                 )
             }
@@ -76,7 +74,7 @@ fun ReserveParkingSpaceGiverScreen(viewModel: ReserveParkingSpaceViewModel = hil
 
 @Composable
 fun ReserveParkingSpaceGiverScreenContent(
-    reservation: Reservation = exampleReservation,
+    reservation: Reservation,
     onRequestBackClicked: (Reservation) -> Unit
 ) {
 
@@ -91,8 +89,8 @@ fun ReserveParkingSpaceGiverScreenContent(
         ParkingSpacedDisplay(
             parkingSpace = reservation.parkingSpace,
             modifier = Modifier
-                .height(275.dp)
-                .width(275.dp)
+                    .height(275.dp)
+                    .width(275.dp)
         )
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -111,8 +109,8 @@ fun ReserveParkingSpaceGiverScreenContent(
             Column {
                 Card(
                     modifier = Modifier
-                        .width(93.dp)
-                        .height(16.dp),
+                            .width(93.dp)
+                            .height(16.dp),
                     //.padding(start = 25.dp),
                     backgroundColor = AssecoBlue,
                     shape = RoundedCornerShape(
@@ -124,8 +122,8 @@ fun ReserveParkingSpaceGiverScreenContent(
                 ) {}
                 Card(
                     modifier = Modifier
-                        .width(93.dp)
-                        .height(74.dp),
+                            .width(93.dp)
+                            .height(74.dp),
                     //.padding(start = 25.dp),
                     backgroundColor = MaterialTheme.colors.onPrimary,
                     shape = RoundedCornerShape(
@@ -167,8 +165,8 @@ fun ReserveParkingSpaceGiverScreenContent(
             Column {
                 Card(
                     modifier = Modifier
-                        .width(93.dp)
-                        .height(16.dp),
+                            .width(93.dp)
+                            .height(16.dp),
                     backgroundColor = Orange,
                     shape = RoundedCornerShape(
                         topStart = 15.dp,
@@ -179,8 +177,8 @@ fun ReserveParkingSpaceGiverScreenContent(
                 ) {}
                 Card(
                     modifier = Modifier
-                        .width(93.dp)
-                        .height(74.dp),
+                            .width(93.dp)
+                            .height(74.dp),
                     backgroundColor = MaterialTheme.colors.onPrimary,
                     shape = RoundedCornerShape(
                         topStart = 0.dp,

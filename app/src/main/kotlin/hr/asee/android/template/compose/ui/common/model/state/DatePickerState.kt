@@ -1,7 +1,6 @@
 package hr.asee.android.template.compose.ui.common.model.state
 
-import java.time.LocalDate
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 data class DatePickerState(
     var dateStart: LocalDateTime? = null,

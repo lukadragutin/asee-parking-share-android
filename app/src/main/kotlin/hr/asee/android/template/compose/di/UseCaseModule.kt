@@ -11,104 +11,144 @@ import hr.asee.android.template.domain.repository.OfferRepository
 import hr.asee.android.template.domain.repository.ParkingSpaceRepository
 import hr.asee.android.template.domain.repository.ReservationRepository
 import hr.asee.android.template.domain.repository.SeekingRepository
-import hr.asee.android.template.domain.usecase.AddParkingSpaceUseCase
-import hr.asee.android.template.domain.usecase.ChangeParkingLocationUseCase
-import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
 import hr.asee.android.template.domain.usecase.DateSelectUseCase
 import hr.asee.android.template.domain.usecase.GetAccountUseCase
-import hr.asee.android.template.domain.usecase.GetOffersUseCase
-import hr.asee.android.template.domain.usecase.GetParkingSpaceByIdUseCase
-import hr.asee.android.template.domain.usecase.GetParkingSpacesUseCase
-import hr.asee.android.template.domain.usecase.GetReservationsUseCase
-import hr.asee.android.template.domain.usecase.GetSeekingsUseCase
+import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
 import hr.asee.android.template.domain.usecase.LoginUseCase
-import hr.asee.android.template.domain.usecase.PutReservationByIdUseCase
-import hr.asee.android.template.domain.usecase.impl.AddParkingSpaceUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.ChangeParkingLocationUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.GetAllBottomNavItemsUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.DateSelectUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.GetAccountUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.GetOffersUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.GetParkingSpaceByIdUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.GetParkingSpacesUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.GetReservationsUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.GetSeekingsUseCaseImpl
+import hr.asee.android.template.domain.usecase.impl.GetAllBottomNavItemsUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.LoginUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.PutReservationByIdUseCaseImpl
+import hr.asee.android.template.domain.usecase.offering.GetOfferingsForGiverUseCase
+import hr.asee.android.template.domain.usecase.offering.GetOffersUseCase
+import hr.asee.android.template.domain.usecase.offering.impl.GetOfferingsForGiverUseCaseImpl
+import hr.asee.android.template.domain.usecase.offering.impl.GetOffersUseCaseImpl
+import hr.asee.android.template.domain.usecase.parkingspace.AddParkingSpaceUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.ChangeParkingLocationUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpaceByIdUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpaceForGiverUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpacesUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.impl.AddParkingSpaceUseCaseImpl
+import hr.asee.android.template.domain.usecase.parkingspace.impl.ChangeParkingLocationUseCaseImpl
+import hr.asee.android.template.domain.usecase.parkingspace.impl.GetParkingSpaceByIdUseCaseImpl
+import hr.asee.android.template.domain.usecase.parkingspace.impl.GetParkingSpaceForGiverUseCaseImpl
+import hr.asee.android.template.domain.usecase.parkingspace.impl.GetParkingSpacesUseCaseImpl
+import hr.asee.android.template.domain.usecase.reservation.GetReservationsForGiverUseCase
+import hr.asee.android.template.domain.usecase.reservation.GetReservationsForSeekerUseCase
+import hr.asee.android.template.domain.usecase.reservation.GetReservationsUseCase
+import hr.asee.android.template.domain.usecase.reservation.PutReservationByIdUseCase
+import hr.asee.android.template.domain.usecase.reservation.impl.GetReservationsForGiverUseCaseImpl
+import hr.asee.android.template.domain.usecase.reservation.impl.GetReservationsForSeekerUseCaseImpl
+import hr.asee.android.template.domain.usecase.reservation.impl.GetReservationsUseCaseImpl
+import hr.asee.android.template.domain.usecase.reservation.impl.PutReservationByIdUseCaseImpl
+import hr.asee.android.template.domain.usecase.seeking.GetSeekingsForSeekerUseCase
+import hr.asee.android.template.domain.usecase.seeking.GetSeekingsUseCase
+import hr.asee.android.template.domain.usecase.seeking.impl.GetSeekingsForSeekerUseCaseImpl
+import hr.asee.android.template.domain.usecase.seeking.impl.GetSeekingsUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object UseCaseModule {
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetAllBottomNavItemsUseCase(navigationItemsRepository: NavigationItemsRepository): GetAllBottomNavItemsUseCase {
-        return GetAllBottomNavItemsUseCaseImpl(navigationItemsRepository = navigationItemsRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetAllBottomNavItemsUseCase(navigationItemsRepository: NavigationItemsRepository): GetAllBottomNavItemsUseCase {
+		return GetAllBottomNavItemsUseCaseImpl(navigationItemsRepository = navigationItemsRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideLoginUseCase(authenticationRepository: AuthenticationRepository): LoginUseCase {
-        return LoginUseCaseImpl(authenticationRepository = authenticationRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideLoginUseCase(authenticationRepository: AuthenticationRepository): LoginUseCase {
+		return LoginUseCaseImpl(authenticationRepository = authenticationRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetAccountUseCase(authenticationRepository: AuthenticationRepository): GetAccountUseCase {
-        return GetAccountUseCaseImpl(authenticationRepository = authenticationRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetAccountUseCase(authenticationRepository: AuthenticationRepository): GetAccountUseCase {
+		return GetAccountUseCaseImpl(authenticationRepository = authenticationRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideFilterByDateUseCase(): DateSelectUseCase {
-        return DateSelectUseCaseImpl()
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideFilterByDateUseCase(): DateSelectUseCase {
+		return DateSelectUseCaseImpl()
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetSeekingsUseCase(seekingRepository: SeekingRepository): GetSeekingsUseCase {
-        return GetSeekingsUseCaseImpl(seekingRepository = seekingRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetSeekingsUseCase(seekingRepository: SeekingRepository): GetSeekingsUseCase {
+		return GetSeekingsUseCaseImpl(seekingRepository = seekingRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetOffersUseCase(offerRepository: OfferRepository): GetOffersUseCase {
-        return GetOffersUseCaseImpl(offerRepository = offerRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetSeekingsForSeekerUseCase(seekingRepository: SeekingRepository): GetSeekingsForSeekerUseCase {
+		return GetSeekingsForSeekerUseCaseImpl(seekingRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetReservationsUseCase(reservationRepository: ReservationRepository): GetReservationsUseCase {
-        return GetReservationsUseCaseImpl(reservationRepository = reservationRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetOffersUseCase(offerRepository: OfferRepository): GetOffersUseCase {
+		return GetOffersUseCaseImpl(offerRepository = offerRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetParkingSpacesUseCase(parkingSpaceRepository: ParkingSpaceRepository): GetParkingSpacesUseCase {
-        return GetParkingSpacesUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetOfferingsForGiverUseCase(offerRepository: OfferRepository): GetOfferingsForGiverUseCase {
+		return GetOfferingsForGiverUseCaseImpl(offerRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideGetParkingSpaceByIdUseCase(parkingSpaceRepository: ParkingSpaceRepository): GetParkingSpaceByIdUseCase {
-        return GetParkingSpaceByIdUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetReservationsUseCase(reservationRepository: ReservationRepository): GetReservationsUseCase {
+		return GetReservationsUseCaseImpl(reservationRepository = reservationRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideAddParkingSpaceUseCase(parkingSpaceRepository: ParkingSpaceRepository): AddParkingSpaceUseCase {
-        return AddParkingSpaceUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetReservationsForGiverUseCase(reservationRepository: ReservationRepository): GetReservationsForGiverUseCase {
+		return GetReservationsForGiverUseCaseImpl(reservationRepository = reservationRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun provideChangeParkingLocationUseCase(parkingSpaceRepository: ParkingSpaceRepository): ChangeParkingLocationUseCase {
-        return ChangeParkingLocationUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetReservationsForSeekerUseCase(reservationRepository: ReservationRepository): GetReservationsForSeekerUseCase {
+		return GetReservationsForSeekerUseCaseImpl(reservationRepository)
+	}
 
-    @Provides
-    @ViewModelScoped
-    fun providePutReservationByIdUseCase(reservationRepository: ReservationRepository): PutReservationByIdUseCase {
-        return PutReservationByIdUseCaseImpl(reservationRepository = reservationRepository)
-    }
+	@Provides
+	@ViewModelScoped
+	fun provideGetParkingSpacesUseCase(parkingSpaceRepository: ParkingSpaceRepository): GetParkingSpacesUseCase {
+		return GetParkingSpacesUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetParkingSpaceByIdUseCase(parkingSpaceRepository: ParkingSpaceRepository): GetParkingSpaceByIdUseCase {
+		return GetParkingSpaceByIdUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetParkingSpaceForGiverUseCase(parkingSpaceRepository: ParkingSpaceRepository): GetParkingSpaceForGiverUseCase {
+		return GetParkingSpaceForGiverUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideAddParkingSpaceUseCase(parkingSpaceRepository: ParkingSpaceRepository): AddParkingSpaceUseCase {
+		return AddParkingSpaceUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideChangeParkingLocationUseCase(parkingSpaceRepository: ParkingSpaceRepository): ChangeParkingLocationUseCase {
+		return ChangeParkingLocationUseCaseImpl(parkingSpaceRepository = parkingSpaceRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun providePutReservationByIdUseCase(reservationRepository: ReservationRepository): PutReservationByIdUseCase {
+		return PutReservationByIdUseCaseImpl(reservationRepository = reservationRepository)
+	}
 }

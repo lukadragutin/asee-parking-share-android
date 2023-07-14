@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
 import hr.asee.android.template.compose.ui.common.component.LabelText
-import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Gray
 import hr.asee.android.template.compose.ui.theme.Orange
-import java.time.format.DateTimeFormatter
+import hr.asee.android.template.domain.model.common.service.Reservation
+import org.threeten.bp.format.DateTimeFormatter
 
 @Composable
 fun SeekerReservationCard(

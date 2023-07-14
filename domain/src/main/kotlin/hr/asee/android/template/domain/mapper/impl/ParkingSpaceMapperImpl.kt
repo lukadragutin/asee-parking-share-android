@@ -3,8 +3,6 @@ package hr.asee.android.template.domain.mapper.impl
 import hr.asee.android.template.data.model.remote.response.ApiParkingSpace
 import hr.asee.android.template.domain.mapper.ParkingSpaceMapper
 import hr.asee.android.template.domain.mapper.UserCompactMapper
-import hr.asee.android.template.domain.model.common.Giver
-import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
 
 class ParkingSpaceMapperImpl(
@@ -15,7 +13,7 @@ class ParkingSpaceMapperImpl(
         return ParkingSpace(
             id = apiParkingSpace.id,
             location = apiParkingSpace.location,
-            owner = userCompactMapper.toUser(apiParkingSpace.owner) as Giver
+            owner = userCompactMapper.toUser(apiParkingSpace.owner)
         )
     }
 
@@ -23,7 +21,7 @@ class ParkingSpaceMapperImpl(
         return ApiParkingSpace(
             id = parkingSpace.id,
             location = parkingSpace.location,
-            owner = userCompactMapper.toApiUserCompact(user = parkingSpace.owner as User)
+            owner = userCompactMapper.toApiUserCompact(user = parkingSpace.owner)
         )
     }
 }

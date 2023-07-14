@@ -8,6 +8,7 @@ object Versions {
     const val sonarqube = "3.3"
     const val kotlin = "1.6.21"
     const val mockito = "4.5.1"
+    const val threetenabp = "1.4.6"
 }
 
 object Dependencies {
@@ -47,6 +48,7 @@ object Dependencies {
     const val timber = "com.jakewharton.timber:timber:4.5.1"
     const val coil = "io.coil-kt:coil-compose:2.0.0"
     const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
+    const val threetenbp = "com.jakewharton.threetenabp:threetenabp:${Versions.threetenabp}"
 
     object AndroidXTest {
         // These versions don't seem to be connected: https://developer.android.com/jetpack/androidx/releases/test

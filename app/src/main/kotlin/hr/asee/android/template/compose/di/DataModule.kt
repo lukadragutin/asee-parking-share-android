@@ -48,10 +48,15 @@ object DataModule {
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
-                .addInterceptor(AccessTokenInterceptor(getAccessTokenInteractor))
                 .build()
             reqresRetrofit.client(client)
         }
+
+        val accessTokenInterceptorClient =   OkHttpClient.Builder()
+                .addInterceptor(AccessTokenInterceptor(getAccessTokenInteractor))
+                .build()
+
+        reqresRetrofit.client(accessTokenInterceptorClient)
 
         return reqresRetrofit.build()
     }

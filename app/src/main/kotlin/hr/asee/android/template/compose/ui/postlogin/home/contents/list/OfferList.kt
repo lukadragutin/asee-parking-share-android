@@ -12,20 +12,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
-import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverOfferCard
 import hr.asee.android.template.compose.ui.postlogin.home.contents.card.SeekerOfferCard
-import hr.asee.android.template.domain.model.common.Giver
-import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
+import hr.asee.android.template.domain.model.common.Giver
 import hr.asee.android.template.domain.model.common.Seeker
+import hr.asee.android.template.domain.model.common.User
+import hr.asee.android.template.domain.model.common.service.Offer
 
 @Composable
 fun OfferList(
-    accountState: AccountState,
+    offers: Set<Offer>,
+    user: User,
     filterState: DatePickerState,
     onGiverOfferClicked: () -> Unit,
     onSeekerOfferClicked: (Int) -> Unit,
@@ -34,10 +34,10 @@ fun OfferList(
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        accountState.offers!!.forEach() { offer ->
+        offers.forEach() { offer ->
             if (!filterState.dateStartSelected!!.isAfter(offer.dateStart) &&
                 !filterState.dateEndSelected!!.isBefore(offer.dateEnd)) {
-                if (accountState.user is Giver && offer.parkingSpace.owner == accountState.user) {
+                if (user is Giver && offer.parkingSpace.owner.id == user.id) {
                     GiverOfferCard(
                         offer = offer,
                         onOfferClicked = onGiverOfferClicked,
@@ -46,7 +46,7 @@ fun OfferList(
 
                     numShown++
                 }
-                else if (accountState.user is Seeker) {
+                else if (user is Seeker) {
                     SeekerOfferCard(
                         offer = offer,
                         onOfferClicked = onSeekerOfferClicked

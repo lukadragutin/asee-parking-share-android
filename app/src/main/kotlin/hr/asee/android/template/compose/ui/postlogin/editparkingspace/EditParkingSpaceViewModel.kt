@@ -3,15 +3,15 @@ package hr.asee.android.template.compose.ui.postlogin.editparkingspace
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.asee.android.template.compose.ui.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
-import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.util.empty
 import hr.asee.android.template.domain.model.common.resource.ErrorData
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
-import hr.asee.android.template.domain.usecase.ChangeParkingLocationUseCase
-import hr.asee.android.template.domain.usecase.GetParkingSpaceByIdUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.ChangeParkingLocationUseCase
+import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpaceByIdUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -20,6 +20,9 @@ class EditParkingSpaceViewModel @Inject constructor(
     private val getParkingSpaceByIdUseCase: GetParkingSpaceByIdUseCase,
     private val changeParkingLocationUseCase: ChangeParkingLocationUseCase
 ) : BaseViewModel() {
+
+    private val _parkingSpaceState = MutableStateFlow(ParkingSpace.EMPTY)
+    val parkingSpaceState = _parkingSpaceState.asStateFlow()
 
     private val _parkingNumberState = MutableStateFlow(InputFieldState(text = String.empty(), onTextChange = this::onParkingNumberTextChange))
     val parkingNumberState: StateFlow<InputFieldState> = _parkingNumberState
@@ -56,14 +59,7 @@ class EditParkingSpaceViewModel @Inject constructor(
         )
     }
 
-    private suspend fun changeParkingLocationSuccess(newParkingSpace: ParkingSpace) {
-        val parkingSpaces = accountState.value.parkingSpaces
-        for (parkingSpace in parkingSpaces!!) {
-            if (parkingSpace.id == newParkingSpace.id) {
-                parkingSpaces.remove(parkingSpace)
-                parkingSpaces.add(newParkingSpace)
-            }
-        }
+    private fun changeParkingLocationSuccess(newParkingSpace: ParkingSpace) {
     }
 
     private fun changeParkingLocationError(errorData: ErrorData) {
@@ -75,13 +71,4 @@ class EditParkingSpaceViewModel @Inject constructor(
     fun onConfirmClicked(parkingSpace: ParkingSpace) {
         runSuspend { changeParkingLocationInternal(parkingSpace.id, parkingSpace) }
     }
-
-    fun getParkingSpace(accountState: AccountState, id: Int): ParkingSpace? {
-        for (parkingSpace in accountState.parkingSpaces!!) {
-            if (parkingSpace.id == id) return parkingSpace
-        }
-
-        return null
-    }
-
 }

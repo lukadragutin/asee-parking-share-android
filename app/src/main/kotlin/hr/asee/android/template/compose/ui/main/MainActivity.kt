@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AndroidComposeCodingTemplateTheme(
-                darkTheme = (if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME) as Boolean
+                darkTheme = (if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME == true)
             ) {
                 ComposeTemplateRoot(
                     navigationDelegate = navigationDelegate
