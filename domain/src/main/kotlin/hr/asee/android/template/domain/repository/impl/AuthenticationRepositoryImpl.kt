@@ -13,7 +13,6 @@ import hr.asee.android.template.domain.mapper.UserMapper
 import hr.asee.android.template.domain.model.common.AccessToken
 import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.repository.AuthenticationRepository
-import java.util.Calendar
 
 class AuthenticationRepositoryImpl(
 	private val loginInteractor: LoginInteractor,
@@ -22,7 +21,7 @@ class AuthenticationRepositoryImpl(
 	private val storeAccessTokenInteractor: StoreAccessTokenInteractor,
 	private val getAccessTokenInteractor: GetAccessTokenInteractor,
 	private val getAccountInteractor: GetAccountInteractor,
-	private val userMapper: UserMapper
+	private val userMapper: UserMapper,
 	private val registerInteractor: RegisterInteractor,
 ) : AuthenticationRepository {
 

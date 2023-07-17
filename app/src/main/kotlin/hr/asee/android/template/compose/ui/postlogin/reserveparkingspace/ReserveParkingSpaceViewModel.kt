@@ -1,7 +1,7 @@
 package hr.asee.android.template.compose.ui.postlogin.reserveparkingspace
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.domain.model.common.service.Offer
 import hr.asee.android.template.domain.model.common.service.Reservation
 import hr.asee.android.template.domain.usecase.reservation.PutReservationByIdUseCase

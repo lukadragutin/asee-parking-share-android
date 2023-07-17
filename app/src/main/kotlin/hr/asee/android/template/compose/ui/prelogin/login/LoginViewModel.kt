@@ -67,6 +67,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signUp() {
-        router.navigateToRegistrationScreen()
+        router.navigateToRegisterScreen()
     }
 }

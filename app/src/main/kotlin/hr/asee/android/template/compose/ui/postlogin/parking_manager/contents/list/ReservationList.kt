@@ -7,9 +7,10 @@ import androidx.compose.ui.unit.dp
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card.GiverReservationCard
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card.SeekerReservationCard
-import hr.asee.android.template.data.model.common.Seeker
-import hr.asee.android.template.data.model.common.User
-import hr.asee.android.template.data.model.common.service.Reservation
+import hr.asee.android.template.domain.model.common.Seeker
+import hr.asee.android.template.domain.model.common.User
+import hr.asee.android.template.domain.model.common.service.Reservation
+
 
 @Composable
 fun ReservationList(
@@ -22,8 +23,8 @@ fun ReservationList(
 
     Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
         reservationList.forEach { reservation ->
-            if (!filterState.dateStartSelected!!.isAfter(reservation.dateStart.toLocalDate()) &&
-                !filterState.dateEndSelected!!.isBefore(reservation.dateEnd.toLocalDate())) {
+            if (!filterState.dateStartSelected!!.isAfter(reservation.dateStart) &&
+                !filterState.dateEndSelected!!.isBefore(reservation.dateEnd)) {
                 if(user is Seeker){
                     SeekerReservationCard(
                         reservation = reservation,

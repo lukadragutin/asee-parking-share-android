@@ -13,8 +13,6 @@ interface ReqresApiService {
         @Body request: ApiRegisterRequest,
     ): Unit
 
-
-
     @POST("/api/login")
     suspend fun login(
         @Body request: ApiLoginRequest,

@@ -4,19 +4,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import hr.asee.android.template.data.model.common.service.Seeking
-import androidx.compose.material.Text
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card.SeekerSeekingCard
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
+import hr.asee.android.template.domain.model.common.service.Seeking
 
 
 @Composable
@@ -29,8 +29,8 @@ fun SeekingList(
 
     Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
         seekingList.forEach { seeking ->
-            if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart.toLocalDate()) &&
-                !filterState.dateEndSelected!!.isBefore(seeking.dateEnd.toLocalDate())
+            if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart) &&
+                !filterState.dateEndSelected!!.isBefore(seeking.dateEnd)
             ) {
                 SeekerSeekingCard(
                     seeking = seeking,

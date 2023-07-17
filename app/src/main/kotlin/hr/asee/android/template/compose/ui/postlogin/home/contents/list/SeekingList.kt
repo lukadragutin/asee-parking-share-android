@@ -27,7 +27,7 @@ fun SeekingList(
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        seekings.forEach() { seeking ->
+        seekings.forEach { seeking ->
             if (!filterState.dateStartSelected!!.isAfter(seeking.dateStart) &&
                 !filterState.dateEndSelected!!.isBefore(seeking.dateEnd)) {
                 SeekingCard(

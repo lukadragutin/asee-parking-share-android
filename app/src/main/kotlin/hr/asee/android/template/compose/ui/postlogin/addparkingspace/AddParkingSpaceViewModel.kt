@@ -1,7 +1,7 @@
 package hr.asee.android.template.compose.ui.postlogin.addparkingspace
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.util.empty
@@ -33,7 +33,7 @@ class AddParkingSpaceViewModel @Inject constructor(
     }
 
     fun getParkingSpace(accountState: AccountState, id: Int): ParkingSpace? {
-        for (parkingSpace in accountState.parkingSpaces!!) {
+        for (parkingSpace in accountState.parkingSpaces) {
             if (parkingSpace.id == id) return parkingSpace
         }
 

@@ -14,7 +14,7 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
 		when (navigationDirection) {
 			NavigationItem.NavigationDirection.LOGOUT -> bottomNavBarDelegate.logout()
 			NavigationItem.NavigationDirection.HOME -> navigate(PostLoginDirection.Home, clearBackstack = false)
-			NavigationItem.NavigationDirection.PARKING_MANAGER -> navigate(PostLoginDirection.ParkingManager, clearBackstack = false)
+			NavigationItem.NavigationDirection.PARKING_MANAGER -> navigateToParkingManagerScreen()
 		}
 	}
 
@@ -49,14 +49,6 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
 
 	override fun navigateBack() {
 		navigationDelegate.navigate(NavigationDelegate.SpecialNavigationAction.GO_BACK)
-	}
-
-	override fun navigateToLoginScreen() {
-		navigate(navigationCommand = PreLoginDirection.Login)
-	}
-
-	override fun navigateToRegistrationScreen() {
-		navigate(navigationCommand = PreLoginDirection.Registration)
 	}
 
 	override fun navigateToHomeScreen() {
@@ -114,10 +106,6 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
 
     override fun navigateToRegisterScreen() {
         navigationDelegate.navigate(navigationCommand = PreLoginDirection.Register)
-    }
-
-    override fun navigateToParkingManagerScreen() {
-        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ParkingManager)
     }
 
     override fun navigateToSeekingRequestScreen() {

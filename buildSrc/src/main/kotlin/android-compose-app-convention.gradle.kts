@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.android.build.api.dsl.Packaging
 import org.gradle.kotlin.dsl.kotlin
 
 plugins {
@@ -37,14 +38,17 @@ android {
         targetCompatibility = Config.javaVersion
     }
 
-    packagingOptions {
-        resources {
-            // "It's perfectly safe to exclude all meta-info files which are there just for documentation and information purposes"
-            // Reference: https://stackoverflow.com/a/68136374/7111456, https://stackoverflow.com/a/47509465/7111456
-            // Basically META-INF will include apk metadata such as licence, dependencies, etc. which are not needed for a normal functioning application.
-            excludes.add("META-INF/*")
-        }
-    }
+	// "It's perfectly safe to exclude all meta-info files which are there just for documentation and information purposes"
+	// Reference: https://stackoverflow.com/a/68136374/7111456, https://stackoverflow.com/a/47509465/7111456
+	// Basically META-INF will include apk metadata such as licence, dependencies, etc. which are not needed for a normal functioning application.
+	fun Packaging.() {
+		resources {
+			// "It's perfectly safe to exclude all meta-info files which are there just for documentation and information purposes"
+			// Reference: https://stackoverflow.com/a/68136374/7111456, https://stackoverflow.com/a/47509465/7111456
+			// Basically META-INF will include apk metadata such as licence, dependencies, etc. which are not needed for a normal functioning application.
+			excludes.add("META-INF/*")
+		}
+	}
 }
 
 dependencies {

@@ -1,6 +1,5 @@
 package hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card
 
-import hr.asee.android.template.compose.ui.common.component.LabelText
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.config.Config.CARD_DATE_FORMAT
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Orange
-import hr.asee.android.template.data.model.common.service.Reservation
-import java.time.format.DateTimeFormatter
+import hr.asee.android.template.domain.model.common.service.Reservation
+import org.threeten.bp.format.DateTimeFormatter
 
 @Composable
 fun SeekerReservationCard(

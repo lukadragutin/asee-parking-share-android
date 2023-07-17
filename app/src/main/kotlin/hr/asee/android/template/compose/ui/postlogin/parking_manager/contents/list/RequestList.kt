@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card.GiverRequestCard
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card.SeekerRequestCard
-import hr.asee.android.template.data.model.common.Seeker
-import hr.asee.android.template.data.model.common.User
 import hr.asee.android.template.data.model.common.service.Request
+import hr.asee.android.template.domain.model.common.Seeker
+import hr.asee.android.template.domain.model.common.User
 
 @Composable
 fun RequestList(

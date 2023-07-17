@@ -3,7 +3,7 @@ package hr.asee.android.template.compose.ui.postlogin.parkingspaces
 import android.util.Log
 import androidx.annotation.MainThread
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.domain.model.common.resource.ErrorData
 import hr.asee.android.template.domain.model.common.service.ParkingSpace

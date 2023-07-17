@@ -1,7 +1,7 @@
 package hr.asee.android.template.compose.ui.postlogin.usermanagement
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.domain.model.common.Admin

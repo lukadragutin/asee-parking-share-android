@@ -73,7 +73,7 @@ fun ParkingSpaceSelector(
 
 		LazyColumn {
 			items(listOf(parkingSpace)) { parkingSpace ->
-				Row() {
+				Row {
 
 					RadioButton(
 						selected = parkingSpace == parkingSpacePickerState.selectedOption,

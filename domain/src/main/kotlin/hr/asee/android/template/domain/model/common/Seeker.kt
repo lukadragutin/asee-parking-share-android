@@ -29,8 +29,7 @@ class Seeker(
         lastModifiedDate = lastModifiedDate,
         authorities = authorities,
         resetDate = resetDate
-    ) {
-}
+    )
 
 /*-------For testing-------*/
 val exampleSeeker = Seeker(

@@ -10,13 +10,14 @@ import hr.asee.android.template.data.interactor.GetAccountInteractor
 import hr.asee.android.template.data.interactor.GetUserByLoginInteractor
 import hr.asee.android.template.data.interactor.LoginInteractor
 import hr.asee.android.template.data.interactor.LogoutInteractor
+import hr.asee.android.template.data.interactor.RegisterInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.data.interactor.impl.GetAccessTokenInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetAccountInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetUserByLoginInteractorImpl
 import hr.asee.android.template.data.interactor.impl.LoginInteractorImpl
-import hr.asee.android.template.data.interactor.impl.RegisterInteractorImpl
 import hr.asee.android.template.data.interactor.impl.LogoutInteractorImpl
+import hr.asee.android.template.data.interactor.impl.RegisterInteractorImpl
 import hr.asee.android.template.data.interactor.impl.StoreAccessTokenInteractorImpl
 import hr.asee.android.template.data.interactor.offering.AddOfferingInteractor
 import hr.asee.android.template.data.interactor.offering.DeleteOfferingInteractor
@@ -56,6 +57,7 @@ import hr.asee.android.template.data.local.storage.ApplicationStorage
 import hr.asee.android.template.data.network.AuthenticationApiService
 import hr.asee.android.template.data.network.OfferApiService
 import hr.asee.android.template.data.network.ParkingSpaceApiService
+import hr.asee.android.template.data.network.ReqresApiService
 import hr.asee.android.template.data.network.ReservationApiService
 import hr.asee.android.template.data.network.SeekingApiService
 import hr.asee.android.template.data.resolver.ReqResServiceErrorResolver

@@ -1,8 +1,12 @@
 package hr.asee.android.template.compose.ui.postlogin.parking_manager
 
-import hr.asee.android.template.compose.ui.common.component.LabelText
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,54 +25,100 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hr.asee.android.template.compose.R
+import hr.asee.android.template.compose.config.Config
+import hr.asee.android.template.compose.delegate.event.NavBarEvent
+import hr.asee.android.template.compose.ui.common.component.BottomNavigationBar
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.component.dialog.BaseAlertDialog
 import hr.asee.android.template.compose.ui.common.component.dialog.RequestAlertDialog
+import hr.asee.android.template.compose.ui.common.component.dialog.ScreenStateDialog
 import hr.asee.android.template.compose.ui.common.component.dialog.button.*
 import hr.asee.android.template.compose.ui.common.component.model.AlertDialogState
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.list.*
+import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
-import hr.asee.android.template.data.model.common.*
-import hr.asee.android.template.data.model.common.service.*
+import hr.asee.android.template.domain.model.common.*
+import hr.asee.android.template.domain.model.common.service.*
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ParkingManagerScreen(viewModel: ParkingManagerViewModel = hiltViewModel(), user: User = exampleGiver){
-
-    exampleSeeker.addSeeking(exampleSeeking1)
-    exampleSeeker.addSeeking(exampleSeeking2)
-    exampleSeeker.addReservation(exampleReservation1)
-    exampleSeeker.addRequests(exampleRequest2)
-    exampleGiver.addOffer(exampleOffer1)
-    exampleGiver.addOffer(exampleOffer2)
-    exampleGiver.addReservation(exampleReservation3)
-    exampleGiver.addReservation(exampleReservation4)
-    exampleGiver.addRequests(exampleRequest1)
+fun ParkingManagerScreen(viewModel: ParkingManagerViewModel = hiltViewModel(), user: User = User.EMPTY){
 
     val filterState by viewModel.filterState.collectAsState()
     val reservationDialogState by viewModel.reservationDialogState.collectAsState()
     val offerDialogState by viewModel.offerDialogState.collectAsState()
     val requestDialogState by viewModel.requestDialogState.collectAsState()
 
-    ParkingManagerScreenContent(
-        user = user,
-        modifier = Modifier,
-        filterState = filterState,
-        reservationDialogState = reservationDialogState,
-        offerDialogState = offerDialogState,
-        requestDialogState = requestDialogState,
-        onCancelReservationClicked = viewModel::onCancelReservationClicked,
-        onCancelClickedReservationCard = viewModel::onCancelClickedReservationCard,
-        onCancelClickedRequestCard = viewModel::onCancelClickedRequestCard,
-        onRemoveOfferClicked = viewModel::onRemoveOfferClicked,
-        onCancelClickedOfferCard = viewModel::onCancelClickedOfferCard,
-        onForwardClickedSeekingCard = viewModel::onForwardClickedSeekingCard,
-        onForwardClickedReservationsCard = viewModel::onForwardClickedReservationsCard,
-        onForwardClickedRequestsCard = viewModel::onForwardClickedRequestsCard,
-        onOfferClicked = viewModel::onGiverOfferClicked
+    val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
     )
+
+    BackHandler(sheetState.isVisible) {
+        scope.launch {
+            sheetState.hide()
+        }
+    }
+
+    AndroidComposeCodingTemplateTheme(
+        darkTheme = ((if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) == true)
+    ) {
+        LaunchedEffect(viewModel.bottomNavBarDelegate) {
+                viewModel.bottomNavBarDelegate.getNavBarEvents().collect { event ->
+                    when (event) {
+                        NavBarEvent.HideNavBar -> viewModel.hideBottomNavBar()
+                        NavBarEvent.ShowNavBar -> viewModel.showBottomNavBar()
+                    }
+                }
+            }
+
+            Scaffold(
+                bottomBar = {
+                    AnimatedVisibility(
+                        visible = bottomNavBarState.isVisible,
+                        enter = slideInVertically(initialOffsetY = { it }),
+                        exit = slideOutVertically(targetOffsetY = { it })
+                    ) {
+                        BottomNavigationBar(
+                            items = bottomNavBarState.items,
+                            onNavElementClicked = bottomNavBarState.onElementClicked,
+                            selectedElement = bottomNavBarState.selectedItem,
+                        )
+                    }
+                },
+            ) { paddingValues ->
+                ParkingManagerScreenContent(
+                    user = user,
+                    modifier = Modifier.padding(paddingValues),
+                    filterState = filterState,
+                    reservationDialogState = reservationDialogState,
+                    offerDialogState = offerDialogState,
+                    requestDialogState = requestDialogState,
+                    onCancelReservationClicked = viewModel::onCancelReservationClicked,
+                    onCancelClickedReservationCard = viewModel::onCancelClickedReservationCard,
+                    onCancelClickedRequestCard = viewModel::onCancelClickedRequestCard,
+                    onRemoveOfferClicked = viewModel::onRemoveOfferClicked,
+                    onCancelClickedOfferCard = viewModel::onCancelClickedOfferCard,
+                    onForwardClickedSeekingCard = viewModel::onForwardClickedSeekingCard,
+                    onForwardClickedReservationsCard = viewModel::onForwardClickedReservationsCard,
+                    onForwardClickedRequestsCard = viewModel::onForwardClickedRequestsCard,
+                    onOfferClicked = viewModel::onGiverOfferClicked
+                )
+
+            }
+        }
+
+    ScreenStateDialog(state = uiState, onDismiss = viewModel::onMessageDismissed)
 }
 
 @Composable
@@ -325,23 +375,24 @@ fun ParkingManagerScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .verticalScroll(state = rememberScrollState())
-                    ) {
-                        if (user.requests.size == 0) {
-                            Spacer(modifier = Modifier.height(100.dp))
-
-                            LabelText(
-                                text = stringResource(id = R.string.parking_manager_screen_no_new_requests_label),
-                                fontSize = 20.sp,
-                                color = LightGray
-                            )
-                        } else {
-                            RequestList(
-                                requestList = user.requests,
-                                user = user,
-                                onForwardClickedRequestsCard = onForwardClickedRequestsCard
-                            )
-                        }
-                    }
+                    ) {}
+//                    {
+//                        if (user.requests.size == 0) {
+//                            Spacer(modifier = Modifier.height(100.dp))
+//
+//                            LabelText(
+//                                text = stringResource(id = R.string.parking_manager_screen_no_new_requests_label),
+//                                fontSize = 20.sp,
+//                                color = LightGray
+//                            )
+//                        } else {
+//                            RequestList(
+//                                requestList = user.requests,
+//                                user = user,
+//                                onForwardClickedRequestsCard = onForwardClickedRequestsCard
+//                            )
+//                        }
+//                    }
                 }
 
                 if (isButtonRightClicked) {
@@ -402,5 +453,5 @@ fun ParkingManagerScreenContent(
 @Preview(showBackground = true)
 @Composable
 fun ParkingManagerScreenPreview() {
-    ParkingManagerScreen()
+    ParkingManagerScreen(user = User.EMPTY)
 }

@@ -65,7 +65,7 @@ fun GiverOfferCard(
 
                 Spacer(modifier = Modifier.width(20.dp))
 
-                Column() {
+                Column {
                     LabelText(
                         text = offer.parkingSpace.location,
                         fontSize = 16.sp

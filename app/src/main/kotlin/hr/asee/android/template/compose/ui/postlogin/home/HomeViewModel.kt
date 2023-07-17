@@ -2,7 +2,7 @@ package hr.asee.android.template.compose.ui.postlogin.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.asee.android.template.compose.delegate.BottomNavBarDelegate
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.AccountState
 import hr.asee.android.template.compose.ui.common.model.state.AlertDialogState

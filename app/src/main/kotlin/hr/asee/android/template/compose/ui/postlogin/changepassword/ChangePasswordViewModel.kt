@@ -1,7 +1,7 @@
 package hr.asee.android.template.compose.ui.postlogin.changepassword
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.util.empty
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -167,4 +167,25 @@ object PostLoginDirection {
                 get() = "createOffer/$userId"
         }
     }
+
+    val SeekingRequest = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "seekingRequest"
+    }
+
+    val ParkingOffer = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "parkingOffer"
+    }
+
+    val ReserveParkingSpace = object : NavigationCommand {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+        override val destination: String
+            get() = "reserveParkingSpace"
+    }
 }

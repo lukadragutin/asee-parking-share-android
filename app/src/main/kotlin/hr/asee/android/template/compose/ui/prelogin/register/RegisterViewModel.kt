@@ -1,23 +1,11 @@
 package hr.asee.android.template.compose.ui.prelogin.register
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.ButtonState
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.ui.prelogin.register.model.RegisterMessages
-import hr.asee.android.template.compose.ui.theme.AssecoYellow
-import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.util.empty
 import hr.asee.android.template.domain.model.common.resource.ErrorData
 import hr.asee.android.template.domain.usecase.RegisterUseCase

@@ -66,7 +66,7 @@ fun SeekerReservationCard(
 
                 Spacer(modifier = Modifier.width(20.dp))
 
-                Column() {
+                Column {
                     LabelText(
                         text = reservation.parkingSpace.location,
                         fontSize = 16.sp

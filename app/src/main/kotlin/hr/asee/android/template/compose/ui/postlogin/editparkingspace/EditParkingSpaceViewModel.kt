@@ -2,7 +2,7 @@ package hr.asee.android.template.compose.ui.postlogin.editparkingspace
 
 import androidx.annotation.MainThread
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.util.empty
@@ -17,10 +17,8 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class EditParkingSpaceViewModel @Inject constructor(
-	private val getParkingSpaceByIdUseCase: GetParkingSpaceByIdUseCase,
-	private val changeParkingLocationUseCase: ChangeParkingLocationUseCase
-) : BaseViewModel() {
+class EditParkingSpaceViewModel @Inject constructor(private val getParkingSpaceByIdUseCase: GetParkingSpaceByIdUseCase,
+													private val changeParkingLocationUseCase: ChangeParkingLocationUseCase) : BaseViewModel() {
 
 	private val _parkingSpaceState = MutableStateFlow(ParkingSpace.EMPTY)
 	val parkingSpaceState = _parkingSpaceState.asStateFlow()
@@ -45,15 +43,12 @@ class EditParkingSpaceViewModel @Inject constructor(
 	}
 
 	private suspend fun initializeParkingSpace(parkingSpaceId: Int) {
-		getParkingSpaceByIdUseCase(parkingSpaceId).onFinished(
-			this::getParkingSpaceByIdSuccess,
-			this::getParkingSpaceByIdError
-		)
+		getParkingSpaceByIdUseCase(parkingSpaceId).onFinished(this::getParkingSpaceByIdSuccess, this::getParkingSpaceByIdError)
 	}
 
 	private fun getParkingSpaceByIdSuccess(parkingSpace: ParkingSpace) {
 		_parkingSpaceState.update { parkingSpace }
-        _parkingNumberState.update { it.copy(text = parkingSpace.location) }
+		_parkingNumberState.update { it.copy(text = parkingSpace.location) }
 	}
 
 	private fun getParkingSpaceByIdError(errorData: ErrorData) {
@@ -61,11 +56,9 @@ class EditParkingSpaceViewModel @Inject constructor(
 	}
 
 	private suspend fun changeParkingLocationInternal() {
-        val parkingSpace = _parkingSpaceState.value.copy(location = parkingNumberState.value.text)
-		changeParkingLocationUseCase(parkingSpace.id, parkingSpace).onFinished(
-			successCallback = this::changeParkingLocationSuccess,
-			errorCallback = this::changeParkingLocationError
-		)
+		val parkingSpace = _parkingSpaceState.value.copy(location = parkingNumberState.value.text)
+		changeParkingLocationUseCase(parkingSpace.id, parkingSpace).onFinished(successCallback = this::changeParkingLocationSuccess,
+																			   errorCallback = this::changeParkingLocationError)
 	}
 
 	private fun changeParkingLocationSuccess(newParkingSpace: ParkingSpace) {

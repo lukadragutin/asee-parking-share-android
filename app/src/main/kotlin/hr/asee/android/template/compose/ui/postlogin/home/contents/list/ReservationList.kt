@@ -33,7 +33,7 @@ fun ReservationList(
     var numShown = 0
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        reservations.forEach() { reservation ->
+        reservations.forEach { reservation ->
             if (!filterState.dateStartSelected!!.isAfter(reservation.dateStart) &&
                 !filterState.dateEndSelected!!.isBefore(reservation.dateEnd)) {
                 if (user is Giver) {

@@ -62,7 +62,7 @@ fun OfferList(
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        offers.forEach() { offer ->
+        offers.forEach { offer ->
             if (!filterState.dateStartSelected!!.isAfter(offer.dateStart) &&
                 !filterState.dateEndSelected!!.isBefore(offer.dateEnd)) {
                 if (user is Giver && offer.parkingSpace.owner.id == user.id) {

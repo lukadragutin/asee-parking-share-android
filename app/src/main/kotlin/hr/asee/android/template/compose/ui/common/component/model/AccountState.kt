@@ -1,7 +1,10 @@
 package hr.asee.android.template.compose.ui.common.component.model
 
-import hr.asee.android.template.data.model.common.User
-import hr.asee.android.template.data.model.common.service.*
+import hr.asee.android.template.domain.model.common.User
+import hr.asee.android.template.domain.model.common.service.Offer
+import hr.asee.android.template.domain.model.common.service.ParkingSpace
+import hr.asee.android.template.domain.model.common.service.Reservation
+import hr.asee.android.template.domain.model.common.service.Seeking
 
 data class AccountState(
     val user: User? = null,

@@ -28,7 +28,7 @@ class OnboardingViewModel @Inject constructor(
             listOf(
                 OnboardingItem(
                     title = "Welcome to ASEE Parking",
-                    message = "Reserve your parking spot on our own parking lot\nLorem ipsum ipsum dolor sit",
+                    message = "Reserve your parking spot on our own parking lot",
                     onboardingType = OnboardingType.WELCOME,
                 ),
                 OnboardingItem(
@@ -48,7 +48,7 @@ class OnboardingViewModel @Inject constructor(
 
     fun navigateToRegister() {
         setOnboardingComplete()
-        router.navigateToRegistrationScreen()
+        router.navigateToRegisterScreen()
     }
 
     fun navigateToLogin() {

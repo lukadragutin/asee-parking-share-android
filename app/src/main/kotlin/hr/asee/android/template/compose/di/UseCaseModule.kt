@@ -16,11 +16,12 @@ import hr.asee.android.template.domain.usecase.DateSelectUseCase
 import hr.asee.android.template.domain.usecase.GetAccountUseCase
 import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
 import hr.asee.android.template.domain.usecase.LoginUseCase
+import hr.asee.android.template.domain.usecase.RegisterUseCase
 import hr.asee.android.template.domain.usecase.impl.DateSelectUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.GetAccountUseCaseImpl
-import hr.asee.android.template.domain.usecase.RegisterUseCase
 import hr.asee.android.template.domain.usecase.impl.GetAllBottomNavItemsUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.LoginUseCaseImpl
+import hr.asee.android.template.domain.usecase.impl.RegisterUseCaseImpl
 import hr.asee.android.template.domain.usecase.login.IsLoginActiveUseCase
 import hr.asee.android.template.domain.usecase.login.LogoutUseCase
 import hr.asee.android.template.domain.usecase.login.impl.IsLoginActiveUseCaseImpl
@@ -59,7 +60,6 @@ import hr.asee.android.template.domain.usecase.seeking.GetSeekingsForSeekerUseCa
 import hr.asee.android.template.domain.usecase.seeking.GetSeekingsUseCase
 import hr.asee.android.template.domain.usecase.seeking.impl.GetSeekingsForSeekerUseCaseImpl
 import hr.asee.android.template.domain.usecase.seeking.impl.GetSeekingsUseCaseImpl
-import hr.asee.android.template.domain.usecase.impl.RegisterUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -100,11 +100,6 @@ object UseCaseModule {
     fun provideRegisterUseCase(authenticationRepository: AuthenticationRepository): RegisterUseCase {
         return RegisterUseCaseImpl(authenticationRepository = authenticationRepository)
     }
-	@Provides
-	@ViewModelScoped
-	fun provideLoginUseCase(authenticationRepository: AuthenticationRepository): LoginUseCase {
-		return LoginUseCaseImpl(authenticationRepository = authenticationRepository)
-	}
 
 	@Provides
 	@ViewModelScoped

@@ -246,7 +246,7 @@ fun HomeScreenContent(
 								color = AssecoBlue
 							)
 						) {
-							append(accountState.user!!.firstName)
+							append(accountState.user.firstName)
 						}
 					},
 				)

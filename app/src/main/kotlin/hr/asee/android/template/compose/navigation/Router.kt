@@ -18,8 +18,6 @@ interface Router {
 
     fun navigateToLoginScreen()
 
-    fun navigateToRegistrationScreen()
-
     fun navigateToHomeScreen()
 
     fun navigateToParkingManagerScreen()
@@ -45,8 +43,6 @@ interface Router {
     fun navigateToCreateOfferScreen(userId: Int)
 
     fun navigateToRegisterScreen()
-
-    fun navigateToParkingManagerScreen()
 
     fun navigateToSeekingRequestScreen()
 

@@ -14,15 +14,15 @@ import hr.asee.android.template.compose.ui.postlogin.createoffer.CreateOfferScre
 import hr.asee.android.template.compose.ui.postlogin.createseeking.CreateSeekingScreen
 import hr.asee.android.template.compose.ui.postlogin.editparkingspace.EditParkingSpaceScreen
 import hr.asee.android.template.compose.ui.postlogin.home.HomeScreen
+import hr.asee.android.template.compose.ui.postlogin.parking_manager.ParkingManagerScreen
+import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.ParkingOfferScreen
+import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.ReserveParkingSpaceScreen
+import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.SeekingRequestScreen
 import hr.asee.android.template.compose.ui.postlogin.parkingspaces.ParkingSpacesScreen
 import hr.asee.android.template.compose.ui.postlogin.reserveparkingspace.ReserveParkingSpaceGiverScreen
 import hr.asee.android.template.compose.ui.postlogin.reserveparkingspace.ReserveParkingSpaceSeekerScreen
 import hr.asee.android.template.compose.ui.postlogin.settings.SettingsScreen
 import hr.asee.android.template.compose.ui.postlogin.usermanagement.UserManagementScreen
-import hr.asee.android.template.compose.ui.postlogin.parking_manager.ParkingManagerScreen
-import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.ParkingOfferScreen
-import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.ReserveParkingSpaceScreen
-import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.SeekingRequestScreen
 
 fun NavGraphBuilder.postLoginNavGraph() {
 	navigation(startDestination = PostLoginDirection.Home.destination, route = PostLoginDirection.Root.destination) {
@@ -58,22 +58,22 @@ fun NavGraphBuilder.postLoginNavGraph() {
 			ReserveParkingSpaceSeekerScreen(offerId = it.arguments?.getInt(KEY_OFFER_ID) as Int)
 		}
 
-        composable(route = PostLoginDirection.ParkingManager.destination, arguments = PostLoginDirection.ParkingManager.arguments) {
-            ParkingManagerScreen()
-        }
+		composable(route = PostLoginDirection.ParkingManager.destination, arguments = PostLoginDirection.ParkingManager.arguments) {
+			ParkingManagerScreen()
+		}
 
-        composable(route = PostLoginDirection.SeekingRequest.destination, arguments = PostLoginDirection.SeekingRequest.arguments) {
-            SeekingRequestScreen()
-        }
+		composable(route = PostLoginDirection.SeekingRequest.destination, arguments = PostLoginDirection.SeekingRequest.arguments) {
+			SeekingRequestScreen()
+		}
 
-        composable(route = PostLoginDirection.ParkingOffer.destination, arguments = PostLoginDirection.ParkingOffer.arguments) {
-            ParkingOfferScreen()
-        }
+		composable(route = PostLoginDirection.ParkingOffer.destination, arguments = PostLoginDirection.ParkingOffer.arguments) {
+			ParkingOfferScreen()
+		}
 
-        composable(route = PostLoginDirection.ReserveParkingSpace.destination, arguments = PostLoginDirection.ReserveParkingSpace.arguments) {
-            ReserveParkingSpaceScreen()
-        }
-    }
+		composable(route = PostLoginDirection.ReserveParkingSpace.destination, arguments = PostLoginDirection.ReserveParkingSpace.arguments) {
+			ReserveParkingSpaceScreen()
+		}
+
 		composable(route = PostLoginDirection.ReserveParkingSpaceGiver.destination, arguments = PostLoginDirection.ReserveParkingSpaceGiver.definedArguments) {
 			ReserveParkingSpaceGiverScreen(reservationId = it.arguments?.getInt(KEY_RESERVATION_ID) as Int)
 		}

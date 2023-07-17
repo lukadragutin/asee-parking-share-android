@@ -13,10 +13,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
-import hr.asee.android.template.compose.ui.postlogin.parking_manager.contents.card.GiverOfferCard
+import hr.asee.android.template.compose.ui.postlogin.home.contents.card.GiverOfferCard
 import hr.asee.android.template.compose.ui.theme.Geomanist
 import hr.asee.android.template.compose.ui.theme.LightGray
-import hr.asee.android.template.data.model.common.service.Offer
+import hr.asee.android.template.domain.model.common.service.Offer
+
 
 @Composable
 fun OfferList(
@@ -29,8 +30,8 @@ fun OfferList(
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         offerList.forEach { offer ->
-            if (!filterState.dateStartSelected!!.isAfter(offer.dateStart.toLocalDate()) &&
-                !filterState.dateEndSelected!!.isBefore(offer.dateEnd.toLocalDate())) {
+            if (!filterState.dateStartSelected!!.isAfter(offer.dateStart) &&
+                !filterState.dateEndSelected!!.isBefore(offer.dateEnd)) {
                     GiverOfferCard(
                         offer = offer,
                         onOfferClicked = onGiverOfferClicked,

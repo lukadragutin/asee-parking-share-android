@@ -10,15 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import hr.asee.android.template.compose.ui.theme.AssecoBlue
-import hr.asee.android.template.compose.ui.theme.DarkGray
-import hr.asee.android.template.compose.ui.theme.Gray
 import androidx.compose.ui.unit.dp
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.DarkGray
@@ -37,7 +30,7 @@ fun BottomNavigationBar(
 				.height(64.dp)
 				.drawBehind {
 					drawLine(
-						color = Gray,
+						color = hr.asee.android.template.compose.ui.theme.Gray,
 						start = Offset(x = 0f, y = 0f),
 						end = Offset(x = size.width, y = 0f),
 						strokeWidth = 1.dp.toPx()
@@ -48,7 +41,7 @@ fun BottomNavigationBar(
 		items.forEach { element ->
 			BottomNavigationItem(
 				selected = element == selectedElement,
-				onClick = { onNavElementClicked },
+				onClick = { onNavElementClicked(element) },
 				icon = {
 					Icon(
 						painter = painterResource(id = element.icon),

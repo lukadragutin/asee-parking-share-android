@@ -1,6 +1,5 @@
 package hr.asee.android.template.compose.ui.postlogin.parking_manager.contents
 
-import hr.asee.android.template.compose.ui.common.component.LabelText
 import android.view.ContextThemeWrapper
 import android.widget.CalendarView
 import androidx.compose.foundation.Image
@@ -8,7 +7,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ripple.rememberRipple
@@ -25,15 +30,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.ui.common.component.DatePicker
+import hr.asee.android.template.compose.ui.common.component.LabelText
 import hr.asee.android.template.compose.ui.common.model.state.DatePickerState
 import hr.asee.android.template.compose.ui.postlogin.parking_manager.ParkingManagerViewModel
 import hr.asee.android.template.compose.ui.theme.Black200
-import hr.asee.android.template.data.model.common.service.Offer
-import hr.asee.android.template.data.model.common.service.exampleOffer1
-import java.time.LocalDate
+import hr.asee.android.template.domain.model.common.service.Offer
+import hr.asee.android.template.domain.model.common.service.exampleOffer1
+import org.threeten.bp.LocalDateTime
 
 @Composable
 fun ParkingOfferScreen(viewModel: ParkingManagerViewModel = hiltViewModel()){
@@ -56,7 +61,7 @@ fun ParkingOfferScreenContent(
     filterState: DatePickerState,
     onDateStartSelect: () -> Unit,
     onDateEndSelect: () -> Unit,
-    onDateSelect: (LocalDate) -> Unit,
+    onDateSelect: (LocalDateTime) -> Unit,
     offer: Offer,
     ){
     val calendarView = CalendarView(
@@ -132,7 +137,6 @@ fun ParkingOfferScreenContent(
                 onDateStartSelect = onDateStartSelect,
                 onDateEndSelect = onDateEndSelect,
                 onDateSelect = onDateSelect,
-                viewModel = viewModel()
             )
         }
     }

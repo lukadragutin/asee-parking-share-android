@@ -123,7 +123,7 @@ fun OnboardingContent(
 		)
 
 		AnimatedVisibility(visible = pagerState.currentPage == pagerState.pageCount - 1) {
-			Column() {
+			Column {
 
 				LabelText(
 					text = stringResource(id = R.string.onboarding_screen_login_button_label),
