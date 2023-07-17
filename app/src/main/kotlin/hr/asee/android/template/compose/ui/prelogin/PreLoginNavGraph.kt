@@ -6,6 +6,7 @@ import androidx.navigation.navigation
 import hr.asee.android.template.compose.navigation.directions.PreLoginDirection
 import hr.asee.android.template.compose.ui.prelogin.login.LoginScreen
 import hr.asee.android.template.compose.ui.prelogin.onboarding.OnboardingScreen
+import hr.asee.android.template.compose.ui.prelogin.register.RegisterScreen
 
 fun NavGraphBuilder.preLoginNavGraph(startLocation: String) {
 
@@ -17,6 +18,10 @@ fun NavGraphBuilder.preLoginNavGraph(startLocation: String) {
 
         composable(route = PreLoginDirection.Login.destination, arguments = PreLoginDirection.Login.arguments) {
             LoginScreen()
+        }
+
+        composable(route = PreLoginDirection.Register.destination, arguments = PreLoginDirection.Register.arguments) {
+            RegisterScreen()
         }
     }
 }

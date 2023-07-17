@@ -85,6 +85,10 @@ object Dependencies {
         const val core = "org.mockito:mockito-core:${Versions.mockito}"
         const val junitJupiter = "org.mockito:mockito-junit-jupiter:${Versions.mockito}"
     }
+
+    object ThreeTen{
+        const val core = "org.threeten:threetenbp:1.6.8"
+    }
 }
 
 object Plugins {

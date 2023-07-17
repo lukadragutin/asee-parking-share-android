@@ -9,6 +9,7 @@ import hr.asee.android.template.compose.config.Config
 import hr.asee.android.template.data.interactor.GetAccessTokenInteractor
 import hr.asee.android.template.data.interactor.GetAccountInteractor
 import hr.asee.android.template.data.interactor.LoginInteractor
+import hr.asee.android.template.data.interactor.RegisterInteractor
 import hr.asee.android.template.data.interactor.LogoutInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
 import hr.asee.android.template.data.interactor.offering.AddOfferingInteractor
@@ -65,10 +66,11 @@ object RepositoryModule {
 
 	@Provides
 	@ViewModelScoped
-	fun provideAuthenticationRepository(loginInteractor: LoginInteractor, logoutInteractor: LogoutInteractor, accessTokenMapper: AccessTokenMapper, storeAccessTokenInteractor: StoreAccessTokenInteractor,
+	fun provideAuthenticationRepository(loginInteractor: LoginInteractor, logoutInteractor: LogoutInteractor, registerInteractor: RegisterInteractor, accessTokenMapper: AccessTokenMapper, storeAccessTokenInteractor: StoreAccessTokenInteractor,
 										getAccessTokenInteractor: GetAccessTokenInteractor, getAccountInteractor: GetAccountInteractor,
 										userMapper: UserMapper): AuthenticationRepository = AuthenticationRepositoryImpl(loginInteractor = loginInteractor,
 																														 logoutInteractor = logoutInteractor,
+                                                                                                                         registerInteractor = registerInteractor,
 																														 accessTokenMapper = accessTokenMapper,
 																														 storeAccessTokenInteractor = storeAccessTokenInteractor,
 																														 getAccessTokenInteractor = getAccessTokenInteractor,

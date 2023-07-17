@@ -15,6 +15,7 @@ import hr.asee.android.template.data.interactor.impl.GetAccessTokenInteractorImp
 import hr.asee.android.template.data.interactor.impl.GetAccountInteractorImpl
 import hr.asee.android.template.data.interactor.impl.GetUserByLoginInteractorImpl
 import hr.asee.android.template.data.interactor.impl.LoginInteractorImpl
+import hr.asee.android.template.data.interactor.impl.RegisterInteractorImpl
 import hr.asee.android.template.data.interactor.impl.LogoutInteractorImpl
 import hr.asee.android.template.data.interactor.impl.StoreAccessTokenInteractorImpl
 import hr.asee.android.template.data.interactor.offering.AddOfferingInteractor
@@ -79,6 +80,13 @@ object InteractorModule {
 		authenticationApiService = retrofit.create(AuthenticationApiService::class.java),
 		reqResServiceErrorResolver = reqResServiceErrorResolver,
 	)
+
+    @Provides
+    @ViewModelScoped
+    fun provideRegisterInteractor(retrofit: Retrofit, reqResServiceErrorResolver: ReqResServiceErrorResolver): RegisterInteractor = RegisterInteractorImpl(
+        reqresApiService = retrofit.create(ReqresApiService::class.java),
+        reqResServiceErrorResolver = reqResServiceErrorResolver,
+    )
 
 	@Provides
 	@ViewModelScoped

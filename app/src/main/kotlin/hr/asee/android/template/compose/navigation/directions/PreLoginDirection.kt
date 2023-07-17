@@ -26,10 +26,10 @@ object PreLoginDirection {
             get() = "login"
     }
 
-    val Registration = object : NavigationCommand {
+    val Register = object : NavigationCommand {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
         override val destination: String
-            get() = "registration"
+            get() = "register"
     }
 }

@@ -108,4 +108,27 @@ class RouterImpl(private val navigationDelegate: NavigationDelegate, private val
 	override fun navigateToCreateOfferScreen(userId: Int) {
 		navigate(navigationCommand = PostLoginDirection.CreateOffer.createOfferRoute(userId))
 	}
+    override fun navigateToLoginScreen() {
+        navigationDelegate.navigate(navigationCommand = PreLoginDirection.Login)
+    }
+
+    override fun navigateToRegisterScreen() {
+        navigationDelegate.navigate(navigationCommand = PreLoginDirection.Register)
+    }
+
+    override fun navigateToParkingManagerScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ParkingManager)
+    }
+
+    override fun navigateToSeekingRequestScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.SeekingRequest)
+    }
+
+    override fun navigateToReserveParkingSpaceScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ReserveParkingSpace)
+    }
+
+    override fun navigateToParkingOfferScreen() {
+        navigationDelegate.navigate(navigationCommand = PostLoginDirection.ParkingOffer)
+    }
 }

@@ -8,11 +8,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import hr.asee.android.template.compose.R
 
-val Geomanist = FontFamily(
-    Font(R.font.geomanist_regular),
-)
-
 // Set of Material typography styles to start with
+
+val Geomanist = FontFamily(
+    Font(R.font.geomanist_regular)
+)
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Geomanist,

@@ -43,4 +43,14 @@ interface Router {
     fun navigateToCreateSeekingScreen()
 
     fun navigateToCreateOfferScreen(userId: Int)
+
+    fun navigateToRegisterScreen()
+
+    fun navigateToParkingManagerScreen()
+
+    fun navigateToSeekingRequestScreen()
+
+    fun navigateToReserveParkingSpaceScreen()
+
+    fun navigateToParkingOfferScreen()
 }

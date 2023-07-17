@@ -1,17 +1,35 @@
 package hr.asee.android.template.domain.repository
 
 import hr.asee.android.template.domain.model.common.AccessToken
+import java.util.*
 import hr.asee.android.template.domain.model.common.User
 
 interface AuthenticationRepository {
 
-    suspend fun login(email: String, password: String): AccessToken
+	suspend fun login(email: String, password: String): AccessToken
 
-    suspend fun isAccessTokenValid(): Boolean
+	suspend fun isAccessTokenValid(): Boolean
 
-    suspend fun storeAccessToken(accessToken: AccessToken)
+	suspend fun register(id: Int,
+						 login: String,
+						 firstName: String,
+						 lastName: String,
+						 email: String,
+						 password: String,
+						 role: String,
+						 activated: Boolean,
+						 langKey: String,
+						 createdBy: String,
+						 createdDate: String,
+						 lastModifiedBy: String,
+						 lastModifiedDate: String,
+						 authorities: Array<String>
 
-    suspend fun getAccount(): User
+	): Unit
 
-    suspend fun logout()
+	suspend fun storeAccessToken(accessToken: AccessToken)
+
+	suspend fun getAccount(): User
+
+	suspend fun logout()
 }

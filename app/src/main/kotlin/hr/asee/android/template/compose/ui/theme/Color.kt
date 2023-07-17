@@ -15,3 +15,7 @@ val BackgroundGray = Color(0xFFF5F5F5)
 val BackgroundBlack = Color(0xFF2D3237)
 val Black200 = Color(0xFF23272C)
 val Black500 = Color(0xFF1D192B)
+val AssecoYellow = Color(0xFFFF9800)
+val AssecoGray = Color(0xFF7D8282)
+
+

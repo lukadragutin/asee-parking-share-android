@@ -1,8 +1,5 @@
 package hr.asee.android.template.compose.ui.common.component.dialog.button
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -25,7 +22,7 @@ fun DialogButtonLayout(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
     ) {
-        Text(
+            Text(
             text = label,
             color = contentColor
         )

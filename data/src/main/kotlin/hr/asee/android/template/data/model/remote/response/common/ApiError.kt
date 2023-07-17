@@ -11,5 +11,6 @@ data class ApiError(
 	@SerialName("status") val status: Int,
 	@SerialName("detail") val detail: String,
 	@SerialName("path") val path: String,
-	@SerialName("message") val message: String
+	@SerialName("message") val message: String,
+    @SerialName("fieldErrors") val fieldErrors: Array<FieldError>?
 ) : SerializableDataModel

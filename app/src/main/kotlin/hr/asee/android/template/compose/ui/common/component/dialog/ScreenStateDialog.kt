@@ -3,7 +3,8 @@ package hr.asee.android.template.compose.ui.common.component.dialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import hr.asee.android.template.compose.ui.common.component.dialog.button.OkButton
+import hr.asee.android.template.compose.ui.common.component.dialog.button.CancelButtonReservationPopUp
+import hr.asee.android.template.compose.ui.common.component.dialog.button.ProceedButton
 import hr.asee.android.template.compose.ui.common.model.state.UiState
 import hr.asee.android.template.compose.util.empty
 
@@ -23,7 +24,8 @@ fun ScreenStateDialog(modifier: Modifier = Modifier, state: UiState, onDismiss: 
             } ?: stringResource(id = messageId)
         } ?: String.empty(),
         buttonsLayout = {
-            OkButton(onClick = onDismiss)
+            ProceedButton(onClick = onDismiss)
+            CancelButtonReservationPopUp(onClick = onDismiss)
         },
         onDismissRequest = onDismiss
     )
