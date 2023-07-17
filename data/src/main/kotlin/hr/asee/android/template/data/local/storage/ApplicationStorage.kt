@@ -9,4 +9,8 @@ interface ApplicationStorage {
     suspend fun getString(key: String, default: String = ""): String
 
     suspend fun deleteValue(key: String)
+
+    suspend fun setBoolean(key: String, value: Boolean)
+
+    suspend fun getBoolean(key: String, default: Boolean = false): Boolean
 }

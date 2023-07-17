@@ -82,12 +82,20 @@ import org.threeten.bp.LocalDateTime
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
+	viewModel.initData()
+
 	val filterState by viewModel.filterState.collectAsState()
 	val cancelReservationDialogState by viewModel.cancelReservationDialogState.collectAsState()
 	val removeOfferDialogState by viewModel.removeOfferDialogState.collectAsState()
+	val removeOfferId by viewModel.removeOfferId.collectAsState()
 	val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
 	val uiState by viewModel.uiState.collectAsState()
 	val accountState by viewModel.accountState.collectAsState()
+	val logoutPressed by viewModel.bottomNavBarDelegate.logoutPressed.collectAsState()
+
+	if(logoutPressed) {
+		viewModel.logout()
+	}
 
 	val scope = rememberCoroutineScope()
 	val sheetState = rememberModalBottomSheetState(
@@ -158,6 +166,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 					filterState = filterState,
 					cancelReservationDialogState = cancelReservationDialogState,
 					removeOfferDialogState = removeOfferDialogState,
+					removeOfferId = removeOfferId,
 					accountState = accountState,
 					viewModel = viewModel
 				)
@@ -179,11 +188,12 @@ fun HomeScreenContent(
 	filterState: DatePickerState,
 	cancelReservationDialogState: AlertDialogState,
 	removeOfferDialogState: AlertDialogState,
+	removeOfferId: Int,
 	accountState: AccountState,
 	viewModel: HomeViewModel
 ) {
 
-	val noContent = derivedStateOf{ accountState.seekings.size + accountState.reservations.size + accountState.offers.size == 0 }
+	val noContent = derivedStateOf { accountState.seekings.size + accountState.reservations.size + accountState.offers.size == 0 }
 
 	if (cancelReservationDialogState.isVisible) {
 		BaseAlertDialog(
@@ -203,29 +213,11 @@ fun HomeScreenContent(
 		)
 	}
 
-	if (removeOfferDialogState.isVisible) {
-		BaseAlertDialog(
-			modifier = modifier,
-			isLoading = false,
-			title = stringResource(id = R.string.home_screen_remove_offer_popup_screen_title_label),
-			message = stringResource(id = R.string.home_screen_remove_offer_popup_screen_question_label),
-			buttonsLayout = {
-				Row(modifier = Modifier.padding(bottom = 8.dp)) {
-					Spacer(modifier = Modifier.width(30.dp))
-					ProceedButton(onClick = viewModel::onRemoveOfferClicked)
-					Spacer(modifier = Modifier.width(45.dp))
-					CancelButton(onClick = viewModel::onCancelClickedOfferCard)
-				}
-			},
-			onDismissRequest = viewModel::onRemoveOfferClicked
-		)
-	}
-
 	Column(
 		modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)
-                .padding(start = 20.dp, end = 20.dp, top = 20.dp)
+				.fillMaxSize()
+				.background(MaterialTheme.colors.background)
+				.padding(start = 20.dp, end = 20.dp, top = 20.dp)
 	) {
 		Row(horizontalArrangement = Arrangement.SpaceBetween) {
 			ProfilePicture(onClicked = viewModel::onProfilePictureClicked)
@@ -294,7 +286,7 @@ fun HomeScreenContent(
 					),
 					onClick = {
 						if (accountState.user is Seeker) viewModel.seekParking()
-						else viewModel.offerParking()
+						else viewModel.offerParking(userId = accountState.user.id)
 					}
 				)
 
@@ -302,8 +294,8 @@ fun HomeScreenContent(
 					verticalArrangement = Arrangement.spacedBy(15.dp),
 					horizontalAlignment = Alignment.CenterHorizontally,
 					modifier = Modifier
-                            .fillMaxWidth()
-                            .verticalScroll(state = rememberScrollState())
+							.fillMaxWidth()
+							.verticalScroll(state = rememberScrollState())
 				) {
 
 					if (noContent.value) {
@@ -343,10 +335,14 @@ fun HomeScreenContent(
 							OfferList(
 								offers = accountState.offers,
 								user = accountState.user,
+								removeOfferDialogState = removeOfferDialogState,
+								removeOfferId = removeOfferId,
 								filterState = filterState,
 								onGiverOfferClicked = viewModel::onGiverOfferClicked,
 								onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
-								onRemoveOfferClicked = viewModel::onRemoveOfferClicked
+								onRemoveOfferClicked = viewModel::onRemoveOfferClicked,
+								onCancelClickedOfferCard = viewModel::onCancelClickedOfferCard,
+								onRemoveClickedOfferCard = viewModel::removeOffer
 							)
 						} else {
 							ReservationList(
@@ -382,9 +378,13 @@ fun HomeScreenContent(
 								offers = accountState.offers,
 								user = accountState.user,
 								filterState = filterState,
+								removeOfferDialogState = removeOfferDialogState,
+								removeOfferId = removeOfferId,
 								onGiverOfferClicked = viewModel::onGiverOfferClicked,
 								onSeekerOfferClicked = viewModel::onSeekerOfferClicked,
-								onRemoveOfferClicked = viewModel::onRemoveOfferClicked
+								onRemoveOfferClicked = viewModel::onRemoveOfferClicked,
+								onCancelClickedOfferCard = viewModel::onCancelClickedOfferCard,
+								onRemoveClickedOfferCard = viewModel::removeOffer
 							)
 						}
 

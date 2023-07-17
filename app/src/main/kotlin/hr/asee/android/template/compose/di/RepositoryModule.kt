@@ -6,11 +6,17 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import hr.asee.android.template.compose.config.Config
+import hr.asee.android.template.data.interactor.GetAccessTokenInteractor
 import hr.asee.android.template.data.interactor.GetAccountInteractor
 import hr.asee.android.template.data.interactor.LoginInteractor
+import hr.asee.android.template.data.interactor.LogoutInteractor
 import hr.asee.android.template.data.interactor.StoreAccessTokenInteractor
+import hr.asee.android.template.data.interactor.offering.AddOfferingInteractor
+import hr.asee.android.template.data.interactor.offering.DeleteOfferingInteractor
 import hr.asee.android.template.data.interactor.offering.GetOfferingsForGiverInteractor
 import hr.asee.android.template.data.interactor.offering.GetOffersInteractor
+import hr.asee.android.template.data.interactor.onboarding.GetIsOnboardingCompleteInteractor
+import hr.asee.android.template.data.interactor.onboarding.SetOnboardingCompleteInteractor
 import hr.asee.android.template.data.interactor.parkingspace.AddParkingSpaceInteractor
 import hr.asee.android.template.data.interactor.parkingspace.ChangeParkingLocationInteractor
 import hr.asee.android.template.data.interactor.parkingspace.GetParkingSpaceByIdInteractor
@@ -31,12 +37,14 @@ import hr.asee.android.template.domain.mapper.UserMapper
 import hr.asee.android.template.domain.repository.AuthenticationRepository
 import hr.asee.android.template.domain.repository.NavigationItemsRepository
 import hr.asee.android.template.domain.repository.OfferRepository
+import hr.asee.android.template.domain.repository.OnboardingRepository
 import hr.asee.android.template.domain.repository.ParkingSpaceRepository
 import hr.asee.android.template.domain.repository.ReservationRepository
 import hr.asee.android.template.domain.repository.SeekingRepository
 import hr.asee.android.template.domain.repository.impl.AuthenticationRepositoryImpl
 import hr.asee.android.template.domain.repository.impl.NavigationItemsRepositoryImpl
 import hr.asee.android.template.domain.repository.impl.OfferRepositoryImpl
+import hr.asee.android.template.domain.repository.impl.OnboardingRepositoryImpl
 import hr.asee.android.template.domain.repository.impl.ParkingSpaceRepositoryImpl
 import hr.asee.android.template.domain.repository.impl.ReservationRepositoryImpl
 import hr.asee.android.template.domain.repository.impl.SeekingRepositoryImpl
@@ -45,81 +53,63 @@ import hr.asee.android.template.domain.repository.impl.SeekingRepositoryImpl
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
 
-    @Provides
-    @ViewModelScoped
-    fun provideNavigationItemsRepository(): NavigationItemsRepository = NavigationItemsRepositoryImpl(Config.BOTTOM_NAV_BAR_ITEMS)
+	@Provides
+	@ViewModelScoped
+	fun provideOnboardingRepository(setOnboardingCompleteInteractor: SetOnboardingCompleteInteractor,
+									getIsOnboardingCompleteInteractor: GetIsOnboardingCompleteInteractor): OnboardingRepository =
+		OnboardingRepositoryImpl(setOnboardingCompleteInteractor = setOnboardingCompleteInteractor, getIsOnboardingCompleteInteractor = getIsOnboardingCompleteInteractor)
 
-    @Provides
-    @ViewModelScoped
-    fun provideAuthenticationRepository(
-        loginInteractor: LoginInteractor,
-        accessTokenMapper: AccessTokenMapper,
-        storeAccessTokenInteractor: StoreAccessTokenInteractor,
-        getAccountInteractor: GetAccountInteractor,
-        userMapper: UserMapper
-    ): AuthenticationRepository = AuthenticationRepositoryImpl(
-        loginInteractor = loginInteractor,
-        accessTokenMapper = accessTokenMapper,
-        storeAccessTokenInteractor = storeAccessTokenInteractor,
-        getAccountInteractor = getAccountInteractor,
-        userMapper = userMapper
-    )
+	@Provides
+	@ViewModelScoped
+	fun provideNavigationItemsRepository(): NavigationItemsRepository = NavigationItemsRepositoryImpl(Config.BOTTOM_NAV_BAR_ITEMS)
 
-    @Provides
-    @ViewModelScoped
-    fun provideParkingSpaceRepository(
-        getParkingSpaceByIdInteractor: GetParkingSpaceByIdInteractor,
-        getParkingSpacesInteractor: GetParkingSpacesInteractor,
-        getParkingSpaceForGiverInteractor: GetParkingSpaceForGiverInteractor,
-        addParkingSpaceInteractor: AddParkingSpaceInteractor,
-        changeParkingLocationInteractor: ChangeParkingLocationInteractor,
-        parkingSpaceMapper: ParkingSpaceMapper
-    ): ParkingSpaceRepository = ParkingSpaceRepositoryImpl(
-        getParkingSpaceByIdInteractor = getParkingSpaceByIdInteractor,
-        getParkingSpacesInteractor = getParkingSpacesInteractor,
-        getParkingSpaceForGiverInteractor = getParkingSpaceForGiverInteractor,
-        addParkingSpaceInteractor = addParkingSpaceInteractor,
-        changeParkingLocationInteractor = changeParkingLocationInteractor,
-        parkingSpaceMapper = parkingSpaceMapper
-    )
+	@Provides
+	@ViewModelScoped
+	fun provideAuthenticationRepository(loginInteractor: LoginInteractor, logoutInteractor: LogoutInteractor, accessTokenMapper: AccessTokenMapper, storeAccessTokenInteractor: StoreAccessTokenInteractor,
+										getAccessTokenInteractor: GetAccessTokenInteractor, getAccountInteractor: GetAccountInteractor,
+										userMapper: UserMapper): AuthenticationRepository = AuthenticationRepositoryImpl(loginInteractor = loginInteractor,
+																														 logoutInteractor = logoutInteractor,
+																														 accessTokenMapper = accessTokenMapper,
+																														 storeAccessTokenInteractor = storeAccessTokenInteractor,
+																														 getAccessTokenInteractor = getAccessTokenInteractor,
+																														 getAccountInteractor = getAccountInteractor,
+																														 userMapper = userMapper)
 
-    @Provides
-    @ViewModelScoped
-    fun provideOfferRepository(
-        offerMapper: OfferMapper,
-        getOffersInteractor: GetOffersInteractor,
-        getOfferingsForGiverInteractor: GetOfferingsForGiverInteractor
-    ): OfferRepository = OfferRepositoryImpl(
-        offerMapper = offerMapper,
-        getOffersInteractor = getOffersInteractor,
-        getOfferingsForGiverInteractor = getOfferingsForGiverInteractor
-    )
+	@Provides
+	@ViewModelScoped
+	fun provideParkingSpaceRepository(getParkingSpaceByIdInteractor: GetParkingSpaceByIdInteractor, getParkingSpacesInteractor: GetParkingSpacesInteractor,
+									  getParkingSpaceForGiverInteractor: GetParkingSpaceForGiverInteractor, addParkingSpaceInteractor: AddParkingSpaceInteractor,
+									  changeParkingLocationInteractor: ChangeParkingLocationInteractor, parkingSpaceMapper: ParkingSpaceMapper): ParkingSpaceRepository =
+		ParkingSpaceRepositoryImpl(getParkingSpaceByIdInteractor = getParkingSpaceByIdInteractor,
+								   getParkingSpacesInteractor = getParkingSpacesInteractor,
+								   getParkingSpaceForGiverInteractor = getParkingSpaceForGiverInteractor,
+								   addParkingSpaceInteractor = addParkingSpaceInteractor,
+								   changeParkingLocationInteractor = changeParkingLocationInteractor,
+								   parkingSpaceMapper = parkingSpaceMapper)
 
-    @Provides
-    @ViewModelScoped
-    fun provideReservationRepository(
-        getReservationsInteractor: GetReservationsInteractor,
-        getReservationsForGiverInteractor: GetReservationsForGiverInteractor,
-        getReservationsForSeekerInteractor: GetReservationsForSeekerInteractor,
-        putReservationByIdInteractor: PutReservationByIdInteractor,
-        reservationMapper: ReservationMapper
-    ): ReservationRepository = ReservationRepositoryImpl(
-        getReservationsInteractor = getReservationsInteractor,
-        getReservationsForGiverInteractor = getReservationsForGiverInteractor,
-        getReservationsForSeekerInteractor = getReservationsForSeekerInteractor,
-        putReservationByIdInteractor = putReservationByIdInteractor,
-        reservationMapper = reservationMapper
-    )
+	@Provides
+	@ViewModelScoped
+	fun provideOfferRepository(offerMapper: OfferMapper, getOffersInteractor: GetOffersInteractor, getOfferingsForGiverInteractor: GetOfferingsForGiverInteractor,
+							   addOfferingInteractor: AddOfferingInteractor, deleteOfferingInteractor: DeleteOfferingInteractor): OfferRepository =
+		OfferRepositoryImpl(offerMapper = offerMapper,
+							getOffersInteractor = getOffersInteractor,
+							getOfferingsForGiverInteractor = getOfferingsForGiverInteractor,
+							addOfferingInteractor = addOfferingInteractor,
+							deleteOfferingInteractor = deleteOfferingInteractor)
 
-    @Provides
-    @ViewModelScoped
-    fun provideSeekingRepository(
-		getSeekingsInteractor: GetSeekingsInteractor,
-        getSeekingsForSeekerInteractor: GetSeekingsForSeekerInteractor,
-		seekingMapper: SeekingMapper
-    ): SeekingRepository = SeekingRepositoryImpl(
-        getSeekingsInteractor = getSeekingsInteractor,
-        getSeekingsForSeekerInteractor = getSeekingsForSeekerInteractor,
-        seekingMapper = seekingMapper
-    )
+	@Provides
+	@ViewModelScoped
+	fun provideReservationRepository(getReservationsInteractor: GetReservationsInteractor, getReservationsForGiverInteractor: GetReservationsForGiverInteractor,
+									 getReservationsForSeekerInteractor: GetReservationsForSeekerInteractor, putReservationByIdInteractor: PutReservationByIdInteractor,
+									 reservationMapper: ReservationMapper): ReservationRepository = ReservationRepositoryImpl(getReservationsInteractor = getReservationsInteractor,
+																															  getReservationsForGiverInteractor = getReservationsForGiverInteractor,
+																															  getReservationsForSeekerInteractor = getReservationsForSeekerInteractor,
+																															  putReservationByIdInteractor = putReservationByIdInteractor,
+																															  reservationMapper = reservationMapper)
+
+	@Provides
+	@ViewModelScoped
+	fun provideSeekingRepository(getSeekingsInteractor: GetSeekingsInteractor, getSeekingsForSeekerInteractor: GetSeekingsForSeekerInteractor,
+								 seekingMapper: SeekingMapper): SeekingRepository =
+		SeekingRepositoryImpl(getSeekingsInteractor = getSeekingsInteractor, getSeekingsForSeekerInteractor = getSeekingsForSeekerInteractor, seekingMapper = seekingMapper)
 }

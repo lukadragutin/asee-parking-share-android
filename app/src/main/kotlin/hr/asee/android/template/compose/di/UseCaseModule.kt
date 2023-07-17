@@ -8,6 +8,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import hr.asee.android.template.domain.repository.AuthenticationRepository
 import hr.asee.android.template.domain.repository.NavigationItemsRepository
 import hr.asee.android.template.domain.repository.OfferRepository
+import hr.asee.android.template.domain.repository.OnboardingRepository
 import hr.asee.android.template.domain.repository.ParkingSpaceRepository
 import hr.asee.android.template.domain.repository.ReservationRepository
 import hr.asee.android.template.domain.repository.SeekingRepository
@@ -19,10 +20,22 @@ import hr.asee.android.template.domain.usecase.impl.DateSelectUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.GetAccountUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.GetAllBottomNavItemsUseCaseImpl
 import hr.asee.android.template.domain.usecase.impl.LoginUseCaseImpl
+import hr.asee.android.template.domain.usecase.login.IsLoginActiveUseCase
+import hr.asee.android.template.domain.usecase.login.LogoutUseCase
+import hr.asee.android.template.domain.usecase.login.impl.IsLoginActiveUseCaseImpl
+import hr.asee.android.template.domain.usecase.login.impl.LogoutUseCaseImpl
+import hr.asee.android.template.domain.usecase.offering.AddOfferingUseCase
+import hr.asee.android.template.domain.usecase.offering.DeleteOfferingUseCase
 import hr.asee.android.template.domain.usecase.offering.GetOfferingsForGiverUseCase
 import hr.asee.android.template.domain.usecase.offering.GetOffersUseCase
+import hr.asee.android.template.domain.usecase.offering.impl.AddOfferingUseCaseImpl
+import hr.asee.android.template.domain.usecase.offering.impl.DeleteOfferingUseCaseImpl
 import hr.asee.android.template.domain.usecase.offering.impl.GetOfferingsForGiverUseCaseImpl
 import hr.asee.android.template.domain.usecase.offering.impl.GetOffersUseCaseImpl
+import hr.asee.android.template.domain.usecase.onboarding.GetIsOnboardingCompleteUseCase
+import hr.asee.android.template.domain.usecase.onboarding.SetOnboardingCompleteUseCase
+import hr.asee.android.template.domain.usecase.onboarding.impl.GetIsOnboardingCompleteUseCaseImpl
+import hr.asee.android.template.domain.usecase.onboarding.impl.SetOnboardingCompleteUseCaseImpl
 import hr.asee.android.template.domain.usecase.parkingspace.AddParkingSpaceUseCase
 import hr.asee.android.template.domain.usecase.parkingspace.ChangeParkingLocationUseCase
 import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpaceByIdUseCase
@@ -52,6 +65,24 @@ object UseCaseModule {
 
 	@Provides
 	@ViewModelScoped
+	fun provideSetOnboardingCompleteUseCase(onboardingRepository: OnboardingRepository): SetOnboardingCompleteUseCase {
+		return SetOnboardingCompleteUseCaseImpl(onboardingRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetIsOnboardingCompleteUseCase(onboardingRepository: OnboardingRepository): GetIsOnboardingCompleteUseCase {
+		return GetIsOnboardingCompleteUseCaseImpl(onboardingRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideIsLoginActiveUseCase(authenticationRepository: AuthenticationRepository): IsLoginActiveUseCase {
+		return IsLoginActiveUseCaseImpl(authenticationRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
 	fun provideGetAllBottomNavItemsUseCase(navigationItemsRepository: NavigationItemsRepository): GetAllBottomNavItemsUseCase {
 		return GetAllBottomNavItemsUseCaseImpl(navigationItemsRepository = navigationItemsRepository)
 	}
@@ -60,6 +91,12 @@ object UseCaseModule {
 	@ViewModelScoped
 	fun provideLoginUseCase(authenticationRepository: AuthenticationRepository): LoginUseCase {
 		return LoginUseCaseImpl(authenticationRepository = authenticationRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideLogoutUseCase(authenticationRepository: AuthenticationRepository): LogoutUseCase {
+		return LogoutUseCaseImpl(authenticationRepository)
 	}
 
 	@Provides
@@ -90,6 +127,18 @@ object UseCaseModule {
 	@ViewModelScoped
 	fun provideGetOffersUseCase(offerRepository: OfferRepository): GetOffersUseCase {
 		return GetOffersUseCaseImpl(offerRepository = offerRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideAddOfferingUseCase(offerRepository: OfferRepository): AddOfferingUseCase {
+		return AddOfferingUseCaseImpl(offerRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideDeleteOfferingUseCase(offerRepository: OfferRepository): DeleteOfferingUseCase {
+		return DeleteOfferingUseCaseImpl(offerRepository)
 	}
 
 	@Provides

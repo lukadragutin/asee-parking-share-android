@@ -7,7 +7,11 @@ interface AuthenticationRepository {
 
     suspend fun login(email: String, password: String): AccessToken
 
+    suspend fun isAccessTokenValid(): Boolean
+
     suspend fun storeAccessToken(accessToken: AccessToken)
 
     suspend fun getAccount(): User
+
+    suspend fun logout()
 }

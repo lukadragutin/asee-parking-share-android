@@ -115,11 +115,20 @@ object PostLoginDirection {
             get() = "changePassword"
     }
 
-    val ParkingSpaces = object : NavigationCommand {
-        override val arguments: List<NamedNavArgument>
-            get() = emptyList()
-        override val destination: String
-            get() = "parkingSpaces"
+    object ParkingSpace {
+        const val PARKING_SPACE_USER_ID_KEY = "parking_space_user_id_key"
+        const val destination = "parkingSpace/{$PARKING_SPACE_USER_ID_KEY}"
+
+        val definedArguments: List<NamedNavArgument> = listOf(
+            navArgument(PARKING_SPACE_USER_ID_KEY) { NavType.IntType }
+        )
+
+        fun parkingSpaceRoute(userId: Int) = object: NavigationCommand {
+            override val arguments: List<NamedNavArgument>
+                get() = definedArguments
+            override val destination: String
+                get() = "parkingSpace/$userId"
+        }
     }
 
 //    val EditParkingSpace = object : NavigationCommand {
@@ -143,10 +152,19 @@ object PostLoginDirection {
             get() = "createSeeking"
     }
 
-    val CreateOffer = object : NavigationCommand {
-        override val arguments: List<NamedNavArgument>
-            get() = emptyList()
-        override val destination: String
-            get() = "createOffer"
+    object CreateOffer {
+        const val CREATE_OFFER_USER_ID_KEY = "user_id_key"
+        const val DESTINATION = "createOffer/{$CREATE_OFFER_USER_ID_KEY}"
+
+        val definedArguments: List<NamedNavArgument> = listOf(
+            navArgument(CREATE_OFFER_USER_ID_KEY) { type = NavType.IntType }
+        )
+
+        fun createOfferRoute(userId: Int): NavigationCommand = object: NavigationCommand {
+            override val arguments: List<NamedNavArgument>
+                get() = definedArguments
+            override val destination: String
+                get() = "createOffer/$userId"
+        }
     }
 }

@@ -23,74 +23,69 @@ import hr.asee.android.template.compose.ui.common.model.state.ParkingSpacePicker
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.compose.ui.theme.DarkGray
 import hr.asee.android.template.compose.ui.theme.Orange
-import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
 
 @Composable
 fun ParkingSpaceSelector(
-    parkingSpaces: Set<ParkingSpace>,
-    user: User,
-    parkingSpacePickerState: ParkingSpacePickerState,
-    onRadioButtonClicked: (ParkingSpace) -> Unit,
-    onCancelClicked: () -> Unit,
+	parkingSpace: ParkingSpace,
+	parkingSpacePickerState: ParkingSpacePickerState,
+	onRadioButtonClicked: (ParkingSpace) -> Unit,
+	onCancelClicked: () -> Unit,
 ) {
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
-            modifier = Modifier.align(Alignment.Start)
-        ) {
-            LabelText(
-                text = stringResource(id = R.string.select_parking_space_screen_cancel_button_label),
-                fontSize = 16.sp,
-                color = Orange,
-                modifier = Modifier
-                    .offset(y = 15.dp)
-                    .clickable(onClick = onCancelClicked)
-            )
+	Column(
+		verticalArrangement = Arrangement.spacedBy(30.dp),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+	) {
+		Row(
+			horizontalArrangement = Arrangement.spacedBy(50.dp),
+			modifier = Modifier.align(Alignment.Start)
+		) {
+			LabelText(
+				text = stringResource(id = R.string.select_parking_space_screen_cancel_button_label),
+				fontSize = 16.sp,
+				color = Orange,
+				modifier = Modifier
+                        .offset(y = 15.dp)
+                        .clickable(onClick = onCancelClicked)
+			)
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 5.dp)
-            ) {
-                LabelText(
-                    text = stringResource(id = R.string.select_parking_space_screen_title_label),
-                    fontSize = 18.sp
-                )
+			Column(
+				verticalArrangement = Arrangement.spacedBy(15.dp),
+				horizontalAlignment = Alignment.CenterHorizontally,
+				modifier = Modifier.padding(bottom = 5.dp)
+			) {
+				LabelText(
+					text = stringResource(id = R.string.select_parking_space_screen_title_label),
+					fontSize = 18.sp
+				)
 
-                LabelText(
-                    text = stringResource(id = R.string.select_parking_space_screen_instruction_label),
-                    fontSize = 12.sp,
-                    color = DarkGray
-                )
-            }
-        }
+				LabelText(
+					text = stringResource(id = R.string.select_parking_space_screen_instruction_label),
+					fontSize = 12.sp,
+					color = DarkGray
+				)
+			}
+		}
 
-        LazyColumn {
-            items(parkingSpaces.toList()) { parkingSpace ->
+		LazyColumn {
+			items(listOf(parkingSpace)) { parkingSpace ->
+				Row() {
 
-                if (parkingSpace.owner.id == user.id) {
-                    Row() {
+					RadioButton(
+						selected = parkingSpace == parkingSpacePickerState.selectedOption,
+						onClick = { onRadioButtonClicked(parkingSpace) },
+						colors = RadioButtonDefaults.colors(
+							selectedColor = AssecoBlue
+						)
+					)
 
-                        RadioButton(
-                            selected = parkingSpace == parkingSpacePickerState.selectedOption,
-                            onClick = { onRadioButtonClicked(parkingSpace) },
-                            colors = RadioButtonDefaults.colors(
-                                selectedColor = AssecoBlue
-                            )
-                        )
-
-                        LabelText(text = "Parking ID: ${parkingSpace.location}", fontSize = 20.sp)
-                    }
-                }
-            }
-        }
-    }
+					LabelText(text = "Parking ID: ${parkingSpace.location}", fontSize = 20.sp)
+				}
+			}
+		}
+	}
 }

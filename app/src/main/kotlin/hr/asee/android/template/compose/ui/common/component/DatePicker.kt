@@ -121,7 +121,7 @@ fun DatePicker(
 				factory = { calendarView },
 				update = {
 					it.setOnDateChangeListener { _, y, m, d ->
-						onDateSelect(LocalDateTime.of(y, m + 1, d, 0, 0, 0))
+						onDateSelect(LocalDateTime.of(y, m + 1, d, 12, 0, 0, 0))
 					}
 				},
 				modifier = modifier

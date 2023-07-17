@@ -14,6 +14,8 @@ interface Router {
 
     fun hideBottomNavBar()
 
+    fun logout()
+
     fun navigateToLoginScreen()
 
     fun navigateToRegistrationScreen()
@@ -28,7 +30,7 @@ interface Router {
 
     fun navigateToChangePasswordScreen()
 
-    fun navigateToParkingSpacesScreen()
+    fun navigateToParkingSpacesScreen(userId: Int)
 
     fun navigateToEditParkingSpaceScreen(parkingSpaceId: Int)
 
@@ -40,5 +42,5 @@ interface Router {
 
     fun navigateToCreateSeekingScreen()
 
-    fun navigateToCreateOfferScreen()
+    fun navigateToCreateOfferScreen(userId: Int)
 }

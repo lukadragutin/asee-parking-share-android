@@ -8,4 +8,8 @@ interface OfferRepository {
     suspend fun getOffers(dateStart: LocalDateTime?, dateEnd: LocalDateTime?): List<Offer>
 
     suspend fun getOfferingsForGiver(giverId: Int): List<Offer>
+
+    suspend fun addOffering(dateStart: LocalDateTime, dateEnd: LocalDateTime, parkingSpaceId: Int)
+
+    suspend fun deleteOffering(offerId: Int)
 }

@@ -1,5 +1,6 @@
 package hr.asee.android.template.compose.ui.postlogin.editparkingspace
 
+import androidx.annotation.MainThread
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.asee.android.template.compose.ui.base.BaseViewModel
 import hr.asee.android.template.compose.ui.common.model.CommonMessages
@@ -17,58 +18,66 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditParkingSpaceViewModel @Inject constructor(
-    private val getParkingSpaceByIdUseCase: GetParkingSpaceByIdUseCase,
-    private val changeParkingLocationUseCase: ChangeParkingLocationUseCase
+	private val getParkingSpaceByIdUseCase: GetParkingSpaceByIdUseCase,
+	private val changeParkingLocationUseCase: ChangeParkingLocationUseCase
 ) : BaseViewModel() {
 
-    private val _parkingSpaceState = MutableStateFlow(ParkingSpace.EMPTY)
-    val parkingSpaceState = _parkingSpaceState.asStateFlow()
+	private val _parkingSpaceState = MutableStateFlow(ParkingSpace.EMPTY)
+	val parkingSpaceState = _parkingSpaceState.asStateFlow()
 
-    private val _parkingNumberState = MutableStateFlow(InputFieldState(text = String.empty(), onTextChange = this::onParkingNumberTextChange))
-    val parkingNumberState: StateFlow<InputFieldState> = _parkingNumberState
+	private val _parkingNumberState = MutableStateFlow(InputFieldState(text = String.empty(), onTextChange = this::onParkingNumberTextChange))
+	val parkingNumberState: StateFlow<InputFieldState> = _parkingNumberState
 
-    private fun onParkingNumberTextChange(newValue: String) {
-        _parkingNumberState.update { it.copy(text = newValue, isError = false) }
-    }
+	private fun onParkingNumberTextChange(newValue: String) {
+		_parkingNumberState.update { it.copy(text = newValue, isError = false) }
+	}
 
-//    fun getParkingSpace(id: Int) {
-//        runSuspend { getParkingSpaceByIdInternal(id) }
-//    }
-//
-//    private suspend fun getParkingSpaceByIdInternal(id: Int) {
-//        getParkingSpaceByIdUseCase(id = id).onFinished(
-//            successCallback = this::getParkingSpaceByIdSuccess,
-//            errorCallback = this::getParkingSpaceByIdError
-//        )
-//    }
-//
-//    private suspend fun getParkingSpaceByIdSuccess(): ParkingSpace? {
-//        return getParkingSpaceByIdUseCase(2).data
-//    }
-//
-//    private fun getParkingSpaceByIdError(errorData: ErrorData) {
-//        when (errorData.errorType) {
-//            GetParkingSpaceByIdUseCase.GetParkingSpaceByIdError.GENERAL_GET_PARKING_SPACE_BY_ID_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
-//        }
-//    }
+	private var initializeCalled = false
 
-    private suspend fun changeParkingLocationInternal(id: Int, newParkingSpace: ParkingSpace) {
-        changeParkingLocationUseCase(id, newParkingSpace).onFinished(
-            successCallback = this::changeParkingLocationSuccess,
-            errorCallback = this::changeParkingLocationError
-        )
-    }
+	@MainThread
+	fun initialize(parkingSpaceId: Int) {
+		if (initializeCalled) return
+		initializeCalled = true
 
-    private fun changeParkingLocationSuccess(newParkingSpace: ParkingSpace) {
-    }
+		runSuspend {
+			initializeParkingSpace(parkingSpaceId)
+		}
+	}
 
-    private fun changeParkingLocationError(errorData: ErrorData) {
-        when (errorData.errorType) {
-            ChangeParkingLocationUseCase.ChangeParkingLocationError.GENERAL_CHANGE_PARKING_LOCATION_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
-        }
-    }
+	private suspend fun initializeParkingSpace(parkingSpaceId: Int) {
+		getParkingSpaceByIdUseCase(parkingSpaceId).onFinished(
+			this::getParkingSpaceByIdSuccess,
+			this::getParkingSpaceByIdError
+		)
+	}
 
-    fun onConfirmClicked(parkingSpace: ParkingSpace) {
-        runSuspend { changeParkingLocationInternal(parkingSpace.id, parkingSpace) }
-    }
+	private fun getParkingSpaceByIdSuccess(parkingSpace: ParkingSpace) {
+		_parkingSpaceState.update { parkingSpace }
+        _parkingNumberState.update { it.copy(text = parkingSpace.location) }
+	}
+
+	private fun getParkingSpaceByIdError(errorData: ErrorData) {
+		showError(CommonMessages.UNEXPECTED_ERROR)
+	}
+
+	private suspend fun changeParkingLocationInternal() {
+        val parkingSpace = _parkingSpaceState.value.copy(location = parkingNumberState.value.text)
+		changeParkingLocationUseCase(parkingSpace.id, parkingSpace).onFinished(
+			successCallback = this::changeParkingLocationSuccess,
+			errorCallback = this::changeParkingLocationError
+		)
+	}
+
+	private fun changeParkingLocationSuccess(newParkingSpace: ParkingSpace) {
+	}
+
+	private fun changeParkingLocationError(errorData: ErrorData) {
+		when (errorData.errorType) {
+			ChangeParkingLocationUseCase.ChangeParkingLocationError.GENERAL_CHANGE_PARKING_LOCATION_ERROR -> showError(CommonMessages.UNEXPECTED_ERROR)
+		}
+	}
+
+	fun onConfirmClicked() {
+		runSuspend { changeParkingLocationInternal() }
+	}
 }

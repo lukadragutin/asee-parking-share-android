@@ -3,7 +3,7 @@ package hr.asee.android.template.domain.model.common.service
 import hr.asee.android.template.domain.model.common.Role
 import hr.asee.android.template.domain.model.common.UserCompact
 
-class ParkingSpace(
+data class ParkingSpace(
     val id: Int = generateId(),
     val location: String,
     val owner: UserCompact = UserCompact.EMPTY.copy(role = Role.GIVER)

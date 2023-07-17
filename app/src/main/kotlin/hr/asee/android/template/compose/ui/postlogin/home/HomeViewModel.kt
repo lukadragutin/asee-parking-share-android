@@ -19,6 +19,8 @@ import hr.asee.android.template.domain.model.common.service.Seeking
 import hr.asee.android.template.domain.usecase.DateSelectUseCase
 import hr.asee.android.template.domain.usecase.GetAccountUseCase
 import hr.asee.android.template.domain.usecase.GetAllBottomNavItemsUseCase
+import hr.asee.android.template.domain.usecase.login.LogoutUseCase
+import hr.asee.android.template.domain.usecase.offering.DeleteOfferingUseCase
 import hr.asee.android.template.domain.usecase.offering.GetOfferingsForGiverUseCase
 import hr.asee.android.template.domain.usecase.offering.GetOffersUseCase
 import hr.asee.android.template.domain.usecase.parkingspace.GetParkingSpaceForGiverUseCase
@@ -29,6 +31,7 @@ import hr.asee.android.template.domain.usecase.seeking.GetSeekingsForSeekerUseCa
 import hr.asee.android.template.domain.usecase.seeking.GetSeekingsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
@@ -39,18 +42,20 @@ open class HomeViewModel @Inject constructor(
     private val getSeekingsUseCase: GetSeekingsUseCase,
     private val getSeekingsForSeekerUseCase: GetSeekingsForSeekerUseCase,
     private val getOffersUseCase: GetOffersUseCase,
+    private val deleteOfferingUseCase: DeleteOfferingUseCase,
     private val getOfferingsForGiverUseCase: GetOfferingsForGiverUseCase,
     private val getReservationsForGiverUseCase: GetReservationsForGiverUseCase,
     private val getReservationsForSeekerUseCase: GetReservationsForSeekerUseCase,
     private val getParkingSpaceForGiverUseCase: GetParkingSpaceForGiverUseCase,
     private val dateSelectUseCase: DateSelectUseCase,
     private val getAllBottomNavItemsUseCase: GetAllBottomNavItemsUseCase,
+    private val logoutUseCase: LogoutUseCase,
     val bottomNavBarDelegate: BottomNavBarDelegate
 ) : BaseViewModel() {
 
     init {
+        showBottomNavBar()
         runSuspend {
-            getAccount()
             getAllBottomNavItemsUseCase().onSuccess { items -> _bottomNavBarState.update { it.copy(items = items, selectedItem = items[0]) } }
         }
     }
@@ -66,6 +71,15 @@ open class HomeViewModel @Inject constructor(
 
     private val _removeOfferDialogState = MutableStateFlow(AlertDialogState())
     val removeOfferDialogState: StateFlow<AlertDialogState> = _removeOfferDialogState
+
+    private val _removeOfferId = MutableStateFlow(-1)
+    val removeOfferId = _removeOfferId.asStateFlow()
+
+    fun initData() {
+        runSuspend {
+            getAccount()
+        }
+    }
 
     private suspend fun getAccount() {
         getAccountInternal()
@@ -312,8 +326,27 @@ open class HomeViewModel @Inject constructor(
         _removeOfferDialogState.update { it.copy(isVisible = false) }
     }
 
-    fun onRemoveOfferClicked() {
+    fun onRemoveOfferClicked(offerId: Int) {
+        _removeOfferId.update { offerId }
         _removeOfferDialogState.update { it.copy(isVisible = true) }
+    }
+
+    fun removeOffer(offerId: Int) {
+        runSuspend {
+            deleteOfferingUseCase(offerId).onFinished(
+                this::deleteOfferingSuccess,
+                this::deleteOfferingError
+            )
+        }
+    }
+
+    private fun deleteOfferingSuccess() {
+        _removeOfferDialogState.update { it.copy(isVisible = false) }
+    }
+
+    private fun deleteOfferingError(errorData: ErrorData) {
+        _removeOfferDialogState.update { it.copy(isVisible = false) }
+        showError(CommonMessages.UNEXPECTED_ERROR)
     }
 
     fun onGiverReservationClicked(reservationId: Int) {
@@ -336,8 +369,8 @@ open class HomeViewModel @Inject constructor(
         // TODO
     }
 
-    fun offerParking() {
-        router.navigateToCreateOfferScreen()
+    fun offerParking(userId: Int) {
+        router.navigateToCreateOfferScreen(userId)
     }
 
     fun seekParking() {
@@ -350,5 +383,22 @@ open class HomeViewModel @Inject constructor(
 
     fun onProfilePictureClicked() {
         router.navigateToUserManagementScreen()
+    }
+
+    fun logout() {
+        runSuspend {
+            logoutUseCase().onFinished(
+                this::onLogoutSuccess,
+                this::onLogoutError
+            )
+        }
+    }
+
+    private fun onLogoutSuccess() {
+        router.logout()
+    }
+
+    private fun onLogoutError(errorData: ErrorData) {
+        // NO_OP
     }
 }

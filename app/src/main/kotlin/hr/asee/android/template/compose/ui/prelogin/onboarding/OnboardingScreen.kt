@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,7 +32,6 @@ import hr.asee.android.template.compose.ui.prelogin.onboarding.component.Horizon
 import hr.asee.android.template.compose.ui.prelogin.onboarding.component.OnboardingButton
 import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
-import hr.asee.android.template.compose.ui.theme.BackgroundGray
 import hr.asee.android.template.compose.ui.theme.Gray
 import hr.asee.android.template.domain.model.OnboardingItem
 import kotlinx.coroutines.launch
@@ -42,102 +40,102 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
 
-    AndroidComposeCodingTemplateTheme(darkTheme = (if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME) as Boolean) {
+	AndroidComposeCodingTemplateTheme(darkTheme = if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME == true) {
 
-        val onboardingItems by viewModel.onboardingItems.collectAsState()
+		val onboardingItems by viewModel.onboardingItems.collectAsState()
 
-        OnboardingContent(
-            onboardingItems = onboardingItems,
-            onNextClicked = viewModel::onNextClicked,
-            onRegisterClicked = viewModel::navigateToRegister,
-            onLoginClicked = viewModel::navigateToLogin
-        )
-    }
+		OnboardingContent(
+			onboardingItems = onboardingItems,
+			onNextClicked = viewModel::onNextClicked,
+			onRegisterClicked = viewModel::navigateToRegister,
+			onLoginClicked = viewModel::navigateToLogin
+		)
+	}
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnboardingContent(
-    onboardingItems: List<OnboardingItem>,
-    onNextClicked: (PagerState) -> Unit,
-    onRegisterClicked: () -> Unit,
-    onLoginClicked: () -> Unit
+	onboardingItems: List<OnboardingItem>,
+	onNextClicked: (PagerState) -> Unit,
+	onRegisterClicked: () -> Unit,
+	onLoginClicked: () -> Unit
 ) {
-    val pagerState = rememberPagerState()
-    val screenEdgePadding = dimensionResource(id = R.dimen.screen_edge_padding)
-    val coroutineScope = rememberCoroutineScope()
+	val pagerState = rememberPagerState()
+	val screenEdgePadding = dimensionResource(id = R.dimen.screen_edge_padding)
+	val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Spacer(modifier = Modifier.height(
-            if (pagerState.currentPage == pagerState.pageCount - 2) 100.dp
-            else 50.dp
-        ))
+	Column(
+		horizontalAlignment = Alignment.CenterHorizontally,
+		modifier = Modifier.fillMaxSize()
+	) {
+		Spacer(modifier = Modifier.height(
+			if (pagerState.currentPage == pagerState.pageCount - 2) 100.dp
+			else 50.dp
+		))
 
-        HorizontalOnboardingPager(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            onboardingItems = onboardingItems,
-            pagerState = pagerState,
-            contentPadding = screenEdgePadding,
-        )
+		HorizontalOnboardingPager(
+			modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+			onboardingItems = onboardingItems,
+			pagerState = pagerState,
+			contentPadding = screenEdgePadding,
+		)
 
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(screenEdgePadding),
-            activeColor = AssecoBlue,
-            inactiveColor = Gray
-        )
+		HorizontalPagerIndicator(
+			pagerState = pagerState,
+			modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(screenEdgePadding),
+			activeColor = AssecoBlue,
+			inactiveColor = Gray
+		)
 
-        OnboardingButton(
-            text = stringResource(id = R.string.onboarding_screen_next_button_label),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = screenEdgePadding,
-                    end = screenEdgePadding,
-                    bottom = screenEdgePadding
-                ),
-            isVisible = pagerState.currentPage == pagerState.pageCount - 2,
-            onClick = {
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                }
-            }
-        )
+		OnboardingButton(
+			text = stringResource(id = R.string.onboarding_screen_next_button_label),
+			modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = screenEdgePadding,
+                        end = screenEdgePadding,
+                        bottom = screenEdgePadding
+                    ),
+			isVisible = pagerState.currentPage == pagerState.pageCount - 2,
+			onClick = {
+				coroutineScope.launch {
+					pagerState.animateScrollToPage(pagerState.currentPage + 1)
+				}
+			}
+		)
 
-        OnboardingButton(
-            text = stringResource(id = R.string.onboarding_screen_register_button_label),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = screenEdgePadding,
-                    end = screenEdgePadding,
-                    bottom = screenEdgePadding
-                ),
-            isVisible = pagerState.currentPage == pagerState.pageCount - 1,
-            onClick = onRegisterClicked
-        )
+		OnboardingButton(
+			text = stringResource(id = R.string.onboarding_screen_register_button_label),
+			modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = screenEdgePadding,
+                        end = screenEdgePadding,
+                        bottom = screenEdgePadding
+                    ),
+			isVisible = pagerState.currentPage == pagerState.pageCount - 1,
+			onClick = onRegisterClicked
+		)
 
-        AnimatedVisibility(visible = pagerState.currentPage == pagerState.pageCount - 1) {
-            Column() {
+		AnimatedVisibility(visible = pagerState.currentPage == pagerState.pageCount - 1) {
+			Column() {
 
-                LabelText(
-                    text = stringResource(id = R.string.onboarding_screen_login_button_label),
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .clickable(onClick = onLoginClicked),
-                    textDecoration = TextDecoration.Underline
-                )
+				LabelText(
+					text = stringResource(id = R.string.onboarding_screen_login_button_label),
+					fontSize = 16.sp,
+					modifier = Modifier
+							.clickable(onClick = onLoginClicked),
+					textDecoration = TextDecoration.Underline
+				)
 
-                Spacer(modifier = Modifier.height(30.dp))
+				Spacer(modifier = Modifier.height(30.dp))
 
-            }
-        }
-    }
+			}
+		}
+	}
 }

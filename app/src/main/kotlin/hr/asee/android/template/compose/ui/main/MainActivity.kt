@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AndroidComposeCodingTemplateTheme(
                 darkTheme = (if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME == true)

@@ -4,8 +4,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.asee.android.template.compose.ui.base.BaseViewModel
+import hr.asee.android.template.compose.ui.common.model.CommonMessages
 import hr.asee.android.template.domain.model.OnboardingItem
 import hr.asee.android.template.domain.model.OnboardingType
+import hr.asee.android.template.domain.model.common.resource.ErrorData
+import hr.asee.android.template.domain.usecase.onboarding.SetOnboardingCompleteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -14,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-
+    private val setOnboardingCompleteUseCase: SetOnboardingCompleteUseCase
 ) : BaseViewModel() {
 
     private val _onboardingItems = MutableStateFlow(listOf<OnboardingItem>())
@@ -44,10 +47,29 @@ class OnboardingViewModel @Inject constructor(
     }
 
     fun navigateToRegister() {
+        setOnboardingComplete()
         router.navigateToRegistrationScreen()
     }
 
     fun navigateToLogin() {
+        setOnboardingComplete()
         router.navigateToLoginScreen()
+    }
+
+    private fun setOnboardingComplete() {
+        runSuspend {
+            setOnboardingCompleteUseCase().onFinished(
+                this::setOnboardingCompleteSuccess,
+                this::setOnboardingCompleteError
+            )
+        }
+    }
+
+    private fun setOnboardingCompleteSuccess() {
+        // NO_OP
+    }
+
+    private fun setOnboardingCompleteError(errorData: ErrorData) {
+        showError(CommonMessages.UNEXPECTED_ERROR)
     }
 }

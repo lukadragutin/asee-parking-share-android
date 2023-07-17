@@ -7,7 +7,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
@@ -45,10 +47,11 @@ import org.threeten.bp.LocalDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CreateOfferScreen(viewModel: CreateOfferViewModel = hiltViewModel()) {
+fun CreateOfferScreen(viewModel: CreateOfferViewModel = hiltViewModel(), userId: Int) {
 
-	val parkingSpaces by viewModel.parkingSpacesState.collectAsState()
-	val user by viewModel.userState.collectAsState()
+	viewModel.init(userId)
+
+	val parkingSpace by viewModel.parkingSpaceState.collectAsState()
 	val datePickerState by viewModel.datePickerState.collectAsState()
 	val parkingSpacePickerState by viewModel.parkingSpacePickerState.collectAsState()
 
@@ -72,8 +75,7 @@ fun CreateOfferScreen(viewModel: CreateOfferViewModel = hiltViewModel()) {
 		ModalBottomSheetLayout(
 			sheetContent = {
 				ParkingSpaceSelector(
-					parkingSpaces = parkingSpaces,
-					user = user,
+					parkingSpace = parkingSpace,
 					parkingSpacePickerState = parkingSpacePickerState,
 					onRadioButtonClicked = viewModel::onRadioButtonClicked,
 					onCancelClicked = {
@@ -141,12 +143,13 @@ fun CreateOfferScreenContent(
 	Column(
 		verticalArrangement = Arrangement.spacedBy(10.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
-		modifier = Modifier.fillMaxWidth()
+		modifier = Modifier
+				.fillMaxWidth()
+				.verticalScroll(rememberScrollState())
 	) {
 
 		ParkingSpacedDisplay(
 			parkingSpace = parkingSpacePickerState.selectedOption,
-			size = 0.75f,
 			modifier = Modifier.clickable {
 				scope.launch {
 					if (sheetState.isVisible)
@@ -166,7 +169,6 @@ fun CreateOfferScreenContent(
 			onDateSelect = onDateSelect,
 			modifier = Modifier
 					.fillMaxWidth()
-					.height(150.dp)
 		)
 
 		BlueButton(
@@ -183,8 +185,5 @@ fun CreateOfferScreenContent(
 					.clickable(onClick = onCancelClicked),
 			textDecoration = TextDecoration.Underline
 		)
-
-		Spacer(modifier = Modifier.height(30.dp))
-
 	}
 }

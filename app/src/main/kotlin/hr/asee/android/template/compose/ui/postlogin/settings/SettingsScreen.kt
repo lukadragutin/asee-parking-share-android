@@ -41,7 +41,7 @@ import hr.asee.android.template.compose.ui.theme.DarkGray
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
 
-    var darkTheme = (if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME) as Boolean
+    val darkTheme = if (DARK_THEME == null) isSystemInDarkTheme() else DARK_THEME == true
 
     AndroidComposeCodingTemplateTheme(darkTheme = darkTheme) {
         Column(modifier = Modifier.background(MaterialTheme.colors.surface)) {

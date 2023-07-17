@@ -43,17 +43,16 @@ import hr.asee.android.template.compose.ui.common.model.state.InputFieldState
 import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
 import hr.asee.android.template.compose.ui.theme.AssecoBlue
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
-import hr.asee.android.template.domain.model.common.service.exampleParkingSpace1
 
 @Composable
-fun EditParkingSpaceScreen(viewModel: EditParkingSpaceViewModel = hiltViewModel(), parkingSpaceId: Int = 0) {
+fun EditParkingSpaceScreen(viewModel: EditParkingSpaceViewModel = hiltViewModel(), parkingSpaceId: Int = -1) {
 
-
+	viewModel.initialize(parkingSpaceId)
 	val parkingSpace by viewModel.parkingSpaceState.collectAsState()
 	val parkingNumberState by viewModel.parkingNumberState.collectAsState()
 
 	AndroidComposeCodingTemplateTheme(
-		darkTheme = (if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) as Boolean
+		darkTheme = if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME == true
 	) {
 
 		Column(modifier = Modifier.background(MaterialTheme.colors.surface)) {
@@ -83,8 +82,8 @@ fun EditParkingSpaceScreen(viewModel: EditParkingSpaceViewModel = hiltViewModel(
 @Composable
 fun EditParkingSpaceScreenContent(
 	parkingNumberState: InputFieldState,
-	parkingSpace: ParkingSpace? = exampleParkingSpace1,
-	onConfirmClicked: (ParkingSpace) -> Unit
+	parkingSpace: ParkingSpace,
+	onConfirmClicked: () -> Unit
 ) {
 
 	Column(
@@ -96,7 +95,7 @@ fun EditParkingSpaceScreenContent(
 		Spacer(modifier = Modifier.height(10.dp))
 
 		ParkingSpacedDisplay(
-			parkingSpace = parkingSpace as ParkingSpace,
+			parkingSpace = parkingSpace,
 			modifier = Modifier
 					.height(275.dp)
 					.width(275.dp)
@@ -133,7 +132,7 @@ fun EditParkingSpaceScreenContent(
 
 		BlueButton(
 			label = stringResource(id = R.string.edit_parking_space_confirm_button_label),
-			onClick = { onConfirmClicked(parkingSpace) }
+			onClick = { onConfirmClicked() }
 		)
 
 	}

@@ -1,5 +1,6 @@
 package hr.asee.android.template.compose.ui.base
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.asee.android.template.compose.config.Config
@@ -28,6 +29,8 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val _bottomNavBarState = MutableStateFlow(BottomNavBarState(items = Config.BOTTOM_NAV_BAR_ITEMS, onElementClicked = this::onNavElementClicked))
     val bottomNavBarState: StateFlow<BottomNavBarState> = _bottomNavBarState
+
+    private var initializeCalled = false
 
     private fun onNavElementClicked(item: NavigationItem) {
         router.navigateToDirection(item.direction)
@@ -74,5 +77,18 @@ abstract class BaseViewModel : ViewModel() {
 
     fun goBack() {
         router.navigateBack()
+    }
+
+    // https://developer.android.google.cn/topic/architecture/ui-layer/state-production#initializing-state-production
+    @MainThread
+    fun initialize() {
+        if(initializeCalled) return
+        initializeCalled = true
+
+        initializeInternal()
+    }
+
+    protected open fun initializeInternal() {
+        // NO_OP
     }
 }

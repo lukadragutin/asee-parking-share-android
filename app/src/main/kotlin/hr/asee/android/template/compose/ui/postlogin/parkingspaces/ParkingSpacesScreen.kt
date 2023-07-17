@@ -26,79 +26,79 @@ import hr.asee.android.template.compose.R
 import hr.asee.android.template.compose.config.Config
 import hr.asee.android.template.compose.ui.common.component.button.BackButton
 import hr.asee.android.template.compose.ui.common.component.button.PlusButton
+import hr.asee.android.template.compose.ui.common.component.dialog.ScreenStateDialog
 import hr.asee.android.template.compose.ui.common.layout.DefaultScreenLayout
 import hr.asee.android.template.compose.ui.postlogin.parkingspaces.contents.list.ParkingSpacesList
 import hr.asee.android.template.compose.ui.theme.AndroidComposeCodingTemplateTheme
-import hr.asee.android.template.domain.model.common.User
 import hr.asee.android.template.domain.model.common.service.ParkingSpace
 
 @Composable
-fun ParkingSpacesScreen(viewModel: ParkingSpacesViewModel = hiltViewModel()) {
+fun ParkingSpacesScreen(viewModel: ParkingSpacesViewModel = hiltViewModel(), userId: Int) {
 
-    val parkingSpaces by viewModel.parkingSpacesState.collectAsState()
-    val user by viewModel.userState.collectAsState()
+	viewModel.initialize(userId)
+	val parkingSpace by viewModel.parkingSpaceState.collectAsState()
+	val uiState by viewModel.uiState.collectAsState()
 
-    AndroidComposeCodingTemplateTheme(
-        darkTheme = (if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME) as Boolean
-    ) {
+	AndroidComposeCodingTemplateTheme(
+		darkTheme = if (Config.DARK_THEME == null) isSystemInDarkTheme() else Config.DARK_THEME == true
+	) {
 
-        Column(modifier = Modifier.background(MaterialTheme.colors.surface)) {
+		Column(modifier = Modifier.background(MaterialTheme.colors.surface)) {
 
-            Spacer(modifier = Modifier.height(10.dp))
+			Spacer(modifier = Modifier.height(10.dp))
 
-            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+			Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
-                BackButton(viewModel::goBack)
+				BackButton(viewModel::goBack)
 
-                Spacer(modifier = Modifier.weight(1f))
+				Spacer(modifier = Modifier.weight(1f))
 
-                PlusButton(onClick = viewModel::onAddParkingSpaceClicked)
-            }
+				PlusButton(onClick = viewModel::onAddParkingSpaceClicked)
+			}
 
-            DefaultScreenLayout(
-                screenTitle = stringResource(id = R.string.parking_spaces_screen_title_label),
-                background = Color.Transparent,
-                modifier = Modifier
-                    .fillMaxHeight()
-            ) {
+			DefaultScreenLayout(
+				screenTitle = stringResource(id = R.string.parking_spaces_screen_title_label),
+				background = Color.Transparent,
+				modifier = Modifier
+						.fillMaxHeight()
+			) {
 
-                ParkingSpacesScreenContent(
-                    parkingSpaces = parkingSpaces,
-                    user = user,
-                    onParkingSpaceClicked = viewModel::onParkingSpaceClicked
-                )
-            }
-        }
-    }
+				ParkingSpacesScreenContent(
+					parkingSpace = parkingSpace,
+					onParkingSpaceClicked = viewModel::onParkingSpaceClicked
+				)
+			}
+		}
+	}
+
+	ScreenStateDialog(state = uiState, onDismiss = viewModel::onMessageDismissed)
 
 }
 
 @Composable
 fun ParkingSpacesScreenContent(
-    parkingSpaces: Set<ParkingSpace>,
-    user: User,
-    onParkingSpaceClicked: (Int) -> Unit
+	parkingSpace: ParkingSpace,
+	onParkingSpaceClicked: (Int) -> Unit
 ) {
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-                .verticalScroll(state = rememberScrollState())
-                .fillMaxWidth()
-    ) {
+	Column(
+		horizontalAlignment = Alignment.CenterHorizontally,
+		modifier = Modifier
+				.verticalScroll(state = rememberScrollState())
+				.fillMaxWidth()
+	) {
 
-        ParkingSpacesList(
-            parkingSpaces = parkingSpaces,
-            user = user,
-            onParkingSpacesClicked = onParkingSpaceClicked
-        )
+		ParkingSpacesList(
+			parkingSpace = parkingSpace,
+			onParkingSpacesClicked = onParkingSpaceClicked
+		)
 
-    }
-    
+	}
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ParkingSpacesPreview() {
-    ParkingSpacesScreen()
+	ParkingSpacesScreen(userId = 2)
 }
